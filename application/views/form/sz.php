@@ -1,11 +1,10 @@
 <?php
-include('../formObjects.php');
 
 if (isset($_POST['race']) === true && empty($_POST['race']) === false)
 {
 	
 	$sql = "SELECT * FROM rasa WHERE raceID = " . $_POST['race'];
-	$result = $db->execute($sql);
+	$result = $db->query($sql);
 	
 	if ($result->num_rows > 0)
 	{

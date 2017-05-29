@@ -5,7 +5,7 @@ echo form_label('Imie: ', 'name');
 echo form_input('name') . "<br>";
 echo form_error('name', '<p>', '</p>');
 echo form_label('Rasa: ', 'race'); 
-echo form_dropdown('race',$race, 1,['id' => 'select']). "<br>";
+echo form_dropdown('race',$race, 0,['id' => 'select']). "<br>";
 echo form_label('Płeć: ', 'gender');
 echo form_dropdown('gender', $gender). "<br>";
 echo form_label('Klasa: ', 'class');
@@ -40,8 +40,8 @@ echo form_input('description'). "<br>";
 <input type="text" id="rsw" readonly size="2" name="rsw">
 <input type="text" id="rogd" readonly size="2" name="rogd">
 <br>
-<input type="text" name="sz" value="<?php echo $sz; ?>" readonly size="2" id="sz">
-<span id="sz"></span>
+<input type="text" name="sz" value="" readonly size="2" id="sz">
+<!--<span id="sz"></span>-->
 <span id="ww"></span>
 <span id="us"></span>
 <span id="s"></span>
@@ -58,7 +58,24 @@ echo form_input('description'). "<br>";
 <?php echo form_submit('submit', 'Stwórz') ?>
 </form>
 <button id="btn1">Generuj</button>
+<?php
 
+if (isset($_POST['race']) === true && empty($_POST['race']) === false)
+{
+	
+	$sql = "SELECT * FROM rasa WHERE raceID = " . $_POST['race'];
+	$result = $db->query($sql);
+	
+	if ($result->num_rows > 0)
+	{
+		$row = $result->fetch_assoc();
+		$sz = $row['sz'];
+		 echo $sz;
+	} 
+	else
+		echo "Błąd";
+}
+?>
 
 <script>
 $("document").ready(function() {
@@ -95,11 +112,12 @@ $("document").ready(function() {
 	});
 }); //ready	
 	$( "#select" ).change(function () {
-	var sz = $("select").val();
+	var sz = $("#select").val();
+	var path = 'http://localhost/warhammer/create_character/get_sz';
     $( "#select option:selected" ).each(function() {
-      //$.post('../models/form_model.php', {race: sz}, function(data) {
-      	$("#sz").val(sz);
-      //}); //post
+      $.post(path, {race: sz}, function(data) {
+      	$("#sz").val(data);
+      }); //post
       
     }); // each
     

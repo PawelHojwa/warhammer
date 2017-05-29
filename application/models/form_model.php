@@ -22,14 +22,11 @@ class Form_model extends CI_Model
 		return $target;	
 	}
 	
-	public function get_stats($tab_name = "", $val = array(), $col)
+	public function get_stats($tab_name = 0, $val = array(), $col)
 	{
-		//if (isset($_POST['race']) === true)
-		//{
-			$query = $this->db->get_where($tab_name, $val);
-			$row = $query->row_array();
-			return $row[$col];
-		//}
+		$query = $this->db->get_where($tab_name, $val);
+		$row = $query->row_array();
+		return $row[$col];
 	}
 	
 	public function stats($val = "", $col = "")

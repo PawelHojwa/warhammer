@@ -53,33 +53,14 @@ class Create_character extends CI_Controller
 		$classes = $this->form_model->arr_conv('classes', 'className');
 		$nature = $this->form_model->arr_conv('charakter', 'natureName');
 		$sz = "";
-		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE)
-		{
-			$sz = $this->form_model->stats($_POST['race'], 'sz');
-			if ($sz != "")
-			{
-				$sz = "Succes";
-				echo $sz;
-			}
-			else
-				echo $str = "Błąd";
-		}
-		
-		echo "<pre>";
-		var_dump($sz);
-		echo "</pre>";
-		
-		echo "<pre>";
-		var_dump($_POST['race']);
-		echo "</pre>";
-		
+
 		$data['race'] = $race;
 		$data['gender'] = $gender;
 		$data['classes'] = $classes;
 		$data['nature'] = $nature;
-		//statystyki
+		/*statystyki
 		
-		$data['sz'] = $sz;/*
+		$data['sz'] = $sz;
 		$data['ww'] = $ww;
 		$data['us'] = $us;
 		$data['s'] = $s;
@@ -152,6 +133,20 @@ class Create_character extends CI_Controller
 			$this->load->view('templates/header', $data);
 			$this->load->view('characters/character');
 			$this->load->view('templates/footer');
+		}
+	}
+
+	public function get_sz()
+	{
+		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE)
+		{
+			$sz = $this->form_model->stats($_POST['race'], 'ww');
+			if ($sz == true)
+			{
+				echo $sz;
+			}
+			else
+				echo "Błąd";
 		}
 	}
 }
