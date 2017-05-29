@@ -4,8 +4,8 @@ echo form_open('characters/character');
 echo form_label('Imie: ', 'name');
 echo form_input('name') . "<br>";
 echo form_error('name', '<p>', '</p>');
-echo form_label('Rasa: ', 'race');
-echo form_dropdown('race',$race, 0, ['id' => 'select']). "<br>";
+echo form_label('Rasa: ', 'race'); 
+echo form_dropdown('race',$race, 1,['id' => 'select']). "<br>";
 echo form_label('Płeć: ', 'gender');
 echo form_dropdown('gender', $gender). "<br>";
 echo form_label('Klasa: ', 'class');
@@ -40,7 +40,7 @@ echo form_input('description'). "<br>";
 <input type="text" id="rsw" readonly size="2" name="rsw">
 <input type="text" id="rogd" readonly size="2" name="rogd">
 <br>
-<!--<input type="text" name="sz" value="<?php echo $sz; ?>" readonly size="2" id="sz">-->
+<input type="text" name="sz" value="<?php echo $sz; ?>" readonly size="2" id="sz">
 <span id="sz"></span>
 <span id="ww"></span>
 <span id="us"></span>
@@ -95,18 +95,17 @@ $("document").ready(function() {
 	});
 }); //ready	
 	$( "#select" ).change(function () {
-	var sz = $("select").val();;
+	var sz = $("select").val();
     $( "#select option:selected" ).each(function() {
-      $.post('stats/sz', {race: sz}, function(data) {
-      	$("#sz").html ('<input type="text" value="' + data + 
-      	'" name="ww" readonly size="2">');
-      }); //post
+      //$.post('../models/form_model.php', {race: sz}, function(data) {
+      	$("#sz").val(sz);
+      //}); //post
       
     }); // each
     
   }).change();
 
-$("document").ready(function() {
+/*$("document").ready(function() {
 	$( "select" ).change(function () {
 	var ww = $("select").val();
     $( "select option:selected" ).each(function() {
@@ -146,7 +145,7 @@ $("document").ready(function() {
 	$( "select" ).change(function () {
 	var wt = $("select").val();
     $( "select option:selected" ).each(function() {
-      $.post('stats/wt.php', {race: wt}, function(data) {
+      $.post('warhammer/views/charachters/stats/wt.php', {race: wt}, function(data) {
       	$("#wt").html ('<input type="text" value="' + data + 
       	'" name="wt" readonly size="2">');
       });
@@ -260,5 +259,5 @@ $("document").ready(function() {
       });
     });
   }).change();
-});
+});*/
 </script>

@@ -49,31 +49,38 @@ class Create_character extends CI_Controller
 	{
 		$data['title'] = "Tworzenie postaci";
 		$race = $this->form_model->arr_conv('rasa', 'raceName');
-		$raceid = $this->form_model->arr_conv('rasa', 'raceID');
 		$gender = $this->form_model->arr_conv('gender', 'genderName');
 		$classes = $this->form_model->arr_conv('classes', 'className');
 		$nature = $this->form_model->arr_conv('charakter', 'natureName');
-		$stats = "s";
-		if (isset($_POST['race']) === true && empty($_POST['race']) === false)
+		$sz = "";
+		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE)
 		{
-			$stats = $this->form_model->get_values('rasa', ['raceID' => $_POST['race']]);
-			var_dump($stats);
+			$sz = $this->form_model->stats($_POST['race'], 'sz');
+			if ($sz != "")
+			{
+				$sz = "Succes";
+				echo $sz;
+			}
+			else
+				echo $str = "Błąd";
 		}
+		
+		echo "<pre>";
+		var_dump($sz);
+		echo "</pre>";
+		
+		echo "<pre>";
+		var_dump($_POST['race']);
+		echo "</pre>";
+		
 		$data['race'] = $race;
-		$data['raceid'] = $raceid; 
 		$data['gender'] = $gender;
 		$data['classes'] = $classes;
 		$data['nature'] = $nature;
-		echo "<pre>";
-		var_dump($race);
-		echo "</pre>";
-		echo "<pre>";
-		var_dump($raceid);
-		echo "</pre>";
 		//statystyki
 		
-		$data['sz'] = $stats;
-		/*$data['ww'] = $ww;
+		$data['sz'] = $sz;/*
+		$data['ww'] = $ww;
 		$data['us'] = $us;
 		$data['s'] = $s;
 		$data['wt'] = $wt;
@@ -85,8 +92,8 @@ class Create_character extends CI_Controller
 		$data['intel'] = $int;
 		$data['op'] = $op;
 		$data['sw'] = $sw;
-		$data['ogd'] = $ogd;*/
-		
+		$data['ogd'] = $ogd;
+		*/
 		$this->form_validation->set_rules('name', 'Imie',
 			'trim|required|alpha|max_length[40]',
 			array('required' => "Pole '{field}' jest wymagane",
@@ -136,7 +143,7 @@ class Create_character extends CI_Controller
 		if ($this->form_validation->run() === FALSE)
 		{
 			$this->load->view('templates/header', $data);
-			$this->load->view('form/create_character');
+			$this->load->view('form/create_character', $data);
 			$this->load->view('templates/footer');
 		}
 		else
