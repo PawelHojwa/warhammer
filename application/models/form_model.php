@@ -15,24 +15,20 @@ class Form_model extends CI_Model
 	
 	public function arr_conv($tab_name, $column)
 	{
+		$i = 1;
 		$target = array();
 		$query = $this->db->get($tab_name);
 		foreach ($query->result_array() as $row)
-			$target[] = $row[$column];
+		{
+			$target[$i] = $row[$column];
+			$i++;
+		}
 		return $target;	
 	}
 	
-	public function get_stats($tab_name = 0, $val = array(), $col)
+	public function stats($tab_name, $src,  $val = "", $col = "")
 	{
-		$query = $this->db->get_where($tab_name, $val);
-		$row = $query->row_array();
-		return $row[$col];
-	}
-	
-	public function stats($val = "", $col = "")
-	{
-		
-			$sql = "SELECT * FROM rasa WHERE raceID = ". $val;
+			$sql = "SELECT * FROM " . $tab_name . " WHERE " . $src . " = ". $val;
 			$result = $this->db->query($sql);
 			
 			if ($result->num_rows() > 0)
