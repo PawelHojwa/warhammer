@@ -1,5 +1,4 @@
 <?php
-
 class Login extends CI_Controller
 {
 	public function __construct()
@@ -10,6 +9,8 @@ class Login extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('form_model');
+		$this->load->library('formable');
+		
 	}
 	
 	public function view_form()
@@ -24,15 +25,7 @@ class Login extends CI_Controller
 	
 	public function success()
 	{
-		$data['title'] = "Tworzenie postaci";
-		$race = $this->form_model->arr_conv('rasa', 'raceName');
-		$gender = $this->form_model->arr_conv('gender', 'genderName');
-		$classes = $this->form_model->arr_conv('classes', 'className');
-		$nature = $this->form_model->arr_conv('charakter', 'natureName');
-		$data['race'] = $race;
-		$data['gender'] = $gender;
-		$data['classes'] = $classes;
-		$data['nature'] = $nature;
+		$data = $this->formable->datas();
 		$this->load->view('templates/header', $data);
 		$this->load->view('form/create_character', $data);
 		$this->load->view('templates/footer');
@@ -40,6 +33,7 @@ class Login extends CI_Controller
 	
 	public function login()
 	{
+		
 		$this->form_validation->set_rules('username', 'Imię', 'required',
 			array('required' => "Pole '{field}' jest wymagane",
 			)

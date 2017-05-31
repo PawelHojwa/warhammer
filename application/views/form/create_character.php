@@ -2,8 +2,8 @@
 <?php
 echo form_open('create_character/create_character');
 echo form_label('Imie: ', 'name');
-echo form_input('name') . "<br>";
-echo form_error('name', '<p>', '</p>');
+echo form_input('name');
+echo form_error('name', '<span>', '</span>') . "<br>";
 echo form_label('Rasa: ', 'race'); 
 echo form_dropdown('race',$race, 1,['id' => 'select']) . "<br>";
 echo form_label('Płeć: ', 'gender');
@@ -13,17 +13,22 @@ echo form_dropdown('classes', $classes, 1, ['id' => 'classes']) . "<br>";
 echo form_label('Charakter: ', 'nature');
 echo form_dropdown('nature', $nature,1 ) . "<br>";
 echo form_label('Wiek: ', 'age');
-echo form_input('age'). "<br>";
+echo form_input('age');
+echo form_error('age', '<span>', '</span>') . "<br>";
 echo form_label('Wzrost: ', 'height');
-echo form_input('height'). "<br>";
+echo form_input('height');
+echo form_error('height', '<span>', '</span>') . "<br>";
 echo form_label('Waga: ', 'weight');
-echo form_input('weight'). "<br>";
+echo form_input('weight');
+echo form_error('weight', '<span>', '</span>') . "<br>";
 echo form_label('Włosy: ', 'hair');
-echo form_input('hair'). "<br>";
+echo form_input('hair');
+echo form_error('hair', '<span>', '</span>') . "<br>";
 echo form_label('Oczy: ', 'eyes');
-echo form_input('eyes'). "<br>";
+echo form_input('eyes');
+echo form_error('eyes', '<span>', '</span>') . "<br>";
 echo form_label('Opis: ', 'description');
-echo form_input('description'). "<br>";
+echo form_input('description') . "<br>";
 
 //losowe statystyki
 echo form_input('rsz', '', ['size' => 2, 'id' => 'rsz', 'readonly' => 'readonly']); //1
