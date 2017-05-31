@@ -8,6 +8,7 @@ class Login extends CI_Controller
 		$this->load->helper('form');
 		$this->load->helper('url_helper');
 		$this->load->library('form_validation');
+		$this->load->library('session');
 		$this->load->model('form_model');
 	}
 	
@@ -23,17 +24,22 @@ class Login extends CI_Controller
 	
 	public function success()
 	{
-		$data['title'] = "Logowanie";
-		$data['sub_title'] = "Formularz logowania";
-		$data['error'] = "";
+		$data['title'] = "Tworzenie postaci";
+		$race = $this->form_model->arr_conv('rasa', 'raceName');
+		$gender = $this->form_model->arr_conv('gender', 'genderName');
+		$classes = $this->form_model->arr_conv('classes', 'className');
+		$nature = $this->form_model->arr_conv('charakter', 'natureName');
+		$data['race'] = $race;
+		$data['gender'] = $gender;
+		$data['classes'] = $classes;
+		$data['nature'] = $nature;
 		$this->load->view('templates/header', $data);
-		$this->load->view('templates/blabla', $data);
+		$this->load->view('form/create_character', $data);
 		$this->load->view('templates/footer');
 	}
 	
 	public function login()
 	{
-		
 		$this->form_validation->set_rules('username', 'Imię', 'required',
 			array('required' => "Pole '{field}' jest wymagane",
 			)
@@ -41,6 +47,8 @@ class Login extends CI_Controller
 		$this->form_validation->set_rules('password', 'Hasło', 'required',
 			array('required' => "Pole '{field}' jest wymagane")
 		);
+		
+	
 		if ($this->form_validation->run() === FALSE)
 		{
 			$this->view_form();
@@ -56,6 +64,8 @@ class Login extends CI_Controller
 			}
 			else
 			{
+				$_SESSION['user'] = $_POST['username'];
+				
 				$this->success();
 			}
 		}

@@ -1,6 +1,6 @@
 <h1><?php echo $title; ?></h1>
 <?php
-echo form_open('characters/character');
+echo form_open('create_character/create_character');
 echo form_label('Imie: ', 'name');
 echo form_input('name') . "<br>";
 echo form_error('name', '<p>', '</p>');
@@ -39,7 +39,7 @@ echo form_input('rcp', '', ['size' => 2, 'id' => 'rcp', 'readonly' => 'readonly'
 echo form_input('rint', '', ['size' => 2, 'id' => 'rint', 'readonly' => 'readonly']); //11
 echo form_input('rop', '', ['size' => 2, 'id' => 'rop', 'readonly' => 'readonly']); //12
 echo form_input('rsw', '', ['size' => 2, 'id' => 'rsw', 'readonly' => 'readonly']); //13
-echo form_input('rogd', '', ['size' => 2, 'id' => 'rogd ', 'readonly' => 'readonly']) . "<br>"; //14
+echo form_input('rogd', '', ['size' => 2, 'id' => 'rogd', 'readonly' => 'readonly']) . "<br>"; //14
 
 //statystyki pobrane z bazy
 echo form_input('sz', '', ['size' => 2, 'id' => 'sz', 'readonly' => 'readonly']); //1
@@ -55,11 +55,11 @@ echo form_input('cp', '', ['size' => 2, 'id' => 'cp', 'readonly' => 'readonly'])
 echo form_input('int', '', ['size' => 2, 'id' => 'int', 'readonly' => 'readonly']); //11
 echo form_input('op', '', ['size' => 2, 'id' => 'op', 'readonly' => 'readonly']); //12
 echo form_input('sw', '', ['size' => 2, 'id' => 'sw', 'readonly' => 'readonly']); //13
-echo form_input('ogd', '', ['size' => 2, 'id' => 'ogd ', 'readonly' => 'readonly']) . "<br>"; //14
+echo form_input('ogd', '', ['size' => 2, 'id' => 'ogd', 'readonly' => 'readonly']) . "<br>"; //14
 echo form_submit('submit', 'Stwórz');
 echo form_close();
+echo form_button('btn1', 'Generuj', ['id' => 'btn1']);
 ?>
-<button id="btn1">Generuj</button>
 <p id="demo"></p>
 
 
@@ -95,7 +95,7 @@ $("document").ready(function() {
 		$("#rsw").val(sw);
 		$("#rogd").val(ogd);
 		
-		//$("#classes").change(function(){
+		
 			var wor = $("#classes").val();
 			var race = $("#select").val();
 			var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
@@ -123,7 +123,7 @@ $("document").ready(function() {
 					$("#demo").text("");
 			  });
 			})
-		//}).change();
+		
 	});
 }); //ready	
 

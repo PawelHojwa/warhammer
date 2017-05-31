@@ -51,6 +51,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['form/create_character'] = 'create_character/create_character';
 $route['form/register'] = 'register/register';
-$route['default_controller'] = 'login/login';
+$route['default_controller'] = 'create_character/create_character';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;

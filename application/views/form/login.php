@@ -13,5 +13,4 @@ echo $error;
 echo form_submit('submit', 'Zaloguj');
 echo form_close();
 echo anchor('form/register', 'Rejestracja', array('title' => 'Rejestracja', 'style' => 'font-size:12px'));
-
 ?>
