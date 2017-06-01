@@ -10,17 +10,20 @@ class Login extends CI_Controller
 		$this->load->library('session');
 		$this->load->model('form_model');
 		$this->load->library('formable');
-		
 	}
 	
-	public function view_form()
+	public function view_form($arr = array())
 	{
 		$data['title'] = "Logowanie";
 		$data['sub_title'] = "Formularz logowania";
 		$data['error'] = "";
+		isset($data['error']) ? "Nieprawidłowy login/hasło" : "";
+		if ($_SERVER['REQUEST_METHOD'] == "POST" && empty($arr))
+			$data['error'] = "Nieprawidłowy login/hasło";
 		$this->load->view('templates/header', $data);
 		$this->load->view('form/login', $data);
 		$this->load->view('templates/footer');
+		
 	}
 	
 	public function success()
@@ -31,7 +34,7 @@ class Login extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 	
-	public function login()
+	public function form_login()
 	{
 		
 		$this->form_validation->set_rules('username', 'Imię', 'required',
@@ -45,6 +48,7 @@ class Login extends CI_Controller
 	
 		if ($this->form_validation->run() === FALSE)
 		{
+			
 			$this->view_form();
 		}
 		else
@@ -53,13 +57,11 @@ class Login extends CI_Controller
 			$users = $this->form_model->get_values('users', $user);
 			if (empty($users))
 			{
-				$data['error'] = "Nieprawidłowy login/hasło";
-				$this->view_form();
+				$this->view_form($users);
 			}
 			else
 			{
-				$_SESSION['user'] = $_POST['username'];
-				
+				$_SESSION['user'] = $_POST['username'];	
 				$this->success();
 			}
 		}

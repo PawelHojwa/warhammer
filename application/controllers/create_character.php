@@ -5,10 +5,12 @@ class Create_character extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();	
+		$this->load->helper('html_helper');
 		$this->load->helper('form');
 		$this->load->helper('url_helper');
 		$this->load->library('form_validation');
-		$this->load->library('session');
+		$this->load->library('session');	
+		$this->load->library('formable');
 		$this->load->model('form_model');
 	}
 	
@@ -46,9 +48,15 @@ class Create_character extends CI_Controller
 		return $data;
 	}
 
+	public function get_user_characters()
+	{
+		
+		return $this->form_model->arr_conv('characters', 'name');
+	}
+
 	public function create_character()
 	{
-		/*if (!isset($_SESSION['user']))
+		if (!isset($_SESSION['user']))
 		{
 			$data['title'] = "Logowanie";
 			$data['sub_title'] = "Formularz logowania";
@@ -58,19 +66,8 @@ class Create_character extends CI_Controller
 			$this->load->view('templates/footer');
 		}
 		else
-		{*/
-			$data['title'] = "Tworzenie postaci";
-			$race = $this->form_model->arr_conv('rasa', 'raceName');
-			$gender = $this->form_model->arr_conv('gender', 'genderName');
-			$classes = $this->form_model->arr_conv('classes', 'className');
-			$nature = $this->form_model->arr_conv('charakter', 'natureName');
-			
-			$data['race'] = $race;
-			$data['gender'] = $gender;
-			$data['classes'] = $classes;
-			$data['nature'] = $nature;
-			//statystyki
-	
+		{
+			$data['char_names'] = $this->get_user_characters();
 			$this->form_validation->set_rules('name', 'Imie',
 				'trim|required|alpha|max_length[40]',
 				array('required' => "Pole '{field}' jest wymagane",
@@ -116,7 +113,7 @@ class Create_character extends CI_Controller
 					'alpha' => "'{field}' musi składać się z liter",
 					'max_length' => "'{field}' - wymagane {param} znaków")
 			);
-			
+			$data = $this->formable->datas();
 			if ($this->form_validation->run() === FALSE)
 			{
 				$this->load->view('templates/header', $data);
@@ -130,7 +127,7 @@ class Create_character extends CI_Controller
 				$this->load->view('characters/character');
 				$this->load->view('templates/footer');
 			}
-		//}
+		}
 	}
 
 	public function get_sz() //1

@@ -35,7 +35,9 @@ class Register extends CI_Controller
 	{
 		$data['title'] = "Rejestracja pomyślna";
 		$data['sub_title'] = "Możesz zalogować się do serwisu";
+		$register = $this->register_data();
 		$this->form_model->insert('users', $register);
+		$data['error'] = "";
 		$this->load->view('templates/header', $data);
 		$this->load->view('form/login');
 		$this->load->view('templates/footer');
@@ -43,7 +45,7 @@ class Register extends CI_Controller
 	
 	public function register()
 	{
-		$this->form_validation->set_rules('name', 'Imie', 'required',
+		$this->form_validation->set_rules('name', 'Imie', 'trim|required',
         	array('required' => "Pole '{field}' jest wymagane")
 		);
 		$this->form_validation->set_rules('login', 'Login', 
@@ -54,30 +56,23 @@ class Register extends CI_Controller
 				'max_length' => "'{field}' musi mieć max. {param} znaków")
 		);
 		$this->form_validation->set_rules('pass', 'Hasło',
-			'required|min_length[6]|max_length[15]',
+			'trim|required|min_length[6]|max_length[15]',
 			array('required' => "Pole '{field}' jest wymagane",
 				'min_length' => "'{field}' musi mieć min. {param} znaków",
 				'max_length' => "'{field}' musi mieć max. {param} znaków")
 		);
 		$this->form_validation->set_rules('confpass', 'Powtórz hasło', 
-			'required|matches[pass]',
+			'trim|required|matches[pass]',
 			array('required' => "Pole '{field}' jest wymagane",
 				'matches' => "'{field}' inne niż '{param}'")
 		);
-		$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email',
+		$this->form_validation->set_rules('email', 'E-mail', 'trim|required|valid_email',
 			array('required' => "Pole '{field}' jest wymagane",
 				'valid_email' => "Nieprawidłowy format adresu e-mail")
 		);
-		
-		$register = $this->register_data();
-		
 		if ($this->form_validation->run() === FALSE)
-		{
 			$this->view_reg_form();
-		}
 		else
-		{
 			$this->create_character();
-		}
 	}
 }

@@ -1,5 +1,8 @@
 <h1><?php echo $title; ?></h1>
+<h3>Witaj <?php echo $user; ?></h3>
+
 <?php
+echo anchor('login/login', "Wyloguj") . "<br><br>";
 echo form_open('create_character/create_character');
 echo form_label('Imie: ', 'name');
 echo form_input('name');

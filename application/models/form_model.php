@@ -13,9 +13,8 @@ class Form_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function arr_conv($tab_name, $column)
+	public function arr_conv($tab_name, $column, $i = 0)
 	{
-		$i = 1;
 		$target = array();
 		$query = $this->db->get($tab_name);
 		foreach ($query->result_array() as $row)
@@ -24,6 +23,12 @@ class Form_model extends CI_Model
 			$i++;
 		}
 		return $target;	
+	}
+	
+	public function get_data($tab_name)
+	{
+		$query = $this->db->get($tab_name);
+		return $query->result_array();
 	}
 	
 	public function stats($tab_name, $src,  $val = "", $col = "")
@@ -41,5 +46,12 @@ class Form_model extends CI_Model
 	public function insert($tab_name, $data = array())
 	{
 		return $this->db->insert($tab_name, $data);
+	}
+	
+	public function change($tab_name, $arr, $val = array())
+	{
+		$this->db->set($arr);
+		$this->db->where($val);
+		$this->db->update($tab_name, $arr, $val);
 	}
 }

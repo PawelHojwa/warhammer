@@ -1,6 +1,6 @@
 <h3><?php echo $title; ?></h3>
 <?php
-echo form_open('form/register', 'style="width:180px"');
+echo form_open('register/register', 'style="width:180px"');
 echo form_label('Imie', 'name');
 echo form_input('name');
 echo form_error('name', '<p>', '</p>');

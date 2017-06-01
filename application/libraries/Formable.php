@@ -7,11 +7,12 @@ class Formable
 	{
 		$CI =& get_instance();
 		$CI->load->model('form_model');
-		$data['title'] = "Tworzenie postaci";
-		$race = $CI->form_model->arr_conv('rasa', 'raceName');
-		$gender = $CI->form_model->arr_conv('gender', 'genderName');
-		$classes = $CI->form_model->arr_conv('classes', 'className');
-		$nature = $CI->form_model->arr_conv('charakter', 'natureName');
+		$race = $CI->form_model->arr_conv('rasa', 'raceName', 1);
+		$gender = $CI->form_model->arr_conv('gender', 'genderName', 1);
+		$classes = $CI->form_model->arr_conv('classes', 'className', 1);
+		$nature = $CI->form_model->arr_conv('charakter', 'natureName', 1);
+		$data['title'] = 'Tworzenie postaci';
+		$data['user'] = $_SESSION['user'];
 		$data['race'] = $race;
 		$data['gender'] = $gender;
 		$data['classes'] = $classes;
