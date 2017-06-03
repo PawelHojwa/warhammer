@@ -7,10 +7,17 @@ class Form_model extends CI_Model
 		$this->load->database();
 	}
 	
-	public function get_values($tab_name, $values = array())
+	public function get_user($tab_name, $values = array())
 	{
 		$query = $this->db->get_where($tab_name, $values);
 		return $query->result_array();
+	}
+	
+	public function get_values($tab_name, $values = array(), $column = "")
+	{
+		$query = $this->db->get_where($tab_name, $values);
+		foreach ($query->result_array() as $row)
+			return $row[$column];
 	}
 	
 	public function arr_conv($tab_name, $column, $i = 0)

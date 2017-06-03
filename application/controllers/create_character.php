@@ -5,7 +5,7 @@ class Create_character extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();	
-		$this->load->helper('html_helper');
+		$this->load->helper('html');
 		$this->load->helper('form');
 		$this->load->helper('url_helper');
 		$this->load->library('form_validation');
@@ -18,44 +18,45 @@ class Create_character extends CI_Controller
 	{
 		$data = array(
 			'id' => $id,
+			'userID' =>$_SESSION['userID'],
 			'name' => $this->input->post('name'),
-			'race' => $this->dropdown->post('race'),
-			'gender' => $this->dropdown->post('gender'),
-			'class' => $this->dropdown->post('class'),
-			'nature' => $this->dropdown->post('nature'),
+			'raceID' => $this->input->post('race'),
+			'genderID' => $this->input->post('gender'),
+			'classID' => $this->input->post('classes'),
+			'natureID' => $this->input->post('nature'),
 			'age' => $this->input->post('age'),
 			'height' => $this->input->post('height'),
 			'weight' => $this->input->post('weight'),
 			'hair' => $this->input->post('hair'),
 			'eyes' => $this->input->post('eyes'),
 			'description' => $this->input->post('description'),
-			'sz' => $this->input->post('sz'),
-			'ww' => $this->input->post('ww'),
-			'us' => $this->input->post('us'),
-			's' => $this->input->post('s'),
-			'wt' => $this->input->post('wt'),
-			'zw' => $this->input->post('zw'),
-			'i' => $this->input->post('i'),
-			'a' => $this->input->post('a'),
-			'zr' => $this->input->post('zr'),
-			'cp' => $this->input->post('cp'),
-			'intel' => $this->input->post('int'),
-			'op' => $this->input->post('op'),
-			'sw' => $this->input->post('sw'),
-			'ogd' => $this->input->post('ogd'),
+			'sz' => (($this->input->post('sz')) + ($this->input->post('rsz'))),
+			'ww' => (($this->input->post('ww')) + ($this->input->post('rww'))),
+			'us' => (($this->input->post('us')) + ($this->input->post('rus'))),
+			's' => (($this->input->post('s')) + ($this->input->post('rs'))),
+			'wt' => (($this->input->post('wt')) + ($this->input->post('rwt'))),
+			'zw' => (($this->input->post('zw')) + ($this->input->post('rzw'))),
+			'i' => (($this->input->post('i')) + ($this->input->post('ri'))),
+			'a' => (($this->input->post('a')) + ($this->input->post('ra'))),
+			'zr' => (($this->input->post('zr')) + ($this->input->post('rzr'))),
+			'cp' => (($this->input->post('cp')) + ($this->input->post('rcp'))),
+			'intel' => (($this->input->post('int')) + ($this->input->post('rint'))),
+			'op' => (($this->input->post('op')) + ($this->input->post('rop'))),
+			'sw' => (($this->input->post('sw')) + ($this->input->post('rse'))),
+			'ogd' => (($this->input->post('ogd')) + ($this->input->post('rogd'))),
 		);
 		
 		return $data;
 	}
 
-	public function get_user_characters()
+	public function get_user_characters($id)
 	{
-		
-		return $this->form_model->arr_conv('characters', 'name');
+		return $this->form_model->get_values('characters', array('userID' => $id), 'name');
 	}
 
 	public function create_character()
 	{
+		
 		if (!isset($_SESSION['user']))
 		{
 			$data['title'] = "Logowanie";
@@ -67,19 +68,17 @@ class Create_character extends CI_Controller
 		}
 		else
 		{
-			$data['char_names'] = $this->get_user_characters();
+			$user_id = $_SESSION['userID'];
+			var_dump($user_id);
 			$this->form_validation->set_rules('name', 'Imie',
-				'trim|required|alpha|max_length[40]',
+				'trim|required|max_length[40]',
 				array('required' => "Pole '{field}' jest wymagane",
-					'alpha' => "'{field}' musi składać się z liter",
 					"max_length" => "'{field}' - wymagane {param} liter")
 			);
 			$this->form_validation->set_rules('age', 'Wiek', 
-				'trim|required|numeric|min_length[2]|max_length[3]',
+				'trim|required|numeric',
 				array('required' => "Pole '{field}' jest wymagane",
-					'numeric' => "'{field}' musi być liczbą",
-					'min_length' => "'{field}' musi mieć min. {param} cyfry",
-					'max_length' => "'{field}' może mieć max. {param} cyfr")
+					'numeric' => "'{field}' musi być liczbą")
 			);
 			$this->form_validation->set_rules('height', 'Wzrost',
 				'trim|required|numeric|min_length[3]|max_length[3]',
@@ -96,35 +95,35 @@ class Create_character extends CI_Controller
 					'max_length' => "'{field}' może mieć max. {param} cyfr")
 			);
 			$this->form_validation->set_rules('hair', 'Włosy',
-				'trim|required|alpha|max_length[20]',
+				'trim|required|max_length[20]',
 				array('required' => "Pole '{field}' jest wymagane",
-					'alpha' => "'{field}' musi składać się z liter",
 					'max_length' => "'field' - wymagane {param} liter")
 			);
 			$this->form_validation->set_rules('eyes', 'Oczy',
-				'trim|required|alpha|max_length[15]',
+				'trim|required|max_length[15]',
 				array('required' => "Pole '{field}' jest wymagane",
-					'alpha' => "'{field}' musi składać się z liter",
 					'max_length' => "'{field}' - wymagane {param} znaków")
 			);
 			$this->form_validation->set_rules('description', 'Opis',
-				'trim|required|alpha|max_length[256]',
+				'trim|required|max_length[255]',
 				array('required' => "Pole '{field}' jest wymagane",
-					'alpha' => "'{field}' musi składać się z liter",
 					'max_length' => "'{field}' - wymagane {param} znaków")
 			);
 			$data = $this->formable->datas();
 			if ($this->form_validation->run() === FALSE)
 			{
+				$data['char_names'] = $this->get_user_characters($user_id);
 				$this->load->view('templates/header', $data);
 				$this->load->view('form/create_character', $data);
 				$this->load->view('templates/footer');
 			}
 			else
 			{
-				//$this->form_model->insert();
+				$data_char = $this->character_data();
+				$this->form_model->insert('characters', $data_char);
+				$data['title'] = "Sukces";
 				$this->load->view('templates/header', $data);
-				$this->load->view('characters/character');
+				$this->load->view('form/create_character');
 				$this->load->view('templates/footer');
 			}
 		}
@@ -325,10 +324,18 @@ public function get_ogd() //14
 			if ($wor == true && $race == true)	
 			{
 				echo $wor; 
-				//echo $race;
 			}
 			else
 				echo "Błąd";
+		}
+	}
+	
+	public function get_race()
+	{
+		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE)
+		{
+			$race = $this->form_model->stats('rasa', 'raceID', $_POST['race'], 'raceID');
+			echo $race;
 		}
 	}
 }

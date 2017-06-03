@@ -13,6 +13,7 @@ class Formable
 		$nature = $CI->form_model->arr_conv('charakter', 'natureName', 1);
 		$data['title'] = 'Tworzenie postaci';
 		$data['user'] = $_SESSION['user'];
+		$data['id'] = $_SESSION['userID'];
 		$data['race'] = $race;
 		$data['gender'] = $gender;
 		$data['classes'] = $classes;

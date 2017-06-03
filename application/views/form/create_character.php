@@ -1,8 +1,11 @@
 <h1><?php echo $title; ?></h1>
 <h3>Witaj <?php echo $user; ?></h3>
-
+<p>Twoje postacie:</p>
 <?php
-echo anchor('login/login', "Wyloguj") . "<br><br>";
+//$list = $char_names;
+//$att = array('style' => 'list-style: none; padding: 0');
+//echo ul($list, $att);
+echo anchor('login/logout', "Wyloguj", array('style' => 'display: block;')) . "<br><br>";
 echo form_open('create_character/create_character');
 echo form_label('Imie: ', 'name');
 echo form_input('name');
@@ -16,7 +19,11 @@ echo form_dropdown('classes', $classes, 1, ['id' => 'classes']) . "<br>";
 echo form_label('Charakter: ', 'nature');
 echo form_dropdown('nature', $nature,1 ) . "<br>";
 echo form_label('Wiek: ', 'age');
-echo form_input('age');
+echo form_label('Młody ', 'age');
+echo form_radio(array('name' => 'age', 'value' => 1));
+echo form_label('Stary ', 'age');
+echo form_radio(array('name' => 'age', 'value' => 2));
+echo form_input('age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly']);
 echo form_error('age', '<span>', '</span>') . "<br>";
 echo form_label('Wzrost: ', 'height');
 echo form_input('height');
@@ -34,6 +41,20 @@ echo form_label('Opis: ', 'description');
 echo form_input('description') . "<br>";
 
 //losowe statystyki
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Sz</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>WW</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>US</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>S</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Wt</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Żw</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>I</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>A</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Zr</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>CP</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Int</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Op</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>SW</spam>";
+echo "<spam style='display: inline-block; text-align: center; width: 47px; margin-right: 4px;'>Ogd</spam><br>";
 echo form_input('rsz', '', ['size' => 2, 'id' => 'rsz', 'readonly' => 'readonly']); //1
 echo form_input('rww', '', ['size' => 2, 'id' => 'rww', 'readonly' => 'readonly']); //2
 echo form_input('rus', '', ['size' => 2, 'id' => 'rus', 'readonly' => 'readonly']); //3
@@ -75,19 +96,19 @@ echo form_button('btn1', 'Generuj', ['id' => 'btn1']);
 $("document").ready(function() {
 	$("#btn1").click(function() {
 		var sz = Math.floor((Math.random() * 3) + 1);
-		var ww = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var us = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
+		var ww = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var us = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
 		var s = Math.floor((Math.random() * 3) + 1);
 		var wt = Math.floor((Math.random() * 3) + 1);
 		var zw = Math.floor((Math.random() * 3) + 1);
 		var a = 0;
-		var i = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var zr = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var cp = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var intel = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var op = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var sw = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
-		var ogd = Math.floor(((Math.random() * 10) + 1) + ((Math.random() * 10) + 1));
+		var i = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var zr = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var cp = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var intel = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var op = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var sw = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
+		var ogd = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
 		$("#rsz").val(sz);
 		$("#rww").val(ww);
 		$("#rus").val(us);
@@ -103,37 +124,114 @@ $("document").ready(function() {
 		$("#rsw").val(sw);
 		$("#rogd").val(ogd);
 		
-		
-			var wor = $("#classes").val();
-			var race = $("#select").val();
-			var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
-			var us = parseInt($("#us").val()) + parseInt($("#rus").val());
-			var i = parseInt($("#i").val()) + parseInt($("#ri").val());
-			var intel = parseInt($("#int").val()) + parseInt($("#rint").val());
-			var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-			var path = "http://localhost/warhammer/create_character/check_class";
-			$("#classes option:selected").each(function(){
-			  $.post(path, {classes: wor, race: race}, function(data){
-				if (wor == 1 && ww < 30)
-				{
-					$("#demo").text("Klasa: " + data + " : Minimalne WW 30");
-					return false;
-				}
-				else if (wor == 2 && us < 30)
-					$("#demo").text("Klasa: " + data + " : Minimalne US 30");
-				else if (wor == 3 && i < 30 && race != 2)
-					$("#demo").text("Klasa: " + data + " : Minimalne I 30");
-				else if (wor == 3 && race == 2 && i < 65)
-					$("#demo").text("Klasa: " + data + " : Minimalne I 65");
-				else if (wor == 4 && intel < 30 && sw < 30)
-					$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
-				else
-					$("#demo").text("");
-			  });
-			})
-		
+		var wor = $("#classes").val();
+		var race = $("#select").val();
+		var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
+		var us = parseInt($("#us").val()) + parseInt($("#rus").val());
+		var i = parseInt($("#i").val()) + parseInt($("#ri").val());
+		var intel = parseInt($("#int").val()) + parseInt($("#rint").val());
+		var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
+		var path = "http://localhost/warhammer/create_character/check_class";
+		$("#classes option:selected").each(function(){
+		  $.post(path, {classes: wor, race: race}, function(data){
+			if (wor == 1 && ww < 30)
+			{
+				$("#demo").text("Klasa: " + data + " : Minimalne WW 30");
+				return false;
+			}
+			else if (wor == 2 && us < 30)
+				$("#demo").text("Klasa: " + data + " : Minimalne US 30");
+			else if (wor == 3 && i < 30 && race != 2)
+				$("#demo").text("Klasa: " + data + " : Minimalne I 30");
+			else if (wor == 3 && race == 2 && i < 65)
+				$("#demo").text("Klasa: " + data + " : Minimalne I 65");
+			else if (wor == 4 && intel < 30 && sw < 30)
+				$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
+			else
+				$("#demo").text("");
+			 });
+		})		
 	});
+	
+	
 }); //ready	
+//liczenie wieku postaci
+$("#select").change(function () {
+	$( ":radio" ).on( "click", function() {
+		var race = $("#select").val();
+		var age = 0;
+		var Age = $("input:radio:checked").val();
+		var	path = 'http"//localhost/warhammer/create_character/get_race';
+		
+		$("#select:selected").each(function() {
+		$("input:radio").each(function () {
+			$.post(path, {race: race}, function() {
+				
+			}) //post
+			}); //radio each
+		}); //each
+				if (race == 1)
+				{ 
+					if (Age == 1)
+					{
+						for (var i = 0; i < 6; i++)
+							age += Math.floor((Math.random() * 6) + 1);
+						$("#page").val(age);
+					}
+					else
+					{
+						for (var i = 0; i < 10; i++)
+							age += Math.floor((Math.random() * 6) + 1);
+						$("#page").val(age);
+					}
+				}
+				else if (race == 2)
+				{
+					if (Age == 1)
+					{
+						for (var i = 0; i < 10; i++)
+							age += Math.floor((Math.random() * 10) + 1);
+						$("#page").val(age);
+					}
+					else
+					{
+						for (var i = 0; i < 10; i++)
+							age += Math.floor((Math.random() * 20) + 1);
+						$("#page").val(age);
+					}
+				}
+				else if (race == 3)
+				{
+					if (Age == 1)
+					{
+						for (var i = 0; i < 10; i++)
+							age += Math.floor((Math.random() * 6) + 1);
+						$("#page").val(age);
+					}
+					else
+					{
+						for (var i = 0; i < 10; i++)
+							age += Math.floor((Math.random() * 12) + 1);
+						$("#page").val(age);
+					}
+				}
+				else if (race == 4)
+				{
+					if (Age == 1)
+					{
+						for (var i = 0; i < 9; i++)
+							age += Math.floor((Math.random() * 12) + 1);
+						$("#page").val(age);
+					}
+					else
+					{
+						for (var i = 0; i < 9; i++)
+							age += Math.floor((Math.random() * 20) + 1);
+						$("#page").val(age);
+					}
+				}
+  }); //onclick
+}).change(); //change 
 
 //1
 $("#select").change(function () {
@@ -289,7 +387,6 @@ $("#select").change(function () {
       }); //post
     }); // each
 }).change();
-
 
 $("#classes").change(function(){
 	var wor = $("#classes").val();
