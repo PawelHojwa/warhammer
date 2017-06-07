@@ -71,7 +71,7 @@ class Form_model extends CI_Model
 	
 	public function get_skill($id)
 	{
-		$query = "SELECT skillName FROM umiejetnosci, p_profesje WHERE umiejetnosci.skillid = p_profesje.skillid AND p_profesje.profID = " . $id;
+		$query = "SELECT skillid FROM p_profesje WHERE p_profesje.profID = " . $id;
 		$result = $this->db->query($query);
 		return $result->result_array();
 	}

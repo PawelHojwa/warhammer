@@ -117,13 +117,9 @@ class Player_skills extends CI_Controller
 			foreach ($skill as $element)
 			{
 				//echo $element;
-				//foreach ($element as $el)
-					//echo $el . ", ";
+				foreach ($element as $el)
+					echo $el . ", ";
 			}
-				
-			//else
-			//	echo 'false';
-			
 		}
 		else
 			echo "Błąd";
