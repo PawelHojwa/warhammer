@@ -1,6 +1,6 @@
 <?php
 
-class Create_character extends CI_Controller
+class Create_player extends CI_Controller
 {
 	public function __construct()
 	{
@@ -53,8 +53,10 @@ class Create_character extends CI_Controller
 	{
 		return $this->form_model->get_values('characters', array('userID' => $id), 'name');
 	}
+	
+	
 
-	public function create_character()
+	public function create()
 	{
 		
 		if (!isset($_SESSION['user']))
@@ -69,7 +71,6 @@ class Create_character extends CI_Controller
 		else
 		{
 			$user_id = $_SESSION['userID'];
-			var_dump($user_id);
 			$this->form_validation->set_rules('name', 'Imie',
 				'trim|required|max_length[40]',
 				array('required' => "Pole '{field}' jest wymagane",
@@ -128,7 +129,6 @@ class Create_character extends CI_Controller
 			}
 		}
 	}
-
 	public function get_sz() //1
 	{
 		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE)

@@ -61,4 +61,18 @@ class Form_model extends CI_Model
 		$this->db->where($val);
 		$this->db->update($tab_name, $arr, $val);
 	}
+	
+	public function last_index($tab_name, $col)
+	{
+		$query = $this->db->get($tab_name);
+		$row = $query->last_row();
+		return $row->$col;
+	}
+	
+	public function get_skill($id)
+	{
+		$query = "SELECT skillName FROM umiejetnosci, p_profesje WHERE umiejetnosci.skillid = p_profesje.skillid AND p_profesje.profID = " . $id;
+		$result = $this->db->query($query);
+		return $result->result_array();
+	}
 }

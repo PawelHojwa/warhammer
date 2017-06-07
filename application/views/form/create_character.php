@@ -6,7 +6,7 @@
 //$att = array('style' => 'list-style: none; padding: 0');
 //echo ul($list, $att);
 echo anchor('login/logout', "Wyloguj", array('style' => 'display: block;')) . "<br><br>";
-echo form_open('create_character/create_character');
+echo form_open('create_player/create');
 echo form_label('Imie: ', 'name');
 echo form_input('name');
 echo form_error('name', '<span>', '</span>') . "<br>";
@@ -131,7 +131,7 @@ $("document").ready(function() {
 		var i = parseInt($("#i").val()) + parseInt($("#ri").val());
 		var intel = parseInt($("#int").val()) + parseInt($("#rint").val());
 		var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-		var path = "http://localhost/warhammer/create_character/check_class";
+		var path = "http://localhost/warhammer/create_player/check_class";
 		$("#classes option:selected").each(function(){
 		  $.post(path, {classes: wor, race: race}, function(data){
 			if (wor == 1 && ww < 30)
@@ -161,7 +161,7 @@ $("#select").change(function () {
 		var race = $("#select").val();
 		var age = 0;
 		var Age = $("input:radio:checked").val();
-		var	path = 'http"//localhost/warhammer/create_character/get_race';
+		var	path = 'http"//localhost/warhammer/create_player/get_race';
 		
 		$("#select:selected").each(function() {
 		$("input:radio").each(function () {
@@ -236,7 +236,7 @@ $("#select").change(function () {
 //1
 $("#select").change(function () {
 	var sz = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_sz';
+	var path = 'http://localhost/warhammer/create_player/get_sz';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: sz}, function(data) {
       	$("#sz").val(data);
@@ -247,7 +247,7 @@ $("#select").change(function () {
 //2
 $("#select").change(function () {
 	var ww = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_ww';
+	var path = 'http://localhost/warhammer/create_player/get_ww';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: ww}, function(data) {
       	$("#ww").val(data);
@@ -258,7 +258,7 @@ $("#select").change(function () {
 //3
 $("#select").change(function () {
 	var us = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_us';
+	var path = 'http://localhost/warhammer/create_player/get_us';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: us}, function(data) {
       	$("#us").val(data);
@@ -269,7 +269,7 @@ $("#select").change(function () {
 //4
 $("#select").change(function () {
 	var s = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_s';
+	var path = 'http://localhost/warhammer/create_player/get_s';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: s}, function(data) {
       	$("#s").val(data);
@@ -280,7 +280,7 @@ $("#select").change(function () {
 //5
 $("#select").change(function () {
 	var wt = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_wt';
+	var path = 'http://localhost/warhammer/create_player/get_wt';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: wt}, function(data) {
       	$("#wt").val(data);
@@ -291,7 +291,7 @@ $("#select").change(function () {
 //6
 $("#select").change(function () {
 	var zw = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_zw';
+	var path = 'http://localhost/warhammer/create_player/get_zw';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: zw}, function(data) {
       	$("#zw").val(data);
@@ -302,7 +302,7 @@ $("#select").change(function () {
 //7
 $("#select").change(function () {
 	var a = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_a';
+	var path = 'http://localhost/warhammer/create_player/get_a';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: a}, function(data) {
       	$("#a").val(data);
@@ -314,7 +314,7 @@ $("#select").change(function () {
 //8
 $("#select").change(function () {
 	var i = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_i';
+	var path = 'http://localhost/warhammer/create_player/get_i';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: i}, function(data) {
       	$("#i").val(data);
@@ -325,7 +325,7 @@ $("#select").change(function () {
 //9
 $("#select").change(function () {
 	var zr = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_zr';
+	var path = 'http://localhost/warhammer/create_player/get_zr';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: zr}, function(data) {
       	$("#zr").val(data);
@@ -336,7 +336,7 @@ $("#select").change(function () {
 //10
 $("#select").change(function () {
 	var cp = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_cp';
+	var path = 'http://localhost/warhammer/create_player/get_cp';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: cp}, function(data) {
       	$("#cp").val(data);
@@ -347,7 +347,7 @@ $("#select").change(function () {
 //11
 $("#select").change(function () {
 	var intel = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_int';
+	var path = 'http://localhost/warhammer/create_player/get_int';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: intel}, function(data) {
       	$("#int").val(data);
@@ -358,7 +358,7 @@ $("#select").change(function () {
 //12
 $("#select").change(function () {
 	var op = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_op';
+	var path = 'http://localhost/warhammer/create_player/get_op';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: op}, function(data) {
       	$("#op").val(data);
@@ -369,7 +369,7 @@ $("#select").change(function () {
 //13
 $("#select").change(function () {
 	var sw = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_sw';
+	var path = 'http://localhost/warhammer/create_player/get_sw';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: sw}, function(data) {
       	$("#sw").val(data);
@@ -380,7 +380,7 @@ $("#select").change(function () {
 //14
 $("#select").change(function () {
 	var ogd = $("#select").val();
-	var path = 'http://localhost/warhammer/create_character/get_ogd';
+	var path = 'http://localhost/warhammer/create_player/get_ogd';
     $( "#select option:selected" ).each(function() {
       $.post(path, {race: ogd}, function(data) {
       	$("#ogd").val(data);
@@ -396,7 +396,7 @@ $("#classes").change(function(){
 	var i = parseInt($("#i").val()) + parseInt($("#ri").val());
 	var intel = parseInt($("#int").val()) + parseInt($("#rint").val());
 	var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-	var path = "http://localhost/warhammer/create_character/check_class";
+	var path = "http://localhost/warhammer/create_player/check_class";
 	$("#classes option:selected").each(function(){
 	  $.post(path, {classes: wor, race: race}, function(data){
 		if (wor == 1 && ww < 30)
