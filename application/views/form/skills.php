@@ -11,7 +11,7 @@ echo '<p id="1"></p>';
 echo form_label('Umiejętności: ', 'skills') . "<br>";
 foreach ($skills as $skill_id => $skill)
 {
-	echo "<span style='display: inline-block; width: 200px;'>" . form_checkbox('skills', $skill_id, FALSE);
+	echo "<span style='display: inline-block; width: 200px;'>" . form_checkbox('skills', $skill_id, false, ['class' => 'skill']);
 	echo form_label($skill, 'skils') . "</span>";
 }
 echo "<br>";
@@ -20,17 +20,21 @@ echo form_close();
 ?>
 
 <script>
-$("select").change(function () {
-	var prof = $("select").val();
-	var skills = [$(":checkbox").val()];
-	$("select option:selected").each(function() {
-		var path = "http://localhost/warhammer/player_skills/get_profession";
-		$.post(path, {prof: prof}, function (data) {
-			$('#1').html(data);
-			if (data == skills)
-				$(":checkbox").prop("checked");
-		}); //post
-	}); //each
-}).change(); //change
-
+ $(document).ready(function () {
+ $('select').change(function () {
+ 	$('.skill').removeProp('checked');
+ 	var prof_id = $(this).val();
+ 	$.ajax({
+ 		url: 'get_prof',
+ 		type: 'post',
+ 		data: {prof: prof_id},
+ 		dataType: 'json',
+ 		success: function(data) {
+ 			$.each(data, function(key, value) {
+ 				$('.skill[value="' + value +'"]').prop('checked');
+ 			}); //each
+ 		}
+ 	}); //ajax
+ });  //change
+});
 </script>

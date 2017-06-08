@@ -108,20 +108,21 @@ class Player_skills extends CI_Controller
 	{
 		return $this->form_model->get_skill($id);
 	}
+
 	
-	public function get_profession()
+	public function get_prof()
 	{
-		if (isset($_POST['prof']) === TRUE && empty($_POST) === FALSE)
+		if (isset($_POST['prof']))
 		{
-			$skill = $this->get_skill($_POST['prof']);
-			foreach ($skill as $element)
+			$skills = $this->get_skill($_POST['prof']);
+			foreach ($skills as $skill)
 			{
-				//echo $element;
-				foreach ($element as $el)
-					echo $el . ", ";
+				foreach ($skill as $s)
+					echo json_encode($skill);
 			}
 		}
 		else
 			echo "Błąd";
+		//echo json_encode("Ohajo!!");
 	}
 }
