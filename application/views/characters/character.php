@@ -108,34 +108,34 @@
           </tr>
           <tr>
             <?php
-            for ($i = 0; $i < 14; $i++)
-			  echo "<td></td>";
+						for ($i = 0; $i < 14; $i++)
+							echo "<td></td>";
             ?>
           </tr>
           <tr>
             <th rowspan="2">S.R.:</th>
             <?php
-            for ($i = 0; $i < 14; $i++)
-			  echo "<td></td>";
+						for ($i = 0; $i < 14; $i++)
+							echo "<td></td>";
             ?>
           </tr>
           <tr>
             <?php
-            for ($i = 0; $i < 14; $i++)
-			  echo "<td></td>";
+						for ($i = 0; $i < 14; $i++)
+							echo "<td></td>";
             ?>
           </tr>
           <tr>
             <th rowspan="2">Akt:</th>
             <?php
-            for ($i = 0; $i < 14; $i++)
-			  echo "<td></td>";
+						for ($i = 0; $i < 14; $i++)
+							echo "<td></td>";
             ?>
           </tr>
           <tr>
             <?php
-            for ($i = 0; $i < 14; $i++)
-			  echo "<td></td>";
+						for ($i = 0; $i < 14; $i++)
+							echo "<td></td>";
             ?> 
           </tr>
         </table>

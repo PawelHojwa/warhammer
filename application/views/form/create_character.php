@@ -81,7 +81,7 @@ echo form_input('i', '', ['size' => 2, 'id' => 'i', 'readonly' => 'readonly']); 
 echo form_input('a', '', ['size' => 2, 'id' => 'a', 'readonly' => 'readonly']); //8
 echo form_input('zr', '', ['size' => 2, 'id' => 'zr', 'readonly' => 'readonly']); //9
 echo form_input('cp', '', ['size' => 2, 'id' => 'cp', 'readonly' => 'readonly']); //10
-echo form_input('int', '', ['size' => 2, 'id' => 'int', 'readonly' => 'readonly']); //11
+echo form_input('int', '', ['size' => 2, 'id' => 'intel', 'readonly' => 'readonly']); //11
 echo form_input('op', '', ['size' => 2, 'id' => 'op', 'readonly' => 'readonly']); //12
 echo form_input('sw', '', ['size' => 2, 'id' => 'sw', 'readonly' => 'readonly']); //13
 echo form_input('ogd', '', ['size' => 2, 'id' => 'ogd', 'readonly' => 'readonly']) . "<br>"; //14
@@ -93,7 +93,37 @@ echo form_button('btn1', 'Generuj', ['id' => 'btn1']);
 
 
 <script>
+function check_class() {
+		var classes = $("#classes").val();
+		var race = $("#select").val();
+		var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
+		var us = parseInt($("#us").val()) + parseInt($("#rus").val());
+		var i = parseInt($("#i").val()) + parseInt($("#ri").val());
+		var intel = parseInt($("#intel").val()) + parseInt($("#rint").val());
+		var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
+		var path = "http://localhost/warhammer/create_player/check_class";
+		$("#classes option:selected").each(function(){
+		  $.post(path, {classes: classes, race: race}, function(data){
+			if (classes == 1 && ww < 30)
+			{
+				$("#demo").text("Klasa: " + data + " : Minimalne WW 30");
+			}
+			else if (classes == 2 && us < 30)
+				$("#demo").text("Klasa: " + data + " : Minimalne US 30");
+			else if (classes == 3 && i < 30 && race != 2)
+				$("#demo").text("Klasa: " + data + " : Minimalne I 30");
+			else if (classes == 3 && race == 2 && i < 65)
+				$("#demo").text("Klasa: " + data + " : Minimalne I 65");
+			else if (classes == 4 && (intel < 30 || sw < 30))
+				$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
+			else
+				$("#demo").text("");
+			 });
+		})
+	}
 $("document").ready(function() {
+	
+
 	$("#btn1").click(function() {
 		var sz = Math.floor((Math.random() * 3) + 1);
 		var ww = Math.floor(((Math.random() * 10) + 1) + Math.floor((Math.random() * 10) + 1));
@@ -124,33 +154,7 @@ $("document").ready(function() {
 		$("#rsw").val(sw);
 		$("#rogd").val(ogd);
 		
-		var wor = $("#classes").val();
-		var race = $("#select").val();
-		var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
-		var us = parseInt($("#us").val()) + parseInt($("#rus").val());
-		var i = parseInt($("#i").val()) + parseInt($("#ri").val());
-		var intel = parseInt($("#int").val()) + parseInt($("#rint").val());
-		var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-		var path = "http://localhost/warhammer/create_player/check_class";
-		$("#classes option:selected").each(function(){
-		  $.post(path, {classes: wor, race: race}, function(data){
-			if (wor == 1 && ww < 30)
-			{
-				$("#demo").text("Klasa: " + data + " : Minimalne WW 30");
-				return false;
-			}
-			else if (wor == 2 && us < 30)
-				$("#demo").text("Klasa: " + data + " : Minimalne US 30");
-			else if (wor == 3 && i < 30 && race != 2)
-				$("#demo").text("Klasa: " + data + " : Minimalne I 30");
-			else if (wor == 3 && race == 2 && i < 65)
-				$("#demo").text("Klasa: " + data + " : Minimalne I 65");
-			else if (wor == 4 && intel < 30 && sw < 30)
-				$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
-			else
-				$("#demo").text("");
-			 });
-		})		
+		check_class();		
 	});
 	
 	
@@ -162,11 +166,9 @@ $("#select").change(function () {
 		var age = 0;
 		var Age = $("input:radio:checked").val();
 		var	path = 'http"//localhost/warhammer/create_player/get_race';
-		
 		$("#select:selected").each(function() {
 		$("input:radio").each(function () {
-			$.post(path, {race: race}, function() {
-				
+			$.post(path, {race: race}, function() {	
 			}) //post
 			}); //radio each
 		}); //each
@@ -233,163 +235,20 @@ $("#select").change(function () {
   }); //onclick
 }).change(); //change 
 
-//1
 $("#select").change(function () {
-	var sz = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_sz';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: sz}, function(data) {
-      	$("#sz").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//2
-$("#select").change(function () {
-	var ww = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_ww';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: ww}, function(data) {
-      	$("#ww").val(data);
-      }); //post    
-    }); // each    
-}).change();
-
-//3
-$("#select").change(function () {
-	var us = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_us';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: us}, function(data) {
-      	$("#us").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//4
-$("#select").change(function () {
-	var s = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_s';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: s}, function(data) {
-      	$("#s").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//5
-$("#select").change(function () {
-	var wt = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_wt';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: wt}, function(data) {
-      	$("#wt").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//6
-$("#select").change(function () {
-	var zw = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_zw';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: zw}, function(data) {
-      	$("#zw").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//7
-$("#select").change(function () {
-	var a = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_a';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: a}, function(data) {
-      	$("#a").val(data);
-      }); //post
-    }); // each
-}).change();
-
-
-//8
-$("#select").change(function () {
-	var i = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_i';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: i}, function(data) {
-      	$("#i").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//9
-$("#select").change(function () {
-	var zr = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_zr';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: zr}, function(data) {
-      	$("#zr").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//10
-$("#select").change(function () {
-	var cp = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_cp';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: cp}, function(data) {
-      	$("#cp").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//11
-$("#select").change(function () {
-	var intel = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_int';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: intel}, function(data) {
-      	$("#int").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//12
-$("#select").change(function () {
-	var op = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_op';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: op}, function(data) {
-      	$("#op").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//13
-$("#select").change(function () {
-	var sw = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_sw';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: sw}, function(data) {
-      	$("#sw").val(data);
-      }); //post
-    }); // each
-}).change();
-
-//14
-$("#select").change(function () {
-	var ogd = $("#select").val();
-	var path = 'http://localhost/warhammer/create_player/get_ogd';
-    $( "#select option:selected" ).each(function() {
-      $.post(path, {race: ogd}, function(data) {
-      	$("#ogd").val(data);
-      }); //post
-    }); // each
+	var race = $("#select").val();
+	var path = 'http://localhost/warhammer/create_player/get_stat';
+  $.post(path, {race: race}, function(data) {
+    $.each(data, function(key, value) {
+    	$("#" + key).val(value);	
+    });  	
+  }); //post
 }).change();
 
 $("#classes").change(function(){
-	var wor = $("#classes").val();
+	check_class();
+
+	/*var wor = $("#classes").val();
 	var race = $("#select").val();
 	var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
 	var us = parseInt($("#us").val()) + parseInt($("#rus").val());
@@ -415,6 +274,6 @@ $("#classes").change(function(){
 		else
 			$("#demo").text("");
 	  });
-	})
+	})*/
 }).change();
 </script>

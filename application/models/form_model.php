@@ -46,13 +46,35 @@ class Form_model extends CI_Model
 			if ($result->num_rows() > 0)
 			{
 				foreach ($result->result_array() as $row)
-					return $row[$col];
+					if (is_array($col)) {
+						$result = [];
+						foreach($col as $col_row) {
+							$result[$col_row] = $row[$col_row];
+						}
+						return $result;
+					} else {
+						return $row[$col];
+					}
 			} 	
 	}
 	
 	public function insert($tab_name, $data = array())
 	{
 		return $this->db->insert($tab_name, $data);
+	}
+	
+	public function multi_insert($tab_name, $data)
+	{
+		foreach ($data['skillid'] as $skill)
+		{
+			$record = array(
+				'id' => $data['id'],
+				'char_id' => $data['char_id'],
+				'profId' => $data['profId'],
+				'skillid' => $skill
+			);
+			$this->db->insert($tab_name, $record);
+		}
 	}
 	
 	public function change($tab_name, $arr, $val = array())
@@ -71,8 +93,39 @@ class Form_model extends CI_Model
 	
 	public function get_skill($id)
 	{
-		$query = "SELECT skillid FROM p_profesje WHERE p_profesje.profID = " . $id;
-		$result = $this->db->query($query);
-		return $result->result_array();
+		$query = $this->db->get_where('p_profesje', ['profID' => $id]);
+		return $query->result_array();
+	}
+	
+	public function get_basic_info()
+	{
+		$this->db->select('*');
+		$this->db->from('characters');
+		$query = $this->db->get();
+		$arr = array();
+		foreach ($query->result_array() as $row)
+			$arr[] = $row;
+		return $row;
+	}
+	
+	public function get_character_skills()
+	{
+		$this->db->select('profesje.professionName');
+		$this->db->select('umiejetnosci.skillName');
+		//$this->db->from('char_skills');
+		$this->db->from('umiejetnosci');
+		$this->db->from('profesje');
+		$this->db->join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND profesje.profID = char_skills.profId', 'right');
+		$this->db->where(['char_id' => 1]);
+		$query = $this->db->get();
+		$arr = array();
+		foreach ($query->result_array() as $key => $value)
+		{
+			$arr['profId'] = $value['professionName'];
+			$arr['skillid'][$key] = $value['skillName'];
+			/*$skills = array(
+				$arr[] = $row['skillid']);*/
+		}
+		return $arr;
 	}
 }
