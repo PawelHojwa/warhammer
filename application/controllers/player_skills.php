@@ -104,26 +104,20 @@ class Player_skills extends CI_Controller {
 
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
 			if ($this -> form_validation -> run() === false) {
+				
+				
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
 				$arr = $this -> verify_data();
+				
 				//$this -> form_model -> multi_insert('char_skills', $arr);
-				$data_arr = $this->form_model->get_basic_info();
-				$data_skills = $this->form_model->get_character_skills();
-				echo "<pre>";
-				var_dump($data_skills);
-				echo "</pre>";
-				$data['title'] = "Karta postaci";
-				$data['name'] = $data_arr['name'];
-				$data['age'] = $data_arr['age'];
-				$data['sk'] = array();
-				foreach ($data_skills['skillid'] as $value)
-					$data['sk'][]= $value;
- 				$data['prof'] = $data_skills['profId'];
+ 				$data = $this->get_char();
+ 				$data['lala'] = $this -> input -> post('skills');
+				$data['title'] = $name;
 				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/success', $data);
+				$this -> load -> view('characters/character', $data);
 				$this -> load -> view('templates/footer');
 			}
 		}
@@ -144,5 +138,66 @@ class Player_skills extends CI_Controller {
 		} else
 			echo "Błąd";
 	}
+	
+	public function get_char()
+	{
+		$b_info = $this->form_model->get_basic_info();
+		$c_skill = $this->form_model->get_character_skills();
+		$arr = array();
+		$arr1 = array(
+			'name' => $b_info['name'],
+			'race' => $b_info['raceName'],
+			'gender' => $b_info['genderName'],
+			'classes' => $b_info['className'],
+			'nature' => $b_info['natureName'],
+			'age' => $b_info['age'],
+			'height' => $b_info['height'],
+			'weight' => $b_info['weight'],
+			'hair' => $b_info['hair'],
+			'eyes' => $b_info['eyes'],
+			'description' => $b_info['description'],
+			'sz' => $b_info['sz'],
+			'ww' => $b_info['ww'],
+			'us' => $b_info['us'],
+			's' => $b_info['s'],
+			'wt' => $b_info['wt'],
+			'zw' => $b_info['zw'],
+			'i' => $b_info['i'],
+			'a' => $b_info['a'],
+			'zr' => $b_info['zr'],
+			'cp' => $b_info['cp'],
+			'int' => $b_info['intel'],
+			'op' => $b_info['op'],
+			'sw' => $b_info['sw'],
+			'ogd' => $b_info['ogd'],
+			
+		);
+		$arr2 = array(
+			'profession' => $c_skill['profName'],
+			'sk' => $c_skill['skillid'],
+			'rsz' => $c_skill['sz'],
+			'rww' => $c_skill['ww'],
+			'rus' => $c_skill['us'],
+			'rs' => $c_skill['s'],
+			'rwt' => $c_skill['wt'],
+			'rzw' => $c_skill['zw'],
+			'ri' => $c_skill['i'],
+			'ra' => $c_skill['a'],
+			'rzr' => $c_skill['zr'],
+			'rcp' => $c_skill['cp'],
+			'rint' => $c_skill['int'],
+			'rop' => $c_skill['op'],
+			'rsw' => $c_skill['sw'],
+			'rogd' => $c_skill['ogd'],
+		);
+		
+		return $arr = array_merge($arr1, $arr2);
+	}
 
+	public function check_checkbox()
+	{
+		//$len = count($this -> input -> post('skills'));
+		//if ($len != 0)
+		return false;
+	}
 }

@@ -1,0 +1,292 @@
+/*Plik css do projektu Warhammer*/
+/*Autor: Paweł Hojwa*/
+
+body
+{
+  background-color: white;
+  box-sizing: border-box;
+}
+
+#mainPage
+{
+  width: 1193px;
+  
+}
+
+#ramka_gora
+{
+  height: 36px;
+  background: url("../img/ramka_gora.jpg");
+}
+
+div#ramka_lewa
+{
+  height: 1612px;
+  width: 38px;
+  background: url("../img/ramka_lewa.jpg");
+  margin-top: -1px;
+  float: left;
+}
+
+div#ramka_prawa
+{
+  height: 1612px;
+  width: 37px;
+  background: url("../img/ramka_prawa.jpg");
+  margin-top: -1px;
+  margin-right: 1px;
+  float: right;
+}
+
+div#logo
+{
+  width: 414px;
+  height: 63px;
+  background: url("../img/logo.jpg");
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div#top
+{
+  height: 652px;
+}
+
+div#top_left
+{
+  width: 422px;
+  float: left;
+}
+
+div#obraz_gora
+{
+  width: 422px;
+  height: 133px;
+  background: url("../img/obraz_1_gora.jpg");
+}
+
+table
+{
+  border-collapse: collapse;
+}
+
+table,th,td
+{
+  border: 1px solid black;
+  font-size: 14px;
+}
+table th
+{
+  background-color: #bfbfbf;
+  height: 40px;
+}
+
+table#tl_table
+{
+  width: 414px;
+  height: 521px;
+  margin-left: 8px;
+}
+
+div#top_right
+{
+  width: 690px;
+  float: right;
+}
+
+table#tr_table
+{
+  width: 656px;
+  height: 324px;
+  margin-top: 16px;
+  margin-left: 34px;
+}
+
+label
+{
+  font-weight: bold;
+}
+
+table#stats
+{
+  width: 656px;
+  height: 278px;
+  margin-top: 23px;
+  margin-left: 34px;
+}
+
+table#stats th, td
+{
+  width: 41px;
+}
+
+table#stats td
+{
+  height: 38px;
+}
+
+div#middle
+{
+  margin-top: 8px;
+  margin-left: 38px;
+  margin-right: 37px;
+  overflow: hidden;
+}
+
+table#m1
+{
+  margin-top: 3px;
+  margin-left: 8px;
+  width: 512px;
+  height: 207px;
+  float: left;
+}
+
+table#m2
+{
+  margin-left: 545px;
+  margin-top: 25px;
+  width: 560px;
+  height: 168px;
+}
+
+table#m2 th:first-child
+{
+  width: 197px;
+}
+
+table#m3
+{
+  margin-top: 10px;
+  margin-left: 8px;
+  width: 235px;
+  height: 162px;
+  float: left;
+}
+
+.small_th
+{
+  font-size: 10px;
+  text-align: left;
+  vertical-align: top;
+  width: 47px;
+}
+
+table#m4
+{
+  margin-top: 20px;
+  margin-left: 40px;
+  font-weight: bold;
+  float: left;
+}
+
+.armour
+{
+  width: 235px;
+  height: 129px;
+}
+
+caption
+{
+  text-align: left;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+table#m5
+{
+  width: 560px;
+  height: 168px;
+  margin-top: 10px;
+  margin-left: 28px;
+  float: left;
+}
+
+table#m5 th:first-child
+{
+  width: 197px;
+}
+
+.tk
+{
+  width: 25px;
+  font-size: 12px;
+}
+
+div#down_left
+{
+  width: 235px;
+  margin-left: 8px;
+  float: left;
+}
+
+table.armour
+{
+  margin-top: 3px;
+}
+
+table#dl3
+{
+  height: 77px;
+  margin-top: 10px;
+}
+
+table#dl4
+{
+  height: 100px;
+  
+}
+
+table#dl4 th
+{
+  width: 50px;
+}
+
+table#dl4 td
+{
+  width: 25px;
+  text-align: center;
+  font-weight: bold;
+}
+
+div#down_middle
+{
+  float:left;
+  margin-left: 10px;
+}
+
+div#obraz_dol1
+{
+  margin-top: -10px;
+  width: 227px;
+  height: 488px;
+  background: url("../img/obraz_1_dol.jpg");
+  float: left;
+}
+
+div#down_right
+{
+  margin-left: 10px;
+  float: left;
+}
+
+div#obraz_dol2
+{
+  width: 385px;
+  height: 340px;
+  background: url("../img/obraz_2_dol.jpg");
+}
+
+div#ramka_dol
+{
+  width: 1192px;
+  height: 39px;
+  background: url("../img/ramka_dol.jpg");
+  clear: both;
+}
+
+table.skills td
+{
+	font-size: 10px;
+	padding: 0;
+}

@@ -2,7 +2,7 @@
 <?php echo heading("Imie postaci: " . $player_name, 3); ?>
 <p>Wiek: <?php echo $age; ?></p>
 <p>Pozostało umiejętności: <span id="amount"><?php echo $am_skill; ?></span></p>
-
+<p id="a"></p>
 <?php
 echo form_open('player_skills/skill');
 echo form_label('Profesje: ', 'prof');
@@ -10,7 +10,8 @@ echo form_dropdown('prof', $profession, 1) . "<br>";
 echo '<p id="1"></p>';
 echo form_label('Umiejętności: ', 'skills') . "<br>";
 foreach ($skills as $skill_id => $skill) {
-	echo "<span style='display: inline-block; width: 200px; margin-bottom: 5px;'>" . form_checkbox('skills[]', $skill_id, false, ['class' => 'skill']);
+	echo "<span style='display: inline-block; width: 200px; margin-bottom: 5px;'>" 
+	. form_checkbox('skills[]', $skill_id, false, ['class' => 'skill']);
 	echo form_label($skill, 'skills') . "</span>";
 }
 echo "<br>";
@@ -22,6 +23,7 @@ echo form_close();
 	$(document).ready(function() {
 		$('.skill').click(function() {
 			var am = $('#amount').text();
+			$("#a").text();
 			if ($('.skill:checked:not(:disabled)').length > am) {
 				return false;
 			}
@@ -42,7 +44,6 @@ echo form_close();
 				},
 				dataType : 'json',
 				success : function(data) {
-					//console.log(data);
 					$.each(data, function(key, value) {
 						$('.skill[value="' + value + '"]').prop('checked', true);
 						$('.skill[value="' + value + '"]').prop('disabled', true);
@@ -55,5 +56,18 @@ echo form_close();
 		}).change();
 		//change
 	}); 
+	
+	$('form').submit(function () {
+		var am = $('#amount').text();
+		var len = $('.skill:checked:not(:disabled)').length;
+		var deff = am - len;
+		if (len == am)
+			return true;
+		else
+		{
+			alert("Pozostało do wybrania: " + deff + " umiejętności");
+			return false;
+		}
+	});
 	// ready
 </script>

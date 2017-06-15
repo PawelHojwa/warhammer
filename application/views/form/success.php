@@ -2,7 +2,7 @@
 <p>Udane dodanie do bazy</p>
 <p>Imie postaci: <?php echo $name; ?></p>
 <p>Wiek: <?php echo $age; ?></p>
-<p>Profesja: <?php echo $prof; ?></p>
+<p>Profesja: <?php echo $profession; ?></p>
 <p>Umiejętności:</p>
 <ul>
 <?php

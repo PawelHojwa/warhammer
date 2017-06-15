@@ -1,3 +1,16 @@
+  <?php 
+  function showR($val)
+	{
+		if ($val != null)
+		{
+			echo "+" . $val;
+		}
+		else
+		{
+			echo " ";
+		}
+	}
+  ?>
   <div id="mainPage">
     <div id="ramka_gora"></div>
     <div id="ramka_lewa"></div>
@@ -7,48 +20,22 @@
     <div id="top">
       <div id="top_left">
         <div id="obraz_gora"></div>
-        <table id="tl_table">
+        <table id="tl_table" class="skills">
           <tr><th>Umiejętności</th><th>Umiejętności</th></tr>
-          <tr><td></td>
-		  <td></td></tr>
-          <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
-		  <tr><td></td>
-		  <td></td></tr>
+          <?php
+          	$am = count($sk);
+          	for ($i = 0; $i < 20; $i++)
+						{
+							if ($i >= $am)
+							{
+								echo "<tr><td></td><td></td></tr>";
+							}
+							else
+							{
+								echo "<tr><td>" . $sk[$i] . "</td><td></td></tr>"; 
+							}
+						}
+          ?>
         </table>
       </div>
       <div id="top_right">
@@ -59,7 +46,7 @@
             <td class="tr1td"><label>Płeć: </label><?php echo $gender; ?></td>
           </tr>
           <tr>
-            <td class="tr2td"><label>Klasa: </label><?php echo $class; ?></td>
+            <td class="tr2td"><label>Klasa: </label><?php echo $classes; ?></td>
             <td class="tr2td"><label>Charakter: </label><?php echo $nature; ?></td>
             <td class="tr2td"><label>Wiek: </label><?php echo $age; ?></td>
           </tr>
@@ -73,13 +60,13 @@
             <td colspan="2"><label>Opis: </label><?php echo $description; ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Pochodzenie:</label></td>
+            <td colspan="3"><label>Pochodzenie: </label></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Kariera:</label></td>
+            <td colspan="3"><label>Kariera: </label><?php echo $profession; ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Profesje wyjściowe:</label></td>
+            <td colspan="3"><label>Profesje wyjściowe: </label></td>
           </tr>
         </table>
         
@@ -114,10 +101,20 @@
           </tr>
           <tr>
             <th rowspan="2">S.R.:</th>
-            <?php
-						for ($i = 0; $i < 14; $i++)
-							echo "<td></td>";
-            ?>
+            <td><?php showR($rsz); ?></td>
+            <td><?php showR($rww); ?></td>
+            <td><?php showR($rus); ?></td>
+            <td><?php showR($rs); ?></td>
+            <td><?php showR($rwt); ?></td>
+            <td><?php showR($rzw); ?></td>
+            <td><?php showR($ri); ?></td>
+            <td><?php showR($ra); ?></td>
+            <td><?php showR($rzr); ?></td>
+            <td><?php showR($rcp); ?></td>
+            <td><?php showR($rint); ?></td>
+            <td><?php showR($rop); ?></td>
+            <td><?php showR($rsw); ?></td>
+            <td><?php showR($rogd); ?></td>
           </tr>
           <tr>
             <?php
@@ -195,8 +192,7 @@
     <div id="middle_2">
       <table id="m3">
         <tr>
-          <td colspan="5" class="small_th" style="font-size: 16px;">Całe ciało: 
-          <input type="text" name="farmour" size="15"></textarea></td>
+          <td colspan="5" class="small_th" style="font-size: 16px;">Całe ciało: </td>
         </tr>
         
         <tr>

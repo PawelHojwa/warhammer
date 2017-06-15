@@ -100,19 +100,23 @@ class Form_model extends CI_Model
 	public function get_basic_info()
 	{
 		$this->db->select('*');
-		$this->db->from('characters');
+		$this->db->from('rasa');
+		$this->db->from('charakter');
+		$this->db->from('classes');
+		$this->db->from('gender');
+		$this->db->join('characters',
+			'characters.raceID = rasa.raceID AND characters.natureID = charakter.natureID AND characters.classID = classes.classID
+			AND characters.genderID = gender.genderID');
 		$query = $this->db->get();
 		$arr = array();
 		foreach ($query->result_array() as $row)
-			$arr[] = $row;
+			$row;
 		return $row;
 	}
 	
 	public function get_character_skills()
 	{
-		$this->db->select('profesje.professionName');
-		$this->db->select('umiejetnosci.skillName');
-		//$this->db->from('char_skills');
+		$this->db->select('*');
 		$this->db->from('umiejetnosci');
 		$this->db->from('profesje');
 		$this->db->join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND profesje.profID = char_skills.profId', 'right');
@@ -121,10 +125,22 @@ class Form_model extends CI_Model
 		$arr = array();
 		foreach ($query->result_array() as $key => $value)
 		{
-			$arr['profId'] = $value['professionName'];
+			$arr['profName'] = $value['professionName'];
 			$arr['skillid'][$key] = $value['skillName'];
-			/*$skills = array(
-				$arr[] = $row['skillid']);*/
+			$arr['sz'] = $value['sz'];
+			$arr['ww'] = $value['ww'];
+			$arr['us'] = $value['us'];
+			$arr['s'] = $value['s'];
+			$arr['wt'] = $value['wt'];
+			$arr['zw'] = $value['zw'];
+			$arr['i'] = $value['i'];
+			$arr['a'] = $value['a'];
+			$arr['zr'] = $value['zr'];
+			$arr['cp'] = $value['cp'];
+			$arr['int'] = $value['intel'];
+			$arr['op'] = $value['op'];
+			$arr['sw'] = $value['sw'];
+			$arr['ogd'] = $value['ogd'];
 		}
 		return $arr;
 	}
