@@ -16,7 +16,6 @@
     <div id="ramka_lewa"></div>
     <div id="ramka_prawa"></div>
     <div id="logo"></div>
-    <form method="post" action="create_char.php">
     <div id="top">
       <div id="top_left">
         <div id="obraz_gora"></div>

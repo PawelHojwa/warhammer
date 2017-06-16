@@ -9,6 +9,7 @@ class Register extends CI_Controller
 		$this->load->helper('url_helper');
 		$this->load->library('form_validation');
 		$this->load->model('form_model');
+		$this->load->helper('html');
 	}
 	
 	public function register_data($type = 'gracz')

@@ -10,12 +10,13 @@ class Login extends CI_Controller
 		$this->load->library('session');
 		$this->load->model('form_model');
 		$this->load->library('formable');
+		$this->load->helper('html');
 	}
 	
 	public function view_form()
 	{
 		$data['title'] = "Logowanie";
-		$data['sub_title'] = "Formularz logowania";
+		$data['sub_title'] = "Zaloguj się";
 		$data['error'] = "";
 		$this->load->view('templates/header', $data);
 		$this->load->view('form/login', $data);
