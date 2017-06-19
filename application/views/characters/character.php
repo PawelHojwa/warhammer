@@ -40,29 +40,29 @@
       <div id="top_right">
         <table id="tr_table">
           <tr>
-            <td class="tr1td"><label>Imię: </label><?php echo $name; ?></td>
-            <td class="tr1td"><label>Rasa: </label><?php echo $race; ?></td>
-            <td class="tr1td"><label>Płeć: </label><?php echo $gender; ?></td>
+            <td class="tr1td"><label>Imię: </label><?php echo " " . $name; ?></td>
+            <td class="tr1td"><label>Rasa: </label><?php echo " " . $race; ?></td>
+            <td class="tr1td"><label>Płeć: </label><?php echo " " . $gender; ?></td>
           </tr>
           <tr>
-            <td class="tr2td"><label>Klasa: </label><?php echo $classes; ?></td>
-            <td class="tr2td"><label>Charakter: </label><?php echo $nature; ?></td>
-            <td class="tr2td"><label>Wiek: </label><?php echo $age; ?></td>
+            <td class="tr2td"><label>Klasa: </label><?php echo " " . $classes; ?></td>
+            <td class="tr2td"><label>Charakter: </label><?php echo " " . $nature; ?></td>
+            <td class="tr2td"><label>Wiek: </label><?php echo " " . $age; ?></td>
           </tr>
           <tr>
-            <td><label>Wzrost: </label><?php echo $height; ?></td>
-            <td><label>Waga: </label><?php echo $weight; ?></td>
-            <td><label>Włosy: </label><?php echo $hair; ?></td>
+            <td><label>Wzrost: </label><?php echo " " . $height; ?></td>
+            <td><label>Waga: </label><?php echo " " . $weight; ?></td>
+            <td><label>Włosy: </label><?php echo " " . $hair; ?></td>
           </tr>
           <tr>
-            <td><label>Oczy: </label><?php echo $eyes; ?></td>
-            <td colspan="2"><label>Opis: </label><?php echo $description; ?></td>
+            <td><label>Oczy: </label><?php echo " " . $eyes; ?></td>
+            <td colspan="2"><label>Opis: </label><?php echo " " . $description; ?></td>
           </tr>
           <tr>
             <td colspan="3"><label>Pochodzenie: </label></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Kariera: </label><?php echo $profession; ?></td>
+            <td colspan="3"><label>Kariera: </label><?php echo " " . $profession; ?></td>
           </tr>
           <tr>
             <td colspan="3"><label>Profesje wyjściowe: </label></td>
@@ -83,7 +83,7 @@
             <td><?php echo $s; ?></td>
             <td><?php echo $wt; ?></td>
             <td><?php echo $zw; ?></td>
-            <td><?php echo $i; ?></td>
+            <td><?php echo $ini; ?></td>
             <td><?php echo $a; ?></td>
             <td><?php echo $zr; ?></td>
             <td><?php echo $cp; ?></td>
@@ -203,7 +203,7 @@
         </tr>
       </table>
       <table id="m4" class="armour">
-        <caption>Głowa (01-15)</caption>
+        <caption class="caption">Głowa (01-15)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>
@@ -244,7 +244,7 @@
     </div>
     <div id="down_left">
       <table id="dl1" class="armour">
-        <caption>Prawa ręka (16-35)</caption>
+        <caption class="caption">Prawa ręka (16-35)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>
@@ -260,7 +260,7 @@
         </tr>
       </table>
       <table id="dl2" class="armour">
-        <caption>Prawa noga(81-90)</caption>
+        <caption class="caption">Prawa noga(81-90)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>
@@ -295,7 +295,7 @@
     <div id="down_middle">
       <div id="obraz_dol1"></div>
       <table id="dm1" class="armour">
-        <caption>Lewa ręka(36-55)</caption>
+        <caption class="caption">Lewa ręka(36-55)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>
@@ -311,7 +311,7 @@
         </tr>
       </table>
       <table id="dm2" class="armour">
-        <caption>Korpus(56-80)</caption>
+        <caption class="caption">Korpus(56-80)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>
@@ -327,7 +327,7 @@
         </tr>
       </table>
       <table id="dm3" class="armour">
-        <caption>Lewa noga(91-00)</caption>
+        <caption class="caption">Lewa noga(91-00)</caption>
         <tr>
           <td colspan="5"></td>
         </tr>

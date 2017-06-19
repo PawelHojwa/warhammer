@@ -63,6 +63,11 @@ class Form_model extends CI_Model
 		return $this->db->insert($tab_name, $data);
 	}
 	
+	public function update($table_name, $data = array(), $id=1)
+	{
+		return $this->db->update($table_name, $data, $id);
+	}
+	
 	public function multi_insert($tab_name, $data)
 	{
 		foreach ($data['skillid'] as $skill)
@@ -114,13 +119,13 @@ class Form_model extends CI_Model
 		return $row;
 	}
 	
-	public function get_character_skills()
+	public function get_character_skills($id = 1)
 	{
 		$this->db->select('*');
 		$this->db->from('umiejetnosci');
 		$this->db->from('profesje');
 		$this->db->join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND profesje.profID = char_skills.profId', 'right');
-		$this->db->where(['char_id' => 1]);
+		$this->db->where(['char_id' => $id]);
 		$query = $this->db->get();
 		$arr = array();
 		foreach ($query->result_array() as $key => $value)

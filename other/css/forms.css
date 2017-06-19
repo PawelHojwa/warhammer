@@ -89,11 +89,11 @@ span.name-stats
 	display : inline-block;
 	text-align : center;
 	width : 47px;
-	margin-right : 4px;
+	margin-right : 5px;
 	font-weight : bold;
 }
 
-caption
+.caption
 {
 	padding: 0;
 }

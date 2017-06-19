@@ -1,6 +1,5 @@
 <h1><?php echo $title; ?></h1>
 <p class="lead">Witaj <?php echo $user; ?></p>
-<p>Twoje postacie:</p>
 <?php
 echo anchor('login/logout', "Wyloguj", array('style' => 'display: inline-block;')) . "<br><br>";
 echo form_open('create_player/create', ['id' => 'basic']);
@@ -29,7 +28,7 @@ echo form_open('create_player/create', ['id' => 'basic']);
 </tr>
 <tr>
 	<td><?php echo form_label('Wiek: ', 'age'); ?></td>
-	<td><?php echo form_input('age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly']); ?></td>
+	<td><?php echo form_input('p_age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly']); ?></td>
 </tr>
 <tr>
 	<td><?php echo form_label('Młody ', 'age'); ?> </td>
@@ -110,14 +109,51 @@ echo form_input('sw', '', ['size' => 2, 'id' => 'sw', 'readonly' => 'readonly'])
 echo form_input('ogd', '', ['size' => 2, 'id' => 'ogd', 'readonly' => 'readonly']);  //14
 ?>
 </div>
+<p id="demo"></p>
 <div class="form-group">
 <?php
 echo form_button('btn1', 'Generuj', ['id' => 'btn1', 'class' => 'btn btn-primary']);
 echo form_submit('submit', 'Stwórz', ['class' => 'btn btn-primary']); ?>
 </div>
 <?php echo form_close(); ?>
-<p id="demo"></p>
+
 <?php echo validation_errors('<p class="alert alert-danger">', '</p>'); ?>
 
-
+<script>
+	/*$('document').ready(function () {
+		$('#basic').submit(function(e) {
+			var classes = $("#classes").val();
+			var race = $("#race").val();
+			var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
+			var us = parseInt($("#us").val()) + parseInt($("#rus").val());
+			var i = parseInt($("#i").val()) + parseInt($("#ri").val());
+			var intel = parseInt($("#intel").val()) + parseInt($("#rint").val());
+			var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
+			var path = "check_class";
+			$("#classes option:selected").each(function() {
+				$.post(path, {
+					classes : classes,
+					race : race
+				}, function(data) {
+					if (classes == 1 && ww < 30) {
+						//alert("Klasa: " + data + " : Minimalne WW 30");
+						e.preventDefault();
+					} /*else if (classes == 2 && us < 30) {
+						$("#demo").text("Klasa: " + data + " : Minimalne US 30");
+						return false;
+					} else if (classes == 3 && i < 30 && race != 2) {
+						$("#demo").text("Klasa: " + data + " : Minimalne I 30");
+						return false;
+					} else if (classes == 3 && race == 2 && i < 65) {
+						$("#demo").text("Klasa: " + data + " : Minimalne I 65");
+						return false;
+					} else if (classes == 4 && (intel < 30 || sw < 30)) {
+						$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
+						return false;
+					} else
+						$("#demo").text("hura");
+				});
+			});
+		});
+	});*/
 </script>

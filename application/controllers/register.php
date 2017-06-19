@@ -39,9 +39,7 @@ class Register extends CI_Controller
 		$register = $this->register_data();
 		$this->form_model->insert('users', $register);
 		$data['error'] = "";
-		$this->load->view('templates/header', $data);
-		$this->load->view('form/login');
-		$this->load->view('templates/footer');
+		redirect('login/form_login');
 	}
 	
 	public function register()

@@ -14,19 +14,25 @@ function check_class() {
 		}, function(data) {
 			if (classes == 1 && ww < 30) {
 				$("#demo").text("Klasa: " + data + " : Minimalne WW 30");
-			} else if (classes == 2 && us < 30)
+				return false;
+			} else if (classes == 2 && us < 30) {
 				$("#demo").text("Klasa: " + data + " : Minimalne US 30");
-			else if (classes == 3 && i < 30 && race != 2)
+				return false;
+			} else if (classes == 3 && i < 30 && race != 2) {
 				$("#demo").text("Klasa: " + data + " : Minimalne I 30");
-			else if (classes == 3 && race == 2 && i < 65)
+				return false;
+			} else if (classes == 3 && race == 2 && i < 65) {
 				$("#demo").text("Klasa: " + data + " : Minimalne I 65");
-			else if (classes == 4 && (intel < 30 || sw < 30))
+				return false;
+			} else if (classes == 4 && (intel < 30 || sw < 30)) {
 				$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
-			else
+				return false;
+			} else
 				$("#demo").text("");
 		});
 	});
 }
+
 
 $("document").ready(function() {
 	$('#first').focus();
@@ -62,12 +68,13 @@ $("document").ready(function() {
 		$("#rogd").val(ogd);
 
 		check_class();
-	}); //click
+	});
+	//click
 
 	//liczenie wieku postaci
-	$("#select").change(function() {
+	$("#race").change(function() {
 		$(":radio").on("click", function() {
-			var race = $("#select").val();
+			var race = $("#race").val();
 			var age = 0;
 			var Age = $("input:radio:checked").val();
 			var path = 'http"//localhost/warhammer/create_player/get_race';
@@ -181,4 +188,3 @@ $("document").ready(function() {
 });
 //ready
 
-	

@@ -26,10 +26,7 @@ class Login extends CI_Controller
 	
 	public function success()
 	{
-		$data = $this->formable->datas();
-		$this->load->view('templates/header', $data);
-		$this->load->view('form/create_character', $data);
-		$this->load->view('templates/footer');
+		redirect('create_player/create');
 	}
 	
 	public function form_login()

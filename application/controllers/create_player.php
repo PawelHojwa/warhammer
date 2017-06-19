@@ -9,13 +9,13 @@ class Create_player extends CI_Controller {
 		$this -> load -> library('form_validation');
 		$this -> load -> library('session');
 		$this -> load -> library('formable');
+		$this -> load -> library('char_skill');
 		$this -> load -> helper('html');
 
 	}
 
 	public function character_data($id = "") {
-		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rse'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), );
-
+		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('p_age'), 'nskill' => rand(1, 4), 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rse'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), );
 		return $data;
 	}
 
@@ -24,19 +24,15 @@ class Create_player extends CI_Controller {
 	}
 
 	public function create() {
-		//$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 		if (!isset($_SESSION['user'])) {
 			$data['title'] = "Logowanie";
 			$data['sub_title'] = "Formularz logowania";
 			$data['error'] = "";
-			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
-			$this -> load -> view('templates/footer');
+			redirect('login/form_login');
 		} else {
 			$user_id = $_SESSION['userID'];
-			
 			$this -> form_validation -> set_rules('name', 'Imie', 'trim|required|max_length[40]', array('required' => "Pole '{field}' jest wymagane", "max_length" => "'{field}' - wymagane {param} liter"));
-			$this -> form_validation -> set_rules('age', 'Wiek', 'trim|required|numeric', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą"));
+			$this -> form_validation -> set_rules('age', 'Wiek', 'trim|required', array('required' => "Pole '{field}' jest wymagane"));
 			$this -> form_validation -> set_rules('height', 'Wzrost', 'trim|required|numeric|min_length[3]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{Field}' musi mieć {param} cyfry", 'max_length' => "'{field}' musi mieć {param} cyfry"));
 			$this -> form_validation -> set_rules('weight', 'Waga', 'trim|required|numeric|min_length[2]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{field}' musi mieć min. {param} cyfry", 'max_length' => "'{field}' może mieć max. {param} cyfr"));
 			$this -> form_validation -> set_rules('hair', 'Włosy', 'trim|required|max_length[20]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'field' - wymagane {param} liter"));
@@ -63,14 +59,44 @@ class Create_player extends CI_Controller {
 				$this -> load -> view('form/create_character', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				$data_char = $this -> character_data();
-				$this -> form_model -> insert('characters', $data_char);
-				$data['title'] = "Sukces";
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/create_character');
-				$this -> load -> view('templates/footer');
+				if ($this -> valid_class()) {
+					$data_char = $this -> character_data();
+					//$p_name = $this->form_model->get_user('characters',['name' => $_POST['name'], 'userID' => $_SESSION['userID']]);
+					/*if (!empty($p_name)) {
+						$id = $this -> form_model -> last_index('characters', 'id');
+						$this->form_model->update('characters', $data_char, $id);
+					} else {*/
+						$this -> form_model -> insert('characters', $data_char);
+					//}
+					redirect('player_skills/skill');
+					/*echo "<pre>";
+					var_dump($data_char);
+					echo "</pre>";*/
+					$this -> load -> view('form/create_character', $data);
+				} else {
+					$data['char_names'] = $this -> get_user_characters($user_id);
+					$this -> load -> view('templates/header', $data);
+					$this -> load -> view('form/create_character', $data);
+					$this -> load -> view('templates/footer');
+				}
 			}
 		}
+	}
+
+	public function get_skill($id) {
+		return $this -> form_model -> get_skill($id);
+	}
+
+	public function get_prof() {
+		if (isset($_POST['prof'])) {
+			$arr = array();
+			$skills = $this -> get_skill($_POST['prof']);
+			foreach ($skills as $skill) {
+				$arr[] = $skill['skillid'];
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else
+			echo "Błąd";
 	}
 
 	public function get_stat() {
@@ -88,6 +114,29 @@ class Create_player extends CI_Controller {
 				echo $wor;
 			} else
 				echo "Błąd";
+		}
+	}
+
+	public function valid_class() {
+		$class = $_POST['classes'];
+		$race = $_POST['race'];
+		$ww = ($_POST['rww'] + $_POST['ww']);
+		$us = ($_POST['rus'] + $_POST['us']);
+		$i = ($_POST['ri'] + $_POST['i']);
+		$int = ($_POST['rint'] + $_POST['int']);
+		$sw = ($_POST['rsw'] + $_POST['rsw']);
+		if ($class == 1 && $ww < 30) {
+			return false;
+		} else if ($class == 2 && $us < 30) {
+			return false;
+		} else if ($class == 3 && $i < 30 && $race != 2) {
+			return false;
+		} else if ($class == 3 && $i < 65 && $race == 2) {
+			return false;
+		} else if ($class == 4 && ($sw < 30 || $int < 30)) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 
