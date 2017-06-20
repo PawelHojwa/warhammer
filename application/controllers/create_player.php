@@ -53,26 +53,34 @@ class Create_player extends CI_Controller {
 			$this -> form_validation -> set_rules('rsw', 'Siła Woli', 'required', array('required' => "Pole '{field}' jest wymagane"));
 			$this -> form_validation -> set_rules('rogd', 'Ogłada', 'required', array('required' => "Pole '{field}' jest wymagane"));
 			$data = $this -> formable -> datas();
+			
 			if ($this -> form_validation -> run() === FALSE) {
 				$data['char_names'] = $this -> get_user_characters($user_id);
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/create_character', $data);
 				$this -> load -> view('templates/footer');
 			} else {
+				$p_name = $this->form_model->get_user('characters',['name' => $_POST['name'], 'userID' => $_SESSION['userID']]);
 				if ($this -> valid_class()) {
+					
 					$data_char = $this -> character_data();
-					//$p_name = $this->form_model->get_user('characters',['name' => $_POST['name'], 'userID' => $_SESSION['userID']]);
-					/*if (!empty($p_name)) {
-						$id = $this -> form_model -> last_index('characters', 'id');
-						$this->form_model->update('characters', $data_char, $id);
-					} else {*/
+					
+					if (!empty($p_name)) {
+						/*if($this->session->has_userdata('p_id'))
+							$this->session->unset_userdata('p_id');*/
+						$_SESSION['p_id'] = $p_name[0]['id'];	
+						$n_skill = $p_name[0]['nskill'];
+						$data_char['id'] = $_SESSION['p_id'];
+						$data_char['nskill'] = $n_skill;
+						$this->form_model->update('characters', $data_char, array('name' => $_POST['name']));
+					} else {
+						$_SESSION['p_id'] = $p_name[0]['id'];
 						$this -> form_model -> insert('characters', $data_char);
-					//}
+					}
 					redirect('player_skills/skill');
-					/*echo "<pre>";
-					var_dump($data_char);
-					echo "</pre>";*/
-					$this -> load -> view('form/create_character', $data);
+					echo "<pre>";
+					var_dump($data_char['nskill']);
+					echo "</pre>";
 				} else {
 					$data['char_names'] = $this -> get_user_characters($user_id);
 					$this -> load -> view('templates/header', $data);
@@ -81,22 +89,6 @@ class Create_player extends CI_Controller {
 				}
 			}
 		}
-	}
-
-	public function get_skill($id) {
-		return $this -> form_model -> get_skill($id);
-	}
-
-	public function get_prof() {
-		if (isset($_POST['prof'])) {
-			$arr = array();
-			$skills = $this -> get_skill($_POST['prof']);
-			foreach ($skills as $skill) {
-				$arr[] = $skill['skillid'];
-			}
-			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
-		} else
-			echo "Błąd";
 	}
 
 	public function get_stat() {

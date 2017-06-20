@@ -6,7 +6,7 @@ function check_class() {
 	var i = parseInt($("#i").val()) + parseInt($("#ri").val());
 	var intel = parseInt($("#intel").val()) + parseInt($("#rint").val());
 	var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-	var path = "http://localhost/warhammer/create_player/check_class";
+	var path = "check_class";
 	$("#classes option:selected").each(function() {
 		$.post(path, {
 			classes : classes,
@@ -77,7 +77,7 @@ $("document").ready(function() {
 			var race = $("#race").val();
 			var age = 0;
 			var Age = $("input:radio:checked").val();
-			var path = 'http"//localhost/warhammer/create_player/get_race';
+			var path = 'get_race';
 			$("#select:selected").each(function() {
 				$("input:radio").each(function() {
 					$.post(path, {
@@ -137,7 +137,7 @@ $("document").ready(function() {
 
 	$("#race").change(function() {
 		var race = $("#race").val();
-		var path = 'http://localhost/warhammer/create_player/get_stat';
+		var path = 'get_stat';
 		$.post(path, {
 			race : race
 		}, function(data) {

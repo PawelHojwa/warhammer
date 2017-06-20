@@ -1,6 +1,6 @@
-<?php echo heading($sub_title, 3); ?>
 <div id="wrapper">
 	<?php echo form_open('login/form_login', 'id="login"');
+		echo form_label('Logowanie', '', ['class' => 'form_caption']);
 		echo form_label('Nazwa użytkownika: ', 'username') . "<br>"; 
 		echo form_input('username', '', 'id="first"');
 		echo form_label('Hasło: ', 'password') . "<br>";

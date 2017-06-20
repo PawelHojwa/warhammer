@@ -1,99 +1,101 @@
 /*..::stylowanie formularzy::..*/
-form
-{
-	margin : 15px;
+form {
+	margin: 15px;
 	margin-top: 0;
-	padding : 15px;
-	border-radius : 20px;
-	box-shadow : 0 0 5px black;
+	padding: 15px;
+	border-radius: 20px;
+	box-shadow: 0 0 5px black;
 }
 
-table#info
-{
-	padding : 10px; 
-	border : none;
+table#info {
+	padding: 10px;
+	border: none;
 }
 
-input[name=age]
-{
-	text-align : center;
+input[name=age] {
+	text-align: center;
 }
 
-table#info tr, table#info  td
-{
-	border : none;
-	padding :  
+table#info tr, table#info  td {
+	border: none;
 }
 
-table#info td
-{
-	padding : 1px;
+table#info td {
+	padding: 1px;
 	width: 100px;
 }
 
-table#info td:first-child
-{
-	text-align : center;
+table#info td:first-child {
+	text-align: center;
 }
 
-p.alert
-{
-	margin-top : 5px;
-	font-size : .8em;
+p.alert {
+	margin-top: 5px;
+	font-size: .8em;
 	width: 300px;
 }
 
-input[name=btn1]
-{
-	margin-top : 10px;
+input[name=btn1] {
+	margin-top: 10px;
 }
 
-h1, h2, h3, h4, h5, h6
-{
-	text-align : center;
+h1, h2, h3, h4, h5, h6 {
+	text-align: center;
 }
 
-div#wrapper
-{
-	width : 300px;
-	margin : 0 auto;
+div#wrapper {
+	width: 300px;
+	margin: 15px auto;
 }
 
-form#login, form#reg_form
-{
+form#login, form#reg_form {
+	width: 205px;
+	margin: 0 auto;
+}
+
+div#anchors {
+	margin: 10px auto;
 	width: 205px;
 }
 
-div#anchors a
-{
-	font-size : .8em;
-	margin-left : 5px;
+div#anchors a {
+	font-size: .8em;
+	margin-left: 5px;
 }
 
-form#reg_form input, form#login input
-{
+div#anchors a:first-child {
+	padding-left: 15px;
+}
+
+form#reg_form input, form#login input {
 	width: 100%;
 	height: 25px;
 	font-size: 1.5em;
 }
 
-form#reg_form input[name=submit], form#login input[name=submit]
-{
-	margin-top : 10px;
+form#reg_form input[name=submit], form#login input[name=submit] {
+	margin-top: 10px;
 	height: 40px;
 	font-size: 1.6em;
 }
 
-span.name-stats
-{
-	display : inline-block;
-	text-align : center;
-	width : 47px;
-	margin-right : 5px;
-	font-weight : bold;
+span.name-stats {
+	display: inline-block;
+	text-align: center;
+	width: 47px;
+	margin-right: 5px;
+	font-weight: bold;
 }
 
-.caption
-{
+.caption {
 	padding: 0;
+}
+
+label.form_caption {
+	font-size: 2em;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	text-align: center;
+	color: green;
 }

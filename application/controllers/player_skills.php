@@ -11,17 +11,13 @@ class Player_skills extends CI_Controller {
 		$this->load->library('char_skill');
 	}
 
-	public function get_char_name($tab_name, $col) {
-		return $this -> form_model -> last_index($tab_name, $col);
-	}
-
 	public function verify_data($id = "") {
 		$skill_1 = $this -> input -> post('skills');
 		$skill_2 = $this -> input -> post('s');
 		$skills = array_merge($skill_1, $skill_2);
 		$data = array(
 			'id' => $id, 
-			'char_id' => $this -> get_char_name('characters', 'id'), 
+			'char_id' => $_SESSION['p_id'],
 			'profId' => $this -> input -> post('prof'), 
 			'skillid' => $skills
 			);
@@ -37,18 +33,24 @@ class Player_skills extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = $this->char_skill->char_data();
-			$prof_id = $this -> char_skill -> get_char_name('characters', 'id');
-	
+			$data = $this->char_skill->char_data($_SESSION['p_id']);
+			$char_id = $this->form_model->get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
+			var_dump($_SESSION['p_id']);
 			if ($this -> form_validation -> run() === false) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				$arr = $this -> verify_data();
-				$this -> form_model -> multi_insert('char_skills', $arr);
-				redirect('show_char/show');
+				if ($char_id == NULL) {
+					$arr = $this -> verify_data();
+					$this -> form_model -> multi_insert('char_skills', $arr);
+				} else {
+					$this->form_model->delete('char_skills', array('char_id' => $_SESSION['p_id']));
+					$arr = $this -> verify_data();
+					$this -> form_model -> multi_insert('char_skills', $arr);
+					redirect('show_char/show');
+				}
 			}
 		}
 	}

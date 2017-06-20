@@ -82,6 +82,11 @@ class Form_model extends CI_Model
 		}
 	}
 	
+	public function delete($tab_name, $arr)
+	{
+		return $this->db->delete($tab_name, $arr);
+	}
+	
 	public function change($tab_name, $arr, $val = array())
 	{
 		$this->db->set($arr);

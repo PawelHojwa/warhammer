@@ -12,7 +12,7 @@ class Show_char extends CI_Controller
 	
 	public function get_char()
 	{
-		$id = $this->form_model->last_index('characters', 'id');
+		$id = $_SESSION['p_id'];
 		$b_info = $this->form_model->get_basic_info();
 		$c_skill = $this->form_model->get_character_skills($id);
 		$arr = array();
@@ -61,9 +61,6 @@ class Show_char extends CI_Controller
 			'rsw' => $c_skill['sw'],
 			'rogd' => $c_skill['ogd'],
 		);
-		/*echo "<pre>";
-		var_dump($arr1);
-		echo "</pre>";*/
 		return $arr = array_merge($arr1, $arr2);
 	}
 	
@@ -80,6 +77,7 @@ class Show_char extends CI_Controller
 			$this->load->view('templates/header', $data);
 			$this->load->view('characters/character');
 			$this->load->view('templates/footer');
+			$this->session->sess_destroy();
 		}	
 	}
 }

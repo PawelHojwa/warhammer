@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Char_skill {
 	
-	public function char_data() {
+	public function char_data($id) {
 		$CI = &get_instance();
 		$CI -> load -> model('form_model');
-		$name = $this -> get_char_name('characters', 'name');
-		$as = $CI -> form_model -> get_values('characters', array('name' <= $name), 'nskill');
-		$age = $CI -> form_model -> get_values('characters', array('name' <= $name), 'age');
-		$race = $CI -> form_model -> get_values('characters', array('name' <= $name), 'raceID');
+		$name = $CI -> form_model -> get_values('characters', array('id' => $id), 'name');
+		$as = $CI -> form_model -> get_values('characters', array('id' <= $id), 'nskill');
+		$age = $CI -> form_model -> get_values('characters', array('id' <= $id), 'age');
+		$race = $CI -> form_model -> get_values('characters', array('id' <= $id), 'raceID');
 		$data['age'] = $age;
 		$am_skill = $this -> check_age($race, $age, $as);
 		$data['am_skill'] = $am_skill;
@@ -16,8 +16,7 @@ class Char_skill {
 		$data['title'] = "Wybór umiejętności";
 		$data['skills'] = $this -> skills('skillName');
 		$data['skills_id'] = $this -> skills('skillid');
-		$data['profession'] = $this -> profession();
-		$prof_id = $this -> get_char_name('characters', 'id');
+		$data['profession'] = $this -> profession();	
 		return $data;
 	}
 	
@@ -25,12 +24,6 @@ class Char_skill {
 		$CI = &get_instance();
 		$CI -> load -> model('form_model');
 		return $CI -> form_model -> arr_conv('umiejetnosci', $column, 1);
-	}
-	
-	public function get_char_name($tab_name, $col) {
-		$CI = &get_instance();
-		$CI -> load -> model('form_model');		
-		return $CI -> form_model -> last_index($tab_name, $col);
 	}
 	
 	public function profession() {

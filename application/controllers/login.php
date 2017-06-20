@@ -21,7 +21,6 @@ class Login extends CI_Controller
 		$this->load->view('templates/header', $data);
 		$this->load->view('form/login', $data);
 		$this->load->view('templates/footer');
-		
 	}
 	
 	public function success()
@@ -52,7 +51,7 @@ class Login extends CI_Controller
 			$users = $this->form_model->get_user('users', $user);
 			if (empty($users))
 			{
-				$this->view_form($users);
+				$this->view_form();
 			}
 			else
 			{

@@ -25,9 +25,7 @@ class Change_password extends CI_Controller
 		$data['title'] = "Logowanie";
 		$data['sub_title'] = "Formularz logowania";
 		$data['error'] = "";
-		$this->load->view('templates/header', $data);
-		$this->load->view('form/login', $data);
-		$this->load->view('templates/footer');
+		redirect('login/gorm_login');
 	}
 	
 	public function to_change()
