@@ -1,14 +1,9 @@
 /*Plik css do projektu Warhammer*/
 /*Autor: Paweł Hojwa*/
-body
-{
-	font-size: 100px;
-}
 
 #mainPage
 {
   width: 1193px;
-  
 }
 
 #ramka_gora
@@ -85,6 +80,20 @@ table#tl_table
   width: 414px;
   height: 521px;
   margin-left: 8px;
+}
+
+table#tl_table ul.skill_list
+{
+	width : 100%;
+	list-style-type: none;
+	padding:3px;
+	margin:0;
+	font-size: 14px;
+}
+
+ul.skill_list li
+{
+	text-decoration: underline;
 }
 
 div#top_right
@@ -281,6 +290,8 @@ div#ramka_dol
 
 table.skills td
 {
-	font-size: 10px;
+	vertical-align: top;
 	padding: 0;
+	margin: 0;
+	width: 207px;
 }

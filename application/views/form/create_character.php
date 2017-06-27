@@ -1,6 +1,22 @@
+<div class="container">
 <h1><?php echo $title; ?></h1>
-<p class="lead">Witaj <?php echo $user; ?></p>
-<?php
+<p class="lead">Witaj <?php echo $user;?></p>
+<p class="name_caption">Twoje postacie:</p>
+<table class="name_table">
+<?php 
+if (empty($name_list)) {
+	echo "Nie masz jeszcze postaci";
+} else {
+    foreach ($name_list as $name) {
+		echo "<tr>";
+		echo "<td>" . anchor('show_char/show?id=' . $name['id'],  $name['name']) . "</td>";
+		echo "<td>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
+		echo "</tr>";
+	}
+}
+?>
+</table>
+<?php 
 echo anchor('login/logout', "Wyloguj", array('style' => 'display: inline-block;')) . "<br><br>";
 echo form_open('create_player/create', ['id' => 'basic']);
 ?>
@@ -62,21 +78,21 @@ echo form_open('create_player/create', ['id' => 'basic']);
 </div>
 <div class="form-group">
 <?php
-//losowe statystyki
-echo "<span class='name-stats'>Sz</span>";
-echo "<span class='name-stats'>WW</span>";
-echo "<span class='name-stats'>US</span>";
-echo "<span class='name-stats'>S</span>";
-echo "<span class='name-stats'>Wt</span>";
-echo "<span class='name-stats'>Żw</span>";
-echo "<span class='name-stats'>I</span>";
-echo "<span class='name-stats'>A</span>";
-echo "<span class='name-stats'>Zr</span>";
-echo "<span class='name-stats'>CP</span>";
-echo "<span class='name-stats'>Int</span>";
-echo "<span class='name-stats'>Op</span>";
-echo "<span class='name-stats'>SW</span>";
-echo "<span class='name-stats'>Ogd</span>" . "<br>";
+echo form_input('', 'Sz', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //1
+echo form_input('', 'WW', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //2
+echo form_input('', 'US', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //3
+echo form_input('', 'S', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //4
+echo form_input('', 'Wt', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //5
+echo form_input('', 'Żw', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //6
+echo form_input('', 'I', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //7
+echo form_input('', 'A', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //8
+echo form_input('', 'Zr', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //9
+echo form_input('', 'CP', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //10
+echo form_input('', 'Int', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //11
+echo form_input('', 'Op', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //12
+echo form_input('', 'SW', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']); //13
+echo form_input('', 'Ogd', ['size' => 2, 'readonly' => 'readonly', 'class' => 'name-stats']) . "<br>"; //14
+//statystyki generowane losowo
 echo form_input('rsz', '', ['size' => 2, 'id' => 'rsz', 'readonly' => 'readonly']); //1
 echo form_input('rww', '', ['size' => 2, 'id' => 'rww', 'readonly' => 'readonly']); //2
 echo form_input('rus', '', ['size' => 2, 'id' => 'rus', 'readonly' => 'readonly']); //3
@@ -116,44 +132,5 @@ echo form_button('btn1', 'Generuj', ['id' => 'btn1', 'class' => 'btn btn-primary
 echo form_submit('submit', 'Stwórz', ['class' => 'btn btn-primary']); ?>
 </div>
 <?php echo form_close(); ?>
-
 <?php echo validation_errors('<p class="alert alert-danger">', '</p>'); ?>
-
-<script>
-	/*$('document').ready(function () {
-		$('#basic').submit(function(e) {
-			var classes = $("#classes").val();
-			var race = $("#race").val();
-			var ww = parseInt($("#ww").val()) + parseInt($("#rww").val());
-			var us = parseInt($("#us").val()) + parseInt($("#rus").val());
-			var i = parseInt($("#i").val()) + parseInt($("#ri").val());
-			var intel = parseInt($("#intel").val()) + parseInt($("#rint").val());
-			var sw = parseInt($("#sw").val()) + parseInt($("#rsw").val());
-			var path = "check_class";
-			$("#classes option:selected").each(function() {
-				$.post(path, {
-					classes : classes,
-					race : race
-				}, function(data) {
-					if (classes == 1 && ww < 30) {
-						//alert("Klasa: " + data + " : Minimalne WW 30");
-						e.preventDefault();
-					} /*else if (classes == 2 && us < 30) {
-						$("#demo").text("Klasa: " + data + " : Minimalne US 30");
-						return false;
-					} else if (classes == 3 && i < 30 && race != 2) {
-						$("#demo").text("Klasa: " + data + " : Minimalne I 30");
-						return false;
-					} else if (classes == 3 && race == 2 && i < 65) {
-						$("#demo").text("Klasa: " + data + " : Minimalne I 65");
-						return false;
-					} else if (classes == 4 && (intel < 30 || sw < 30)) {
-						$("#demo").text("Klasa: " + data + " : Minimalne Int 30 i SW 30");
-						return false;
-					} else
-						$("#demo").text("hura");
-				});
-			});
-		});
-	});*/
-</script>
+</div>

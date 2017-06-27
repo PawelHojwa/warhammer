@@ -6,9 +6,9 @@ class Char_skill {
 		$CI = &get_instance();
 		$CI -> load -> model('form_model');
 		$name = $CI -> form_model -> get_values('characters', array('id' => $id), 'name');
-		$as = $CI -> form_model -> get_values('characters', array('id' <= $id), 'nskill');
-		$age = $CI -> form_model -> get_values('characters', array('id' <= $id), 'age');
-		$race = $CI -> form_model -> get_values('characters', array('id' <= $id), 'raceID');
+		$as = $CI -> form_model -> get_values('characters', array('id' => $id), 'nskill');
+		$age = $CI -> form_model -> get_values('characters', array('id' => $id), 'age');
+		$race = $CI -> form_model -> get_values('characters', array('id' => $id), 'raceID');
 		$data['age'] = $age;
 		$am_skill = $this -> check_age($race, $age, $as);
 		$data['am_skill'] = $am_skill;

@@ -1,1 +1,1 @@
-<p>Dane usunięto z bazy!!</p>
+<p><?php echo $smt; ?></p>

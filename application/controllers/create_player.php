@@ -11,9 +11,13 @@ class Create_player extends CI_Controller {
 		$this -> load -> library('formable');
 		$this -> load -> library('char_skill');
 		$this -> load -> helper('html');
-
 	}
-
+	
+  public function get_char_id($arr)
+  {
+      return $this -> form_model -> get_user('characters', $arr);
+  }
+    
 	public function character_data($id = "") {
 		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('p_age'), 'nskill' => rand(1, 4), 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rse'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), );
 		return $data;
@@ -22,77 +26,9 @@ class Create_player extends CI_Controller {
 	public function get_user_characters($id) {
 		return $this -> form_model -> get_values('characters', array('userID' => $id), 'name');
 	}
-
-	public function create() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
-			redirect('login/form_login');
-		} else {
-			$user_id = $_SESSION['userID'];
-			$this -> form_validation -> set_rules('name', 'Imie', 'trim|required|max_length[40]', array('required' => "Pole '{field}' jest wymagane", "max_length" => "'{field}' - wymagane {param} liter"));
-			$this -> form_validation -> set_rules('age', 'Wiek', 'trim|required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('height', 'Wzrost', 'trim|required|numeric|min_length[3]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{Field}' musi mieć {param} cyfry", 'max_length' => "'{field}' musi mieć {param} cyfry"));
-			$this -> form_validation -> set_rules('weight', 'Waga', 'trim|required|numeric|min_length[2]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{field}' musi mieć min. {param} cyfry", 'max_length' => "'{field}' może mieć max. {param} cyfr"));
-			$this -> form_validation -> set_rules('hair', 'Włosy', 'trim|required|max_length[20]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'field' - wymagane {param} liter"));
-			$this -> form_validation -> set_rules('eyes', 'Oczy', 'trim|required|max_length[15]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'{field}' - wymagane {param} znaków"));
-			$this -> form_validation -> set_rules('description', 'Opis', 'trim|required|max_length[255]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'{field}' - wymagane {param} znaków"));
-			$this -> form_validation -> set_rules('rsz', 'Szybkość', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rww', 'Walka Wręcz', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rus', 'Um. Strzeleckie', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rs', 'Siła', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rwt', 'Wytrzymałość', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rzw', 'Żywotność', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('ri', 'Inicjatywa', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('ra', 'Atak', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rzr', 'Zręczność', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rcp', 'Cechy Przywódcze', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rint', 'Inteligencja', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rop', 'Opanowanie', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rsw', 'Siła Woli', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$this -> form_validation -> set_rules('rogd', 'Ogłada', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			$data = $this -> formable -> datas();
-			
-			if ($this -> form_validation -> run() === FALSE) {
-				$data['char_names'] = $this -> get_user_characters($user_id);
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/create_character', $data);
-				$this -> load -> view('templates/footer');
-			} else {
-				$p_name = $this->form_model->get_user('characters',['name' => $_POST['name'], 'userID' => $_SESSION['userID']]);
-				if ($this -> valid_class()) {
-					
-					$data_char = $this -> character_data();
-					
-					if (!empty($p_name)) {
-						/*if($this->session->has_userdata('p_id'))
-							$this->session->unset_userdata('p_id');*/
-						$_SESSION['p_id'] = $p_name[0]['id'];	
-						$n_skill = $p_name[0]['nskill'];
-						$data_char['id'] = $_SESSION['p_id'];
-						$data_char['nskill'] = $n_skill;
-						$this->form_model->update('characters', $data_char, array('name' => $_POST['name']));
-					} else {
-						$_SESSION['p_id'] = $p_name[0]['id'];
-						$this -> form_model -> insert('characters', $data_char);
-					}
-					redirect('player_skills/skill');
-					echo "<pre>";
-					var_dump($data_char['nskill']);
-					echo "</pre>";
-				} else {
-					$data['char_names'] = $this -> get_user_characters($user_id);
-					$this -> load -> view('templates/header', $data);
-					$this -> load -> view('form/create_character', $data);
-					$this -> load -> view('templates/footer');
-				}
-			}
-		}
-	}
-
-	public function get_stat() {
-		if (isset($_REQUEST['race']) === TRUE && empty($_REQUEST['race']) === FALSE) {
+    
+    public function get_stat() {
+    	if (isset($_REQUEST['race']) === TRUE && empty($_REQUEST['race']) === FALSE) {
 			$stats = $this -> form_model -> stats('rasa', 'raceID', $_REQUEST['race'], ['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);
 			$this -> output -> set_content_type('application/json') -> set_output(json_encode($stats));
 		}
@@ -139,4 +75,76 @@ class Create_player extends CI_Controller {
 		}
 	}
 
+	public function create() {
+		if (!isset($_SESSION['user'])) {
+			$data['title'] = "Logowanie";
+			$data['sub_title'] = "Formularz logowania";
+			$data['error'] = "";
+			redirect('login/form_login');
+		} else {
+			$user_id = $_SESSION['userID'];
+			
+			$this -> form_validation -> set_rules('name', 'Imie', 'trim|required|max_length[40]', array('required' => "Pole '{field}' jest wymagane", "max_length" => "'{field}' - wymagane {param} liter"));
+			$this -> form_validation -> set_rules('age', 'Wiek', 'trim|required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('height', 'Wzrost', 'trim|required|numeric|min_length[3]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{Field}' musi mieć {param} cyfry", 'max_length' => "'{field}' musi mieć {param} cyfry"));
+			$this -> form_validation -> set_rules('weight', 'Waga', 'trim|required|numeric|min_length[2]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{field}' musi mieć min. {param} cyfry", 'max_length' => "'{field}' może mieć max. {param} cyfr"));
+			$this -> form_validation -> set_rules('hair', 'Włosy', 'trim|required|max_length[20]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'field' - wymagane {param} liter"));
+			$this -> form_validation -> set_rules('eyes', 'Oczy', 'trim|required|max_length[15]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'{field}' - wymagane {param} znaków"));
+			$this -> form_validation -> set_rules('description', 'Opis', 'trim|required|max_length[255]', array('required' => "Pole '{field}' jest wymagane", 'max_length' => "'{field}' - wymagane {param} znaków"));
+			$this -> form_validation -> set_rules('rsz', 'Szybkość', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rww', 'Walka Wręcz', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rus', 'Um. Strzeleckie', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rs', 'Siła', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rwt', 'Wytrzymałość', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rzw', 'Żywotność', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('ri', 'Inicjatywa', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('ra', 'Atak', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rzr', 'Zręczność', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rcp', 'Cechy Przywódcze', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rint', 'Inteligencja', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rop', 'Opanowanie', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rsw', 'Siła Woli', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('rogd', 'Ogłada', 'required', array('required' => "Pole '{field}' jest wymagane"));
+			$data = $this -> formable -> datas(); 
+			$names = array('userID' => $user_id);
+			if (empty($names)) {
+				$data['name_list'] = "Brak postaci";
+			} else {
+				$data['name_list'] = $this -> form_model -> get_user('characters', $names);
+			}
+			$data['char_names'] = $this -> get_user_characters($user_id);
+			if ($this -> form_validation -> run() === FALSE) {
+				$data['char_names'] = $this -> get_user_characters($user_id);
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('form/create_character', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+         $val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
+	       $p_id = $this->get_char_id($val);
+	       $_SESSION['p_id'] = $p_id[0]['id'];
+	       $n_skill = $p_id[0]['nskill']; 
+				 //var_dump($p_id);           
+				if ($this -> valid_class()) {
+					$data_char = $this -> character_data();
+					if (!empty($p_id)) {
+						$data_char['id'] = $_SESSION['p_id'];
+						$data_char['nskill'] = $n_skill;
+						$this->form_model->update('characters', $data_char, array('name' => $_POST['name']));
+					} else { 
+						$this -> form_model -> insert('characters', $data_char);
+						$data_char['id'] = $this -> form_model -> last_index('characters', 'id');
+						$this -> session -> set_userdata('p_id', $data_char['id']);
+					}
+						/*$this -> load -> view('templates/header', $data);
+						$this -> load -> view('form/create_character', $data);
+						$this -> load -> view('templates/footer');*/
+						redirect('player_skills/skill');
+				} else {
+					$this -> load -> view('templates/header', $data);
+					$this -> load -> view('form/create_character', $data);
+					$this -> load -> view('templates/footer');
+				}
+			}
+		}
+	}
 }

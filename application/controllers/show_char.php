@@ -10,14 +10,14 @@ class Show_char extends CI_Controller
 		$this->load->library('session');
 	}
 	
-	public function get_char()
+	public function get_char($id = 1)
 	{
-		$id = $_SESSION['p_id'];
-		$b_info = $this->form_model->get_basic_info();
+		$b_info = $this->form_model->get_basic_info($id);
 		$c_skill = $this->form_model->get_character_skills($id);
 		$arr = array();
 		$arr1 = array(
-			'name' => $b_info['name'],
+			'id' => $b_info['id'],
+ 			'name' => $b_info['name'],
 			'race' => $b_info['raceName'],
 			'gender' => $b_info['genderName'],
 			'classes' => $b_info['className'],
@@ -72,12 +72,16 @@ class Show_char extends CI_Controller
 			$data['error'] = "";
 			redirect('login/form_login');
 		} else {
-			$data = $this->get_char();
+			if (!isset($_SESSION['p_id'])) {
+				$_SESSION['p_id'] = $_GET['id'];
+			}
+			$data = $this->get_char($_SESSION['p_id']);
 			$data['title'] = "Karta postaci";
 			$this->load->view('templates/header', $data);
 			$this->load->view('characters/character');
 			$this->load->view('templates/footer');
-			$this->session->sess_destroy();
+			$this -> session -> unset_userdata('p_id');
+			//$this->session->sess_destroy();
 		}	
 	}
 }

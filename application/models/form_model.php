@@ -9,15 +9,20 @@ class Form_model extends CI_Model
 	
 	public function get_user($tab_name, $values = array())
 	{
-		$query = $this->db->get_where($tab_name, $values);
-		return $query->result_array();
+      $this->db->where($values);
+			$query = $this->db->get($tab_name);
+      if ($query !== FALSE && $query->num_rows() > 0) {
+	    	return $query->result_array();     
+	    } 
 	}
 	
-	public function get_values($tab_name, $values = array(), $column = "")
+	public function get_values($tab_name,$value = array(), $column = "")
 	{
-		$query = $this->db->get_where($tab_name, $values);
+        
+		$query = $this->db->get_where($tab_name, $value);
+        $data = array();
 		foreach ($query->result_array() as $row)
-			return $row[$column];
+		      return $row[$column];
 	}
 	
 	public function arr_conv($tab_name, $column, $i = 0)
@@ -60,22 +65,22 @@ class Form_model extends CI_Model
 	
 	public function insert($tab_name, $data = array())
 	{
-		return $this->db->insert($tab_name, $data);
+		$this->db->insert($tab_name, $data);
 	}
 	
 	public function update($table_name, $data = array(), $id=1)
 	{
-		return $this->db->update($table_name, $data, $id);
+		$this->db->update($table_name, $data, $id);
 	}
 	
-	public function multi_insert($tab_name, $data)
+	public function multi_insert($tab_name, $arr)
 	{
-		foreach ($data['skillid'] as $skill)
+		foreach ($arr['skillid'] as $skill)
 		{
 			$record = array(
-				'id' => $data['id'],
-				'char_id' => $data['char_id'],
-				'profId' => $data['profId'],
+				'id' => $arr['id'],
+				'char_id' => $arr['char_id'],
+				'profId' => $arr['profId'],
 				'skillid' => $skill
 			);
 			$this->db->insert($tab_name, $record);
@@ -104,10 +109,10 @@ class Form_model extends CI_Model
 	public function get_skill($id)
 	{
 		$query = $this->db->get_where('p_profesje', ['profID' => $id]);
-		return $query->result_array();
+    	return $query->result_array();
 	}
 	
-	public function get_basic_info()
+	public function get_basic_info($id)
 	{
 		$this->db->select('*');
 		$this->db->from('rasa');
@@ -117,6 +122,7 @@ class Form_model extends CI_Model
 		$this->db->join('characters',
 			'characters.raceID = rasa.raceID AND characters.natureID = charakter.natureID AND characters.classID = classes.classID
 			AND characters.genderID = gender.genderID');
+		$this->db->where(array('id' => $id));
 		$query = $this->db->get();
 		$arr = array();
 		foreach ($query->result_array() as $row)
@@ -154,4 +160,4 @@ class Form_model extends CI_Model
 		}
 		return $arr;
 	}
-}
+}				

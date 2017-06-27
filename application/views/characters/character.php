@@ -10,6 +10,7 @@
 			echo " ";
 		}
 	}
+	echo anchor('create_player/create', 'Powrót');
   ?>
   <div id="mainPage">
     <div id="ramka_gora"></div>
@@ -20,21 +21,21 @@
       <div id="top_left">
         <div id="obraz_gora"></div>
         <table id="tl_table" class="skills">
-          <tr><th>Umiejętności</th><th>Umiejętności</th></tr>
-          <?php
-          	$am = count($sk);
-          	for ($i = 0; $i < 20; $i++)
-						{
-							if ($i >= $am)
-							{
-								echo "<tr><td></td><td></td></tr>";
-							}
-							else
-							{
-								echo "<tr><td>" . $sk[$i] . "</td><td></td></tr>"; 
-							}
-						}
-          ?>
+          <tr>
+          	<th>Umiejętności</th>
+          	<th>Umiejętności</th>
+          </tr>
+          <tr>
+          	<td>
+          		<ul class="skill_list">
+          			<?php 
+          				foreach ($sk as $skill) {
+          					echo "<li>" . $skill . "</li>";
+									}?>
+          		</ul>
+         		</td>
+         		<td></td>
+         	</tr>
         </table>
       </div>
       <div id="top_right">
