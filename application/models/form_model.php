@@ -16,7 +16,7 @@ class Form_model extends CI_Model
 	    } 
 	}
 	
-	public function get_values($tab_name,$value = array(), $column = "")
+	public function get_values($tab_name, $value = array(), $column = "")
 	{
         
 		$query = $this->db->get_where($tab_name, $value);
@@ -159,5 +159,25 @@ class Form_model extends CI_Model
 			$arr['ogd'] = $value['ogd'];
 		}
 		return $arr;
+	}
+	
+	public function get_trade_table($type = 1)
+	{
+    	$this -> db -> select('*');
+		$this -> db -> from('availability');
+		$this -> db -> join('trades', 'trades.availability = availability.lp', 'right');
+		$this -> db -> where('type', $type);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+  		foreach ($query -> result_array() as $rows) {
+				$arr['name'] = $rows['name'];
+        $arr['price'] = $rows['price'];
+        $arr['weight'] = $rows['weight'];
+        $arr['avail'] = $rows['availability'];
+			}
+			return $arr;
+		} else {
+			return "Błąd";
+		}
 	}
 }				
