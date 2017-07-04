@@ -136,8 +136,8 @@ class Create_player extends CI_Controller {
 						$this -> session -> set_userdata('p_id', $data_char['id']);
 					}
 						/*$this -> load -> view('templates/header', $data);
-						$this -> load -> view('form/create_character', $data);
-						$this -> load -> view('templates/footer');*/
+					$this -> load -> view('form/create_character', $data);
+					$this -> load -> view('templates/footer');*/
 						redirect('player_skills/skill');
 				} else {
 					$this -> load -> view('templates/header', $data);

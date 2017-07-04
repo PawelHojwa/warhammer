@@ -9,6 +9,10 @@ class Char_skill {
 		$as = $CI -> form_model -> get_values('characters', array('id' => $id), 'nskill');
 		$age = $CI -> form_model -> get_values('characters', array('id' => $id), 'age');
 		$race = $CI -> form_model -> get_values('characters', array('id' => $id), 'raceID');
+		$class_id = $CI -> form_model -> get_values('characters', array('id' => $id), 'classID');
+		$prof_id = $this -> prof_id($class_id);
+		$prof_name = $this -> profession($class_id);
+		$profession = array_combine($prof_id, $prof_name);
 		$data['age'] = $age;
 		$am_skill = $this -> check_age($race, $age, $as);
 		$data['am_skill'] = $am_skill;
@@ -16,7 +20,7 @@ class Char_skill {
 		$data['title'] = "Wybór umiejętności";
 		$data['skills'] = $this -> skills('skillName');
 		$data['skills_id'] = $this -> skills('skillid');
-		$data['profession'] = $this -> profession();	
+		$data['profession'] = $profession;	
 		return $data;
 	}
 	
@@ -26,10 +30,27 @@ class Char_skill {
 		return $CI -> form_model -> arr_conv('umiejetnosci', $column, 1);
 	}
 	
-	public function profession() {
+	public function prof_id($id) {
 		$CI = &get_instance();
 		$CI -> load -> model('form_model');
-		return $CI -> form_model -> arr_conv('profesje', 'professionName', 1);
+		return $CI -> form_model -> get_professions('profesje', 'profID', $id, 1);
+	}
+	
+	public function dim_to_sing_array($arr)
+	{
+		$target = array();
+		foreach ($arr as $ar) {
+			foreach ($ar as $a) {
+				$target[] = $a;
+			}
+		}
+		return $target;
+	}
+	
+	public function profession($id) {
+		$CI = &get_instance();
+		$CI -> load -> model('form_model');
+		return $CI -> form_model -> get_professions('profesje', 'professionName',$id, 1);
 	}
 	
 	public function check_age($r, $a, $s) {

@@ -4,9 +4,9 @@
 	//echo form_open('', ['id' => 'price']);
 	echo form_dropdown('t_list', $trade_list, 1, array('id' => 'trade'));
 	//echo form_close();
-	echo br(3);
-	
+	echo br(2);	
 ?>
+<p>1 zk = 20/- = 240 p</p>
 <div id="result"></div>
 </div>
 <script>

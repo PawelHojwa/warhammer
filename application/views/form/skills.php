@@ -5,7 +5,7 @@
 <?php
 echo form_open('player_skills/skill',['id' => 'skill_form']);
 echo form_label('Profesje: ', 'prof');
-echo form_dropdown('prof', $profession, 1, ['id' => 'profession']) . "<br>";
+echo form_dropdown('prof', $profession, 1 , ['id' => 'profession']) . "<br>";
 echo '<p id="1"></p>';
 echo form_label('Umiejętności: ', 'skills') . "<br>";
 foreach ($skills as $skill_id => $skill) {
