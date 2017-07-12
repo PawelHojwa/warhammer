@@ -73,9 +73,16 @@ class Form_model extends CI_Model {
 		$this -> db -> update($table_name, $data, $id);
 	}
 
-	public function multi_insert($tab_name, $arr) {
-		foreach ($arr['skillid'] as $skill) {
+	public function multi_insert($tab_name, $column ,$arr) {
+		foreach ($arr[$column] as $skill) {
 			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'profId' => $arr['profId'], 'skillid' => $skill);
+			$this -> db -> insert($tab_name, $record);
+		}
+	}
+	
+	public function multi($tab_name, $column, $arr) {
+		foreach ($arr[$column] as $skill) {
+			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'inv' => $skill);
 			$this -> db -> insert($tab_name, $record);
 		}
 	}
@@ -148,8 +155,9 @@ class Form_model extends CI_Model {
 
 	public function get_trade_table($type = 1) {
 		$this -> db -> select('*');
-		$this -> db -> from('trades');
-		$this -> db -> join('availability', 'trades.availability = availability.lp', 'left');
+		$this -> db -> from('availability');
+		$this -> db -> from('items');
+		$this -> db -> join('trades', 'trades.availability = availability.lp AND items.id = trades.name', 'left');
 		$this -> db -> where('type', $type);
 		$query = $this -> db -> get();
 		$arr = array();
@@ -163,4 +171,21 @@ class Form_model extends CI_Model {
 		}
 	}
 
+	public function get_inv($tab_name, $where = array())
+	{
+		$this -> db -> select('*');
+		$this -> db -> from($tab_name);
+		$this -> db -> join('items', $tab_name.'.name = items.id', 'left');
+		$this -> db -> where($where);
+		$query = $this -> db -> get();
+		$arr = array();
+		if ($query -> num_rows() > 0) {
+			foreach ($query -> result_array() as $rows) {
+				$arr[] = $rows;
+			}
+			return $arr;
+		} else {
+			return "Błąd zapytania!!";
+		}
+	}
 }

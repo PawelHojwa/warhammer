@@ -10,7 +10,7 @@
 			echo " ";
 		}
 	}
-	echo anchor('create_player/create', 'Powrót');
+	echo anchor('login/logout', 'Wyloguj');
   ?>
   <div id="mainPage">
     <div id="ramka_gora"></div>

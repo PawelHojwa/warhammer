@@ -36,9 +36,6 @@ class Player_skills extends CI_Controller {
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
 			$char_id = $this->form_model->get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
-			echo "<pre>";
-			var_dump($data['profession']);
-			echo "</pre>";
 			if ($this -> form_validation -> run() === false) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/skills', $data);
@@ -47,12 +44,12 @@ class Player_skills extends CI_Controller {
 				if ($char_id == NULL) {
 					$arr = $this -> verify_data();
 					$this -> form_model -> multi_insert('char_skills', $arr);
-          redirect('show_char/show');
+          redirect('inventory/form_inventory');
 				} else {
 					$this->form_model->delete('char_skills', array('char_id' => $_SESSION['p_id']));
 					$arr = $this -> verify_data();
-					$this -> form_model -> multi_insert('char_skills', $arr);
-					redirect('show_char/show');
+					$this -> form_model -> multi_insert('char_skills', 'skillid' ,$arr);
+					redirect('inventory/form_inventory');
 				}
 			}
 		}

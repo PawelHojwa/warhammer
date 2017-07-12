@@ -42,7 +42,7 @@ class Trade extends CI_Controller
             echo "<tr>";
 		    foreach ($t_list as $item) {
                 echo "<tr>";
-			    echo "<td>" . $item['name'] . "</td>";
+			    echo "<td>" . $item['item'] . "</td>";
                 echo "<td style='text-align: center;'>" . $item['price'] . "</td>";
                 echo "<td style='text-align: center;'>" . $item['weight'] . "</td>";
                 echo "<td style='text-align: center;'>" . $item['avail'] . "</td>";

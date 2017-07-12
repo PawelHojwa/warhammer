@@ -133,7 +133,7 @@ class Create_player extends CI_Controller {
 					} else { 
 						$this -> form_model -> insert('characters', $data_char);
 						$data_char['id'] = $this -> form_model -> last_index('characters', 'id');
-						$this -> session -> set_userdata('p_id', $data_char['id']);
+						$this -> session -> set_userdata(['p_id'=> $data_char['id']]);
 					}
 						/*$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);
