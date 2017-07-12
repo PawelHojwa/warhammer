@@ -11,13 +11,13 @@ class Player_skills extends CI_Controller {
 		$this->load->library('char_skill');
 	}
 
-	public function verify_data($id = "") {
+	public function verify_data($p_id, $id = "") {
 		$skill_1 = $this -> input -> post('skills');
 		$skill_2 = $this -> input -> post('s');
 		$skills = array_merge($skill_1, $skill_2);
 		$data = array(
 			'id' => $id, 
-			'char_id' => $_SESSION['p_id'],
+			'char_id' => $p_id,
 			'profId' => $this -> input -> post('prof'), 
 			'skillid' => $skills
 			);
@@ -42,13 +42,13 @@ class Player_skills extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				if ($char_id == NULL) {
-					$arr = $this -> verify_data();
-					$this -> form_model -> multi_insert('char_skills', $arr);
+					$arr = $this -> verify_data($_SESSION['p_id']);
+					$this -> form_model -> multi_insert('char_skills', 'skillid', $arr);
           redirect('inventory/form_inventory');
 				} else {
 					$this->form_model->delete('char_skills', array('char_id' => $_SESSION['p_id']));
-					$arr = $this -> verify_data();
-					$this -> form_model -> multi_insert('char_skills', 'skillid' ,$arr);
+					$arr = $this -> verify_data($_SESSION['p_id']);
+					$this -> form_model -> multi_insert('char_skills', 'skillid', $arr);
 					redirect('inventory/form_inventory');
 				}
 			}
