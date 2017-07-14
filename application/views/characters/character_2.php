@@ -31,7 +31,7 @@
 			</tr>
 		</table>
 	</div>
-	<div id="middle_2">
+	<div id="middle_page_2">
 		<table id="inventory">
 			<tr>
 				<th>Ekwipunek</th>

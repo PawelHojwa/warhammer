@@ -107,6 +107,7 @@ class Create_player extends CI_Controller {
 			$this -> form_validation -> set_rules('rogd', 'Ogłada', 'required', array('required' => "Pole '{field}' jest wymagane"));
 			$data = $this -> formable -> datas(); 
 			$names = array('userID' => $user_id);
+			$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
 			if (empty($names)) {
 				$data['name_list'] = "Brak postaci";
 			} else {
@@ -119,7 +120,7 @@ class Create_player extends CI_Controller {
 				$this -> load -> view('form/create_character', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-         $val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
+         
 	       $p_id = $this->get_char_id($val);
 	       $_SESSION['p_id'] = $p_id[0]['id'];
 	       $n_skill = $p_id[0]['nskill']; 
@@ -132,7 +133,7 @@ class Create_player extends CI_Controller {
 						$this->form_model->update('characters', $data_char, array('name' => $_POST['name']));
 					} else { 
 						$this -> form_model -> insert('characters', $data_char);
-						$data_char['id'] = $this -> form_model -> last_index('characters', 'id');
+						$data_char['id'] = $this -> get_char_id('characters', $val);
 						$this -> session -> set_userdata(['p_id'=> $data_char['id']]);
 					}
 						/*$this -> load -> view('templates/header', $data);

@@ -1,19 +1,16 @@
 /*Plik css do projektu Warhammer*/
 /*Autor: Paweł Hojwa*/
 
-#mainPage
-{
+#mainPage {
   width: 1193px;
 }
 
-#ramka_gora
-{
+#ramka_gora {
   height: 36px;
   background: url("../img/ramka_gora.jpg");
 }
 
-div#ramka_lewa
-{
+#ramka_lewa {
   height: 1612px;
   width: 38px;
   background: url("../img/ramka_lewa.jpg");
@@ -21,8 +18,7 @@ div#ramka_lewa
   float: left;
 }
 
-div#ramka_prawa
-{
+#ramka_prawa {
   height: 1612px;
   width: 37px;
   background: url("../img/ramka_prawa.jpg");
@@ -31,8 +27,7 @@ div#ramka_prawa
   float: right;
 }
 
-div#logo
-{
+#logo {
   width: 414px;
   height: 63px;
   background: url("../img/logo.jpg");
@@ -40,50 +35,43 @@ div#logo
   margin-right: auto;
 }
 
-div#top
-{
+#top {
   height: 652px;
 }
 
-div#top_left
-{
+#top_left {
   width: 422px;
   float: left;
 }
 
-div#obraz_gora
-{
+#obraz_gora {
   width: 422px;
   height: 133px;
   background: url("../img/obraz_1_gora.jpg");
 }
 
-table
-{
+table {
   border-collapse: collapse;
 }
 
-table,th,td
-{
+table ,th ,td {
   border: 1px solid black;
   font-size: 14px;
 }
-table th
-{
+
+table th {
   background-color: #bfbfbf;
   height: 40px;
   text-align: center;
 }
 
-table#tl_table
-{
+#tl_table {
   width: 414px;
   height: 521px;
   margin-left: 8px;
 }
 
-table#tl_table ul.skill_list
-{
+#tl_table ul.skill_list {
 	width : 100%;
 	list-style-type: none;
 	padding:3px;
@@ -91,58 +79,54 @@ table#tl_table ul.skill_list
 	font-size: 14px;
 }
 
-ul.skill_list li
-{
+.skill_list li {
 	text-decoration: underline;
 }
 
-div#top_right
-{
+#top_right {
   width: 690px;
   float: right;
 }
 
-table#tr_table
-{
+#tr_table {
   width: 656px;
   height: 324px;
   margin-top: 16px;
   margin-left: 34px;
 }
 
-label
-{
+#tr_table td {
+	padding-left: 5px;
+}
+
+label {
   font-weight: bold;
 }
 
-table#stats
-{
+#stats {
   width: 656px;
   height: 278px;
   margin-top: 23px;
   margin-left: 34px;
 }
 
-table#stats th, td
-{
+#stats th, #stats td {
   width: 41px;
 }
 
-table#stats td
-{
+#stats td {
   height: 38px;
+  text-align: center;
 }
 
-div#middle
-{
+#middle {
   margin-top: 8px;
   margin-left: 38px;
   margin-right: 37px;
   overflow: hidden;
 }
 
-table#m1
-{
+#m1 {
   margin-top: 3px;
   margin-left: 8px;
   width: 512px;
@@ -150,21 +134,18 @@ table#m1
   float: left;
 }
 
-table#m2
-{
+#m2 {
   margin-left: 545px;
   margin-top: 25px;
   width: 560px;
   height: 168px;
 }
 
-table#m2 th:first-child
-{
+#m2 th:first-child {
   width: 197px;
 }
 
-table#m3
-{
+#m3 {
   margin-top: 10px;
   margin-left: 8px;
   width: 235px;
@@ -172,31 +153,28 @@ table#m3
   float: left;
 }
 
-.small_th
-{
+.small_th {
   font-size: 10px;
   text-align: left;
   vertical-align: top;
   width: 47px;
 }
 
-table#m4
-{
+#m4 {
   margin-top: 20px;
   margin-left: 40px;
   font-weight: bold;
   float: left;
 }
 
-.armour
-{
+.armour {
   width: 235px;
   height: 129px;
   text-align: center;
+  margin-top: 10px;
 }
 
-table#m5
-{
+#m5 {
   width: 560px;
   height: 168px;
   margin-top: 10px;
@@ -204,56 +182,47 @@ table#m5
   float: left;
 }
 
-table#m5 th:first-child
-{
+#m5 th:first-child {
   width: 197px;
 }
 
-.tk
-{
+.tk {
   width: 25px;
   font-size: 12px;
 }
 
-div#down_left
-{
+#down_left {
   width: 235px;
   margin-left: 8px;
   float: left;
 }
 
-table#dl3
-{
+#dl3 {
   height: 77px;
   margin-top: 10px;
 }
 
-table#dl4
-{
+#dl4 {
   height: 80px;
  	margin-top: 5px; 
 }
 
-table#dl4 th
-{
+#dl4 th {
   width: 50px;
 }
 
-table#dl4 td
-{
+#dl4 td {
   width: 25px;
   text-align: center;
   font-weight: bold;
 }
 
-div#down_middle
-{
+#down_middle {
   float:left;
   margin-left: 10px;
 }
 
-div#obraz_dol1
-{
+#obraz_dol1 {
   margin-top: -10px;
   width: 227px;
   height: 488px;
@@ -261,35 +230,30 @@ div#obraz_dol1
   float: left;
 }
 
-div#down_right
-{
+#down_right {
 	margin-top: 25px;
   margin-left: 10px;
   float: left;
 }
 
-div#down_right table
-{
+#down_right table {
 	width : 100%;
 }
 
-div#obraz_dol2
-{
+#obraz_dol2 {
   width: 385px;
   height: 340px;
   background: url("../img/obraz_2_dol.jpg");
 }
 
-div#ramka_dol
-{
+#ramka_dol {
   width: 1192px;
   height: 39px;
   background: url("../img/ramka_dol.jpg");
   clear: both;
 }
 
-table.skills td
-{
+.skills td {
 	vertical-align: top;
 	padding: 0;
 	margin: 0;
