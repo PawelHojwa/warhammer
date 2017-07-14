@@ -6,6 +6,7 @@
 	
 	<?php
 		echo link_tag(base_url() . 'other/css/style.css');
+		echo link_tag(base_url() . 'other/css/style_2.css');
 		echo link_tag(base_url() . 'other/css/forms.css');
 		echo link_tag('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
 	?>

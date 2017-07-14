@@ -355,5 +355,6 @@
         </tr>
       </table>
     </div>
-    <div id="ramka_dol"></div>
+    <div id="ramka_dol"></div>	
+		</div>
   </div>

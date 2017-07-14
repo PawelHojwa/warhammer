@@ -1,0 +1,179 @@
+/*--Stylizacja karty postaci strona 2--*/
+
+table td > span {
+	padding-top: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+}
+
+/*--sekcja top_2--*/
+
+#top_2 {
+	width: 1076px;
+	margin-top: 20px;
+	margin-left: 58px;
+}
+
+#skill_2 {
+	float: left;
+	margin-right: 15px;
+}
+
+#skill_2 th {
+	width: 220px;
+}
+
+#skill_2 td {
+	height: 312px;
+}
+
+#other_info {
+	width: 400px;
+}
+
+#other_info td {
+	height: 40px;
+	vertical-align: top;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+#other_info #blesses {
+	width: 200px;
+	height: 232px;
+}
+
+#modifier {
+	/*width: 50px;
+	height: 200px;*/
+}
+
+/*--Sekcja middle_2--*/
+
+#middle_2 {
+	width: 1076px;
+	margin-left: 58px;
+	margin-top: 15px;
+}
+
+#inventory {
+	width: 100%;
+}
+
+#inventory .inv {
+	width: 332px;
+}
+
+#inventory .place {
+	width: 93px;
+}
+
+#inventory .obc {
+	width: 57px;
+}
+
+#inventory td {
+	height: 558px;
+}
+
+#inv_sum {
+	width: 100%;
+	border-top: none;
+}
+
+#inv_sum td, #inv_sum th {
+	height: 40px;
+	width: 12.5%;
+	border-top: none;
+}
+
+/*--Sekcja bottom_2--*/
+
+#bottom_2 {
+	margin-left: 58px;
+	margin-top: 15px;
+}
+
+#bottom_left_2 {
+	float: left;
+	width: 311px;
+}
+
+#movement {
+	width: 100%;
+	margin-bottom: 24px;
+}
+
+#movement th:first-child {
+	width: 123px;
+}
+
+#tracking {
+	width: 100%;
+}
+
+#tracking #a {
+	width: 96px;
+}
+
+#bottom_middle {
+	float: left;
+	width: 363px;
+	margin-left: 21px;
+}
+
+#range_of_motion {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+#range_of_motion th:first-child {
+	width: 144px;
+}
+
+#range_of_motion td {
+	text-align: center;
+	font-style: italic;
+	font-family: cursive; 
+}
+
+#languages {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+#languages td {
+	height: 119px;
+	vertical-align: top;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+#psyche_mutation {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+#psyche_mutation td:first-child {
+	width: 80%;
+	height: 105px;
+}
+
+#psyche_mutation th, #psyche_mutation td {
+	text-align: left;
+	vertical-align: top;
+	height: 105px;
+}
+
+#psyche_mutation th {
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+#bottom_right {
+	float: left;
+	width: 388px;
+	height: 530px;
+	background: url("../img/dwarf.jpg");
+}

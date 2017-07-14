@@ -80,7 +80,7 @@ class Show_char extends CI_Controller
 			$this->load->view('templates/header', $data);
 			$this->load->view('characters/character');
 			$this->load->view('templates/footer');
-			$this -> session -> unset_userdata('p_id');
+			//$this -> session -> unset_userdata('p_id');
 			//$this->session->sess_destroy();
 		}	
 	}
