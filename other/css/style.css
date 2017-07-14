@@ -141,8 +141,12 @@ label {
   height: 168px;
 }
 
+#m2 #i {
+	width: 35px;
+}
+
 #m2 th:first-child {
-  width: 197px;
+  width: 203px;
 }
 
 #m3 {
@@ -183,12 +187,16 @@ label {
 }
 
 #m5 th:first-child {
-  width: 197px;
+  width: 203px;
 }
 
-.tk {
-  width: 25px;
+#m5 .tk, #m2 .tk {
+  width: 48px;
   font-size: 12px;
+}
+
+#m5 .dyst {
+	width: 35px;
 }
 
 #down_left {

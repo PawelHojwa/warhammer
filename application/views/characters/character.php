@@ -141,51 +141,38 @@
     <div id="middle">
       <table id="m1">
         <tr>
-          <th>Specjalizacja</th><th>P.S.</th><th>Modyfikator:</th>
+          <th>Specjalizacja</th>
+          <th>P.S.</th>
+          <th>Modyfikator:</th>
         </tr>
         <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </table>
       <table id="m2">
         <tr>
-          <th>Broń ręczna:</th><th>I</th><th>WW</th><th>O</th><th>P</th><th class="tk">Tr.Kryt.</th><th>PWT:</th><th>Żw. B.</th><th>Żw. A.</th>
+          <th>Broń ręczna:</th>
+          <th id="i">I</th>
+          <th class="tk">WW</th>
+          <th>O</th>
+          <th>P</th>
+          <th class="tk">Tr.Kryt.</th>
+          <th class="tk">PWT:</th>
+          <th class="tk">Żw. B.</th>
+          <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </table>
     </div>
@@ -221,25 +208,26 @@
       </table>
       <table id="m5">
         <tr>
-          <th>Broń strzelecka</th><th>K</th><th>D</th><th>M</th><th>SE</th><th>ŁAD</th><th class="tk">Tr.Kryt.</th><th>Żw. B.</th><th>Żw. A.</th>
+          <th>Broń strzelecka</th>
+          <th class="dyst">K</th>
+          <th class="dyst">D</th>
+          <th class="dyst">M</th>
+          <th>SE</th>
+          <th>ŁAD</th>
+          <th class="tk">Tr.Kryt.</th>
+          <th class="tk">Żw. B.</th>
+          <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </table>
     </div>
