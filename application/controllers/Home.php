@@ -11,7 +11,7 @@ class Home extends CI_Controller
 	
 	public function index()
 	{
-		$data = array('title' => "True Fantasy Group", 'price_list' => 'Cennik', 'create' => 'Tworzenie postaci');
+		$data = array('title' => "True Fantasy Group", 'price_list' => 'Cennik', 'create' => 'Tworzenie postaci', 'speed' => 'Prędkość');
 		$this -> load -> view('templates/header', $data);
 		$this -> load -> view('home/index', $data);
 		$this -> load -> view('templates/footer');
