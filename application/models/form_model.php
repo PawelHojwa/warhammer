@@ -20,9 +20,9 @@ class Form_model extends CI_Model {
 		}
 	}
 
-	public function arr_conv($tab_name, $column, $i = 0) {
+	public function arr_conv($tab_name, $column, $i = 0, $limit = 0) {
 		$target = array();
-		$query = $this -> db -> get($tab_name);
+		$query = $this -> db -> get($tab_name, $limit);
 		foreach ($query->result_array() as $row) {
 			$target[$i] = $row[$column];
 			$i++;
@@ -169,6 +169,24 @@ class Form_model extends CI_Model {
 		} else {
 			return "Błąd";
 		}
+	}
+
+	public function get_speed($number = 1)
+	{
+		$this -> db -> select('*');
+		$this -> db -> from('speed');
+		$this -> db -> where('speed', $number);
+		$query = $this -> db -> get();
+		$arr = array();
+		if ($query -> num_rows() > 0) {
+			foreach ($query -> result_array() as $rows) {
+				$arr[] = $rows;
+			}
+			return $arr;
+		} else {
+			return "Błąd zapytania";
+		}
+		
 	}
 
 	public function get_inv($tab_name, $where = array())

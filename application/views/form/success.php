@@ -1,1 +1,5 @@
-<p><?php echo $smt; ?></p>
+<p><?php
+foreach ($speed as $s) {
+ echo $s; 
+}
+ ?></p>

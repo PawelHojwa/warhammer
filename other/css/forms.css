@@ -127,3 +127,11 @@ table.name_table td
 .anchor {
 	margin-left: 5px;
 }
+
+#speed .speed {
+	width: 45px;
+}
+
+#speed td {
+	text-align: center;
+}
