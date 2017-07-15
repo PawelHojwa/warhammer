@@ -1,9 +1,10 @@
 <div class="container">
 <h1><?php echo $title; ?></h1>
+<small><?php echo anchor(base_url(), 'Powrót'); ?></small>
 <?php
-	//echo form_open('', ['id' => 'price']);
+	
+	echo br(2);
 	echo form_dropdown('t_list', $trade_list, 1, array('id' => 'trade'));
-	//echo form_close();
 	echo br(2);	
 ?>
 <p>1 zk = 20/- = 240 p</p>
