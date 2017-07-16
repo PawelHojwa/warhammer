@@ -344,6 +344,11 @@ function showR($val) {
       </table>
     </div>
     <div id="ramka_dol"></div>	
-		</div>
-  </div>
+    
+	</div>
+<?php
+	echo "<small>" . anchor('show_char_2/page_2', 'Następna strona') . "</small>";
+?>
 </div>
+
+  
