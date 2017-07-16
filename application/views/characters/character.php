@@ -1,17 +1,17 @@
-  <?php 
-  function showR($val)
-	{
-		if ($val != null)
-		{
-			echo "+" . $val;
-		}
-		else
-		{
-			echo " ";
-		}
+<?php 
+function showR($val) {
+	if ($val != null) {
+	echo "+" . $val;
+	} else {
+		echo " ";
 	}
-	echo anchor('login/logout', 'Wyloguj');
-  ?>
+}
+?>
+<div class="container">
+<?php
+	echo "<small>" . anchor('login/logout', 'Wyloguj') . "</small>";
+	echo br(2);
+?>
   <div id="mainPage">
     <div id="ramka_gora"></div>
     <div id="ramka_lewa"></div>
@@ -346,3 +346,4 @@
     <div id="ramka_dol"></div>	
 		</div>
   </div>
+</div>

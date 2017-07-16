@@ -8,10 +8,10 @@ class Login extends CI_Controller
 		$this->load->helper('url_helper');
 		$this->load->library('form_validation');
 		$this->load->library('session');
-		$this->load->model('form_model');
 		$this->load->library('formable');
 		$this->load->helper('html');
-        $this->load->driver('session');
+    $this->load->driver('session');
+		$this -> load -> model('universal_model');
 	}
 	
 	public function view_form()
@@ -49,12 +49,12 @@ class Login extends CI_Controller
 		else
 		{
 			$user = array('login' => $_POST['username'], 'pass' => sha1($_POST['password']));
-			$users = $this->form_model->get_user('users', $user);
-            $user_id = $this->form_model->get_values('users', array('login' => $_POST['username']), 'userID');
-            $s_data = array(
-                'user' => $_POST['username'],
-                'userID' => $user_id
-            );
+			$users = $this->universal_model->get_user('users', $user);
+      $user_id = $this->universal_model->get_values('users', array('login' => $_POST['username']), 'userID');
+      $s_data = array(
+          'user' => $_POST['username'],
+          'userID' => $user_id
+      );
     	$this->session->set_userdata($s_data);
 			if (empty($users))
 			{

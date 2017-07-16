@@ -29,7 +29,7 @@ class Form_model extends CI_Model {
 		}
 		return $target;
 	}
-	
+
 	public function get_professions($tab_name, $column, $id, $i = 0) {
 		$target = array();
 		$this -> db -> where('classID', $id);
@@ -49,8 +49,10 @@ class Form_model extends CI_Model {
 	}
 
 	public function stats($tab_name, $src, $val = "", $col = "") {
-		$sql = "SELECT * FROM " . $tab_name . " WHERE " . $src . " = " . $val;
-		$result = $this -> db -> query($sql);
+		$this -> db -> select('*');
+		$this -> db -> from($tab_name);
+		$this -> db -> where(array($src => $val));
+		$result = $this -> db -> get();
 		if ($result -> num_rows() > 0) {
 			foreach ($result->result_array() as $row)
 				if (is_array($col)) {
@@ -73,13 +75,13 @@ class Form_model extends CI_Model {
 		$this -> db -> update($table_name, $data, $id);
 	}
 
-	public function multi_insert($tab_name, $column ,$arr) {
+	public function multi_insert($tab_name, $column, $arr) {
 		foreach ($arr[$column] as $skill) {
 			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'profId' => $arr['profId'], 'skillid' => $skill);
 			$this -> db -> insert($tab_name, $record);
 		}
 	}
-	
+
 	public function multi($tab_name, $column, $arr) {
 		foreach ($arr[$column] as $skill) {
 			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'inv' => $skill);
@@ -171,8 +173,7 @@ class Form_model extends CI_Model {
 		}
 	}
 
-	public function get_speed($number = 1)
-	{
+	public function get_speed($number = 1) {
 		$this -> db -> select('*');
 		$this -> db -> from('speed');
 		$this -> db -> where('speed', $number);
@@ -186,14 +187,13 @@ class Form_model extends CI_Model {
 		} else {
 			return "Błąd zapytania";
 		}
-		
+
 	}
 
-	public function get_inv($tab_name, $where = array())
-	{
+	public function get_inv($tab_name, $where = array()) {
 		$this -> db -> select('*');
 		$this -> db -> from($tab_name);
-		$this -> db -> join('items', $tab_name.'.name = items.id', 'left');
+		$this -> db -> join('items', $tab_name . '.name = items.id', 'left');
 		$this -> db -> where($where);
 		$query = $this -> db -> get();
 		$arr = array();
@@ -206,4 +206,5 @@ class Form_model extends CI_Model {
 			return "Błąd zapytania!!";
 		}
 	}
+
 }

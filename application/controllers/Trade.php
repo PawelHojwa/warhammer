@@ -3,14 +3,15 @@
 class Trade extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
-		$this -> load -> model('form_model');
+		$this -> load -> model('universal_model');
+		$this -> load -> model('trade_model');
 		$this -> load -> helper('html');
 		$this -> load -> helper('url_helper');
 		$this -> load -> helper('form');
 	}
 
 	public function get_list($tab_name) {
-		return $this -> form_model -> get_data($tab_name);
+		return $this -> universal_model -> get_data($tab_name);
 	}
 
 	public function price_list() {
@@ -22,12 +23,12 @@ class Trade extends CI_Controller {
 	}
 
 	public function trade_list() {
-		return $arr = $this -> form_model -> arr_conv('things_types', 'name', 1);
+		return $arr = $this -> universal_model -> arr_conv('things_types', 'name', 1);
 	}
 
 	public function get_trade_list() {
 		if (isset($_REQUEST['trade']) === TRUE && $_REQUEST['trade'] !== FALSE) {
-			$t_list = $this -> form_model -> get_trade_table($_REQUEST['trade']);
+			$t_list = $this -> trade_model -> get_trade_table($_REQUEST['trade']);
 			echo "<table class='table'>";
 			echo "<tr>";
 			echo "<th style='border-top: 1px solid black;'>Nazwa</th>

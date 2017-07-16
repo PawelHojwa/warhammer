@@ -4,7 +4,9 @@ class Inventory extends CI_Controller
 	public function __construct() {
 		parent::__construct();
 		$this -> load -> helper('form');
-		$this -> load -> model('form_model');
+		$this -> load -> model('item_model');
+		$this -> load -> model('universal_model');
+		$this -> load -> model('char_inventory_model');
 		$this -> load -> library('session');
 		$this -> load -> library('form_validation');
 		$this -> load -> helper('url_helper');
@@ -12,11 +14,11 @@ class Inventory extends CI_Controller
 	}
 	
 	public function basic_inv($id) {
-		return $this -> form_model -> get_inv('basic_inv', ['classID'=> $id]);
+		return $this -> item_model -> get_inv('basic_inv', ['classID'=> $id]);
 	}
 	
 	public function prof_inv($id) {
-		return $this -> form_model -> get_inv('prof_inv', ['profID' => $id]);
+		return $this -> item_model -> get_inv('prof_inv', ['profID' => $id]);
 	}
 	
 	public function verify_data($arr, $id = '') {
@@ -38,8 +40,8 @@ class Inventory extends CI_Controller
 			redirect('login/form_login');
 		} else {
 			$player_id = $_SESSION['p_id'];
-			$class_id = $this -> form_model -> get_values('characters', array('id' => $player_id), 'classID');
-			$prof_id = $this -> form_model -> get_values('char_skills', array('char_id' => $player_id), 'profId');
+			$class_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'classID');
+			$prof_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $player_id), 'profId');
 			$b_inv = $this -> basic_inv($class_id); 
 			$p_inv = $this -> prof_inv($prof_id);
 			$inv = array();
@@ -61,7 +63,7 @@ class Inventory extends CI_Controller
 				$this -> load -> view('templates/footer');
 			} else {
 				$arr = $this -> verify_data($full_inv);
-				$this -> form_model -> multi('char_inv', 'inv', $arr);
+				$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
 				redirect('show_char/show');
 			}
 		}

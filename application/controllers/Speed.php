@@ -3,14 +3,15 @@
 class Speed extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
-		$this -> load -> model('form_model');
+		$this -> load -> model('speed_model');
+		$this -> load -> model('universal_model');
 		$this -> load -> helper('html');
 		$this -> load -> helper('url_helper');
 		$this -> load -> helper('form');
 	}
 	
 	public function speed_values() {
-		return $arr = $this -> form_model -> arr_conv('speed', 'speed', 1, 20);
+		return $arr = $this -> universal_model -> arr_conv('speed', 'speed', 1, 20);
 	}
 	
 	public function speed_tables() {
@@ -23,7 +24,7 @@ class Speed extends CI_Controller {
 	
 	public function choice_speed() {
 		if (isset($_REQUEST['choice']) === TRUE && $_REQUEST['choice'] !== FALSE) {
-			$speed = $this -> form_model -> get_speed($_REQUEST['choice']);
+			$speed = $this -> speed_model -> get_speed($_REQUEST['choice']);
 			echo "<table id='speed' style='margin-top: 10px;'>";
 			echo "<tr>";
 			echo "<th>Tempo ruchu</th>";

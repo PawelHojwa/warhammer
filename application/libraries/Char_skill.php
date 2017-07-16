@@ -4,12 +4,12 @@ class Char_skill {
 	
 	public function char_data($id) {
 		$CI = &get_instance();
-		$CI -> load -> model('form_model');
-		$name = $CI -> form_model -> get_values('characters', array('id' => $id), 'name');
-		$as = $CI -> form_model -> get_values('characters', array('id' => $id), 'nskill');
-		$age = $CI -> form_model -> get_values('characters', array('id' => $id), 'age');
-		$race = $CI -> form_model -> get_values('characters', array('id' => $id), 'raceID');
-		$class_id = $CI -> form_model -> get_values('characters', array('id' => $id), 'classID');
+		$CI -> load -> model('universal_model');
+		$name = $CI -> universal_model -> get_values('characters', array('id' => $id), 'name');
+		$as = $CI -> universal_model -> get_values('characters', array('id' => $id), 'nskill');
+		$age = $CI -> universal_model -> get_values('characters', array('id' => $id), 'age');
+		$race = $CI -> universal_model -> get_values('characters', array('id' => $id), 'raceID');
+		$class_id = $CI -> universal_model -> get_values('characters', array('id' => $id), 'classID');
 		$prof_id = $this -> prof_id($class_id);
 		$prof_name = $this -> profession($class_id);
 		$profession = array_combine($prof_id, $prof_name);
@@ -26,31 +26,20 @@ class Char_skill {
 	
 	public function skills($column) {
 		$CI = &get_instance();
-		$CI -> load -> model('form_model');
-		return $CI -> form_model -> arr_conv('umiejetnosci', $column, 1);
+		$CI -> load -> model('universal_model');
+		return $CI -> universal_model -> arr_conv('umiejetnosci', $column, 1);
 	}
 	
 	public function prof_id($id) {
 		$CI = &get_instance();
-		$CI -> load -> model('form_model');
-		return $CI -> form_model -> get_professions('profesje', 'profID', $id, 1);
-	}
-	
-	public function dim_to_sing_array($arr)
-	{
-		$target = array();
-		foreach ($arr as $ar) {
-			foreach ($ar as $a) {
-				$target[] = $a;
-			}
-		}
-		return $target;
+		$CI -> load -> model('profession_model');
+		return $CI -> profession_model -> get_professions('profesje', 'profID', $id, 1);
 	}
 	
 	public function profession($id) {
 		$CI = &get_instance();
-		$CI -> load -> model('form_model');
-		return $CI -> form_model -> get_professions('profesje', 'professionName',$id, 1);
+		$CI -> load -> model('profession_model');
+		return $CI -> profession_model -> get_professions('profesje', 'professionName',$id, 1);
 	}
 	
 	public function check_age($r, $a, $s) {
