@@ -25,7 +25,7 @@ class Char_inventory_model extends CI_Model {
 			}
 			return $arr;
 		} else {
-			return "Błąd zapytania!";
+			return "";
 		}
 	}
 	

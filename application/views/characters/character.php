@@ -274,7 +274,7 @@ function showR($val) {
           <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td style="style=vertical-align: top;">
+          <td style="vertical-align: top;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -285,7 +285,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="style=vertical-align: top; text-align: center;">
+          <td style="vertical-align: top; text-align: center;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -296,7 +296,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="style=vertical-align: top; text-align: center;">
+          <td style="vertical-align: top; text-align: center;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -307,7 +307,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="style=vertical-align: top; text-align: center;">
+          <td style="vertical-align: top; text-align: center;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -318,7 +318,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="style=vertical-align: top; text-align: center;">
+          <td style="vertical-align: top; text-align: center;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -329,7 +329,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="style=vertical-align: top; text-align: center;">
+          <td style="vertical-align: top; text-align: center;">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {

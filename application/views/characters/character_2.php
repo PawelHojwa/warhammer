@@ -51,36 +51,32 @@
 					<th>Obc:</th>
 				</tr>
 				<tr>
-					<td class="inv">
-					<ul class="skill_list">
+					<td class="inv" style="vertical-align: top;">
 					<?php
 					if (!empty($inventory)) {
 						foreach ($inventory as $item) {
-							if ($item['items_group_id'] == 3) {
-								echo "<li>" . $item['item'] . "</li>";
+							if ($item['items_group_id'] == 4) {
+								echo $item['item'] . "<br>";
 							}
 						}
 					} else {
 						echo "";
 					}
 					?>
-					</ul>
 					</td>
 					<td class="place"></td>
-					<td class="obc">
-					<ul class="skill_list">
+					<td class="obc" style="vertical-align: top; text-align: center;">
 					<?php
 					if (!empty($inventory)) {
 						foreach ($inventory as $item) {
-							if ($item['items_group_id'] == 3) {
-								echo "<li>" . $item['weight'] . "</li>";
+							if ($item['items_group_id'] == 4) {
+								echo $item['weight'] . "<br>";
 							}
 						}
 					} else {
 						echo "";
 					}
 					?>
-					</ul>
 					</td>
 					<td class="inv"></td>
 					<td class="place"></td>
@@ -213,8 +209,3 @@
 		<div id="ramka_dol"></div>
 	</div>
 </div>
-<?php
-	echo "<pre>";
-	var_dump($inventory);
-	echo "</pre>";
-?>

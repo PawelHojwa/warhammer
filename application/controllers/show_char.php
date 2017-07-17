@@ -10,7 +10,7 @@ class Show_char extends CI_Controller {
 		$this -> load -> library('session');
 	}
 
-	public function get_char($id = 1) {
+	public function get_char($id) {
 		$b_info = $this -> characters_model -> get_basic_info($id);
 		$c_skill = $this -> char_skills_model -> get_character_skills($id);
 		$char_meele_weapon = $this -> char_inventory_model -> get_weapon('mod_broni', 'meele', $id);
@@ -34,10 +34,6 @@ class Show_char extends CI_Controller {
 				$_SESSION['p_id'] = $_GET['id'];
 			}
 			$data = $this -> get_char($_SESSION['p_id']);
-			echo "<pre>";
-			var_dump($data['ranged']);
-			var_dump($_SESSION['p_id']);
-			echo "</pre>";
 			$data['title'] = "Karta postaci";
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('characters/character', $data);
