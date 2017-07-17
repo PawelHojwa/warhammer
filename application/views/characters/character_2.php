@@ -2,6 +2,7 @@
 <?php
 	echo "<small>" . anchor('login/logout', 'Wyloguj') . "</small>";
 	echo br(2);
+	
 ?>
 	<div id="mainPage">
 		<div id="ramka_gora"></div>
@@ -50,9 +51,37 @@
 					<th>Obc:</th>
 				</tr>
 				<tr>
-					<td class="inv"></td>
+					<td class="inv">
+					<ul class="skill_list">
+					<?php
+					if (!empty($inventory)) {
+						foreach ($inventory as $item) {
+							if ($item['items_group_id'] == 3) {
+								echo "<li>" . $item['item'] . "</li>";
+							}
+						}
+					} else {
+						echo "";
+					}
+					?>
+					</ul>
+					</td>
 					<td class="place"></td>
-					<td class="obc"></td>
+					<td class="obc">
+					<ul class="skill_list">
+					<?php
+					if (!empty($inventory)) {
+						foreach ($inventory as $item) {
+							if ($item['items_group_id'] == 3) {
+								echo "<li>" . $item['weight'] . "</li>";
+							}
+						}
+					} else {
+						echo "";
+					}
+					?>
+					</ul>
+					</td>
 					<td class="inv"></td>
 					<td class="place"></td>
 					<td class="obc"></td>
@@ -184,3 +213,8 @@
 		<div id="ramka_dol"></div>
 	</div>
 </div>
+<?php
+	echo "<pre>";
+	var_dump($inventory);
+	echo "</pre>";
+?>

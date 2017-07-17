@@ -164,11 +164,66 @@ function showR($val) {
           <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td style="vertical-align: top;">
+          <?php
+          if (!empty($weapon)) {
+          	foreach ($weapon as $item) {
+          		if ($item['items_group_id'] == 1 || $item['items_group_id'] == 2)
+          		echo $item['item'] . "<br>";
+          	}
+					} else {
+						echo "";
+					}
+					?>
+          </td>
+          <td style="vertical-align: top; text-align: center">
+          <?php
+          if (!empty($weapon)) {
+          	foreach ($weapon as $item) {
+          		if ($item['items_group_id'] == 1 || $item['items_group_id'] == 2)
+          		echo $item['inic'] . "<br>";
+          	}
+					} else {
+						echo "";
+					}
+					?>
+          </td>
+          <td style="vertical-align: top; text-align: center">
+          <?php
+          if (!empty($weapon)) {
+          	foreach ($weapon as $item) {
+          		if ($item['items_group_id'] == 1 || $item['items_group_id'] == 2)
+          		echo $item['mod_traf'] . "<br>";
+          	}
+					} else {
+						echo "";
+					}
+					?>
+					</td>
+          <td style="vertical-align: top; text-align: center">
+          <?php
+          if (!empty($weapon)) {
+          	foreach ($weapon as $item) {
+          		if ($item['items_group_id'] == 1 || $item['items_group_id'] == 2)
+          		echo $item['obr'] . "<br>";
+          	}
+					} else {
+						echo "";
+					}
+					?>
+					</td>
+          <td style="vertical-align: top; text-align: center">
+          <?php
+          if (!empty($weapon)) {
+          	foreach ($weapon as $item) {
+          		if ($item['items_group_id'] == 1 || $item['items_group_id'] == 2)
+          		echo $item['par'] . "<br>";
+          	}
+					} else {
+						echo "";
+					}
+					?>
+          </td>
           <td></td>
           <td></td>
           <td></td>
@@ -219,12 +274,72 @@ function showR($val) {
           <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td style="style=vertical-align: top;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['item'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
+          <td style="style=vertical-align: top; text-align: center;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['s'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
+          <td style="style=vertical-align: top; text-align: center;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['l'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
+          <td style="style=vertical-align: top; text-align: center;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['m'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
+          <td style="style=vertical-align: top; text-align: center;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['SE'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
+          <td style="style=vertical-align: top; text-align: center;">
+          <?php
+          if (!empty($ranged)) {
+          	foreach ($ranged as $weapon) {
+          		echo $weapon['reload'] . "<br>";
+          	}
+          } else {
+          	echo "";
+          }
+          ?>
+          </td>
           <td></td>
           <td></td>
           <td></td>

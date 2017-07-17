@@ -10,4 +10,40 @@ class Char_inventory_model extends CI_Model {
 			$this -> db -> insert($tab_name, $record);
 		}
 	}
+	
+	public function get_char_inventory($id = 1) {
+		$this -> db -> select('*');
+		$this -> db -> from('char_inv');
+		$this -> db -> from('trades');
+		$this -> db -> join('items', 'items.id = char_inv.inv AND items.id = trades.name');
+		$this -> db -> where('char_id', $id);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			$arr = array();
+			foreach ($query -> result_array() as $row) {
+				$arr[] = $row;
+			}
+			return $arr;
+		} else {
+			return "Błąd zapytania!";
+		}
+	}
+	
+	public function get_weapon($tab_name, $type, $id = 1) {
+		$this -> db -> select('*');
+		$this -> db -> from('char_inv');
+		$this -> db -> from($tab_name);
+		$this -> db -> join('items', 'items.id = char_inv.inv AND items.' . $type . ' = ' . $tab_name . '.weapon_id');
+		$this -> db -> where(array('char_id' => $id));
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			$arr = array();
+			foreach ($query -> result_array() as $row) {
+				$arr[] = $row;
+			}
+			return $arr;
+		} else {
+			return "";
+		}
+	}
 }
