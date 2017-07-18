@@ -167,7 +167,6 @@ label {
 #m4 {
   margin-top: 20px;
   margin-left: 40px;
-  font-weight: bold;
   float: left;
 }
 
@@ -263,8 +262,11 @@ label {
 }
 
 .skills td {
-	vertical-align: top;
 	padding: 0;
 	margin: 0;
 	width: 207px;
+}
+
+.text-top {
+	vertical-align: top;
 }

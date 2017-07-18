@@ -164,7 +164,7 @@ function showR($val) {
           <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td style="vertical-align: top;">
+          <td class="text-top text-left">
           <?php
           if (!empty($weapon)) {
           	foreach ($weapon as $item) {
@@ -176,7 +176,7 @@ function showR($val) {
 					}
 					?>
           </td>
-          <td style="vertical-align: top; text-align: center">
+          <td class="text-center text-top">
           <?php
           if (!empty($weapon)) {
           	foreach ($weapon as $item) {
@@ -188,7 +188,7 @@ function showR($val) {
 					}
 					?>
           </td>
-          <td style="vertical-align: top; text-align: center">
+          <td class="text-center text-top">
           <?php
           if (!empty($weapon)) {
           	foreach ($weapon as $item) {
@@ -200,7 +200,7 @@ function showR($val) {
 					}
 					?>
 					</td>
-          <td style="vertical-align: top; text-align: center">
+          <td class="text-center text-top">
           <?php
           if (!empty($weapon)) {
           	foreach ($weapon as $item) {
@@ -212,7 +212,7 @@ function showR($val) {
 					}
 					?>
 					</td>
-          <td style="vertical-align: top; text-align: center">
+          <td class="text-center text-top">
           <?php
           if (!empty($weapon)) {
           	foreach ($weapon as $item) {
@@ -234,11 +234,39 @@ function showR($val) {
     <div id="middle_2">
       <table id="m3">
         <tr>
-          <td colspan="5" class="small_th" style="font-size: 16px;">Całe ciało: </td>
+          <td colspan="5" class="small_th text-left text-top" style="font-size: 16px;">Całe ciało:<br> 
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 1) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         
         <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 1) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+					if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead text-center'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -248,13 +276,39 @@ function showR($val) {
       <table id="m4" class="armour">
         <caption class="caption">Głowa (01-15)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-left text-top">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 2) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
+        
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 1) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+					if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -274,7 +328,7 @@ function showR($val) {
           <th class="tk">Żw. A.</th>
         </tr>
         <tr>
-          <td style="vertical-align: top;">
+          <td class="text-top text-left">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -285,7 +339,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="vertical-align: top; text-align: center;">
+          <td class="text-center text-top" >
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -296,7 +350,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="vertical-align: top; text-align: center;">
+          <td class="text-center text-top">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -307,7 +361,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="vertical-align: top; text-align: center;">
+          <td sclass="text-center text-top">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -318,7 +372,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="vertical-align: top; text-align: center;">
+          <td class="text-center text-top">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -329,7 +383,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td style="vertical-align: top; text-align: center;">
+          <td class="text-center text-top">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
@@ -350,13 +404,38 @@ function showR($val) {
       <table id="dl1" class="armour">
         <caption class="caption">Prawa ręka (16-35)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-top text-left">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 4) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 4) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+					if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -366,13 +445,37 @@ function showR($val) {
       <table id="dl2" class="armour">
         <caption class="caption">Prawa noga(81-90)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-top text-left">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 5) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 5) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+					if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?></th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -401,13 +504,38 @@ function showR($val) {
       <table id="dm1" class="armour">
         <caption class="caption">Lewa ręka(36-55)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-top text-left">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 4) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 4) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          } 
+					if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -417,13 +545,38 @@ function showR($val) {
       <table id="dm2" class="armour">
         <caption class="caption">Korpus(56-80)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-top text-left">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 3) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 3) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+          if ($pp == 0) {
+          	$pp ="";
+          }
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -433,13 +586,38 @@ function showR($val) {
       <table id="dm3" class="armour">
         <caption class="caption">Lewa noga(91-00)</caption>
         <tr>
-          <td colspan="5"></td>
+          <td colspan="5" class="text-top text-left">
+          <?php
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 5) {
+          			echo $item['item'];
+          		}
+          	}
+          } else {
+          	echo "";
+          }					
+          ?>
+          </td>
         </tr>
         <tr>
-          <td colspan="5"></td>
-        </tr>
-        <tr>
-          <th class="small_th">PP:</th>
+          <th class="small_th text-center">PP:
+          <?php
+          $pp = 0;
+          if (!empty($armour)) {
+          	foreach ($armour as $item) {
+          		if ($item['placement'] == 5) {
+          			$pp += $item['pp'];
+          		}
+          	}
+          }
+          if ($pp == 0) {
+						$pp = "";
+					}
+					echo br();
+					echo "<span class='lead'>" . $pp . "</span>";
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>

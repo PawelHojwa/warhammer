@@ -46,4 +46,22 @@ class Char_inventory_model extends CI_Model {
 			return "";
 		}
 	}
+	
+	public function get_armour($id) {
+		$this -> db -> select('*');
+		$this -> db -> from('char_inv');
+		$this -> db -> from('armour');
+		$this -> db -> join('items', 'items.id = char_inv.inv AND armour.armour_id = char_inv.inv');
+		$this -> db -> where(array('char_id' => $id));
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			$arr = array();
+			foreach ($query -> result_array() as $row) {
+				$arr[] = $row;
+			}
+			return $arr;
+		} else {
+			return "";
+		}
+	}
 }
