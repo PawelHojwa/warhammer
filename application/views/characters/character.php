@@ -492,10 +492,62 @@ function showR($val) {
       </table>
       <table id="dl4" class="armour">
         <tr>
-          <th>Atak</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+          <th>Atak</th>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
         </tr>
         <tr>
-          <th>Inicjatywa:</th><td></td><td></td><td></td><td></td><td></td>
+          <th>Inicjatywa:</th>
+          <td class="text-center">
+          <?php
+          	if($a == 1 || $a == 2 || $a == 3 || $a == 4 || $a == 5) {
+          		echo $ini;
+          	}
+          ?>
+          </td>
+          <td class="text-center">
+          <?php
+          	if ($a == 2) {
+          		echo ceil($ini * 0.5);
+          	} else if ($a == 3) {
+          		echo ceil($ini * 0.66);
+          	} else if ($a == 4) {
+          		echo ceil($ini * 0.75);
+          	} else {
+          		echo ceil($ini * 0.8);
+          	}
+          ?>
+          </td>
+          <td class="text-center">
+          <?php
+          	if ($a == 3) {
+          		echo ceil($ini * 0.33);
+          	} else if ($a == 4) {
+          		echo ceil($ini * 0.5);
+          	} else {
+          		echo ceil($ini * 0.6);
+          	}
+          ?>
+          </td>
+          <td class="text-center">
+          <?php
+          	if ($a == 4) {
+          		echo ceil($ini * 0.25);
+          	} else {
+          		echo ceil($ini * 0.4);
+          	}
+          ?>
+          </td>
+          <td class="text-center">
+          <?php
+          	if($a == 5) {
+          		echo ceil($ini * 0.2);
+          	}
+          ?>
+          </td>
         </tr>
       </table>
     </div>

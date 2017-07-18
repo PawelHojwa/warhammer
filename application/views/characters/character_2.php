@@ -143,22 +143,38 @@
 					</tr>
 					<tr>
 						<th>Wypatrywanie</th>
-						<td></td>
+						<td class="text-center">
+						<?php
+							echo ceil(($i + $intel) / 2);
+						?>
+						</td>
 						<td></td>
 					</tr>
 					<tr>
 						<th>Ukrywanie się</th>
-						<td></td>
+						<td class="text-center">
+						<?php
+							echo ceil(($op + $intel) / 2);
+						?>
+						</td>
 						<td></td>
 					</tr>
 					<tr>
 						<th>Nasłuchiwanie</th>
-						<td></td>
+						<td class="text-center">
+						<?php
+							echo ceil(($i + $intel) / 2);
+						?>
+						</td>
 						<td></td>
 					</tr>
 					<tr>
 						<th>Skradanie się</th>
-						<td></td>
+						<td class="text-center">
+						<?php
+							echo ceil(($op + $intel) / 2);
+						?>
+						</td>
 						<td></td>
 					</tr>
 				</table>

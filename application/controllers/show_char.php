@@ -37,7 +37,7 @@ class Show_char extends CI_Controller {
 			}
 			$data = $this -> get_char($_SESSION['p_id']);
 			/*echo "<pre>";
-			var_dump($data['armour']);
+			var_dump($data);
 			echo "</pre>";*/
 			$data['title'] = "Karta postaci";
 			$this -> load -> view('templates/header', $data);

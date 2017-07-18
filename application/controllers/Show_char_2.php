@@ -18,12 +18,10 @@ class Show_char_2 extends CI_Controller {
 		return $arr;
 	}
 	
-	public function get_speed($id) {
+	public function get_stats($id, $name) {
 		$s = 0;
 		$stats = $this -> characters_model -> get_basic_info($id);
-		//foreach ($stats as $stat) {
-			$s = $stats['sz'];
-		//}
+		$s = $stats[$name];
 		return $s;
 	}
 	
@@ -32,8 +30,12 @@ class Show_char_2 extends CI_Controller {
 	}
 	
 	public function page_2() {
-		$data = $this -> get_inventory($_SESSION['p_id']);
-		$data['sz'] = $this -> get_speed($_SESSION['p_id']);
+		$player_id = $_SESSION['p_id'];
+		$data = $this -> get_inventory($player_id);
+		$data['sz'] = $this -> get_stats($player_id, 'sz');
+		$data['intel'] = $this -> get_stats($player_id, 'intel');
+		$data['i'] = $this -> get_stats($player_id, 'i');
+		$data['op'] = $this -> get_stats($player_id, 'op');
 		$data['speed'] = $this -> show_speed($data['sz']);
 		$data['title'] = "Karta postaci";
 		$this -> load -> view('templates/header', $data);
