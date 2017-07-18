@@ -101,38 +101,40 @@
 		</div>
 		<div id="bottom_2">
 			<div id="bottom_left_2">
-				<table id="movement">
-					<tr>
-						<th>Tempo ruchu</th>
-						<th>m/10s</th>
-						<th>m/min</th>
-						<th>km/h</th>
-					</tr>
-					<tr>
-						<th>Ostrożnie</th>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<th>Normalnie</th>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<th>Trucht</th>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<th>Biegiem</th>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
+			<?php
+				echo "<table id='movement'>";
+				echo "<tr>";
+				echo "<th>Tempo ruchu</th>";
+				echo "<th class='speed'>m/10s</th>";
+				echo "<th class='speed'>m/min</th>";
+				echo "<th class='speed'>km/h</th>";
+				echo "</tr>";
+				echo "<tr>";
+				echo "<th>Ostrożnie</th>";
+				foreach ($speed as $val) {
+					echo "<td class='text-center'>" . $val['carefully'] . "</td>";
+				}
+				echo "</tr>";
+				echo "<tr>";
+				echo "<th>Normalnie</th>";
+				foreach ($speed as $val) {
+					echo "<td class='text-center'>" . $val['normal'] . "</td>";
+				}
+				echo "</tr>";
+				echo "<tr>";
+				echo "<th>Trucht</th>";
+				foreach ($speed as $val) {
+					echo "<td class='text-center'>" . $val['run'] * 0.75 . "</td>";
+				}
+				echo "</tr>";
+				echo "<tr>";
+				echo "<th>Biegiem</th>";
+				foreach ($speed as $val) {
+					echo "<td class='text-center'>" . $val['run'] . "</td>";
+				}
+				echo "</tr>";
+				echo "</table>";
+			?>
 				<table id="tracking">
 					<tr>
 						<th></th>

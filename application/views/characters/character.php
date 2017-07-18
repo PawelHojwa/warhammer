@@ -26,7 +26,7 @@ function showR($val) {
           	<th>Umiejętności</th>
           </tr>
           <tr>
-          	<td>
+          	<td class="text-top">
           		<ul class="skill_list">
           			<?php 
           				foreach ($sk as $skill) {
@@ -361,7 +361,7 @@ function showR($val) {
           }
           ?>
           </td>
-          <td sclass="text-center text-top">
+          <td class="text-center text-top">
           <?php
           if (!empty($ranged)) {
           	foreach ($ranged as $weapon) {
