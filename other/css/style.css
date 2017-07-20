@@ -270,3 +270,7 @@ label {
 .text-top {
 	vertical-align: top;
 }
+
+.bottom {
+	width: 1000px;
+}

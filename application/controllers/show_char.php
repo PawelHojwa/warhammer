@@ -25,7 +25,7 @@ class Show_char extends CI_Controller {
 		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5);
 	}
 	
-	public function show() {
+	public function page_1() {
 		if (!isset($_SESSION['user'])) {
 			$data['title'] = "Logowanie";
 			$data['sub_title'] = "Formularz logowania";
@@ -41,7 +41,7 @@ class Show_char extends CI_Controller {
 			echo "</pre>";*/
 			$data['title'] = "Karta postaci";
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('characters/character', $data);
+			$this -> load -> view('characters/page_1', $data);
 			$this -> load -> view('templates/footer');
 		}
 	}

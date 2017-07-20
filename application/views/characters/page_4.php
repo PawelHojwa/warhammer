@@ -1,8 +1,15 @@
 <div class="container">
 <?php
 	echo "<small>" . anchor('login/logout', 'Wyloguj') . "</small>";
-	echo br(2);
+	echo br();
 ?>
+	<div class="text-center">
+  <?php
+		echo br();
+		echo "<small>" . anchor('show_char_3/page_3', 'Poprzednia strona') . "</small>";
+		echo br(2);
+	?>
+	</div>
   <div id="mainPage">
     <div id="ramka_gora"></div>
     <div id="ramka_lewa"></div>
@@ -52,4 +59,10 @@
     </table>
     <div id="ramka_dol"></div>
   </div>
+  <div class="text-center">
+  <?php
+		echo br();
+		echo "<small>" . anchor('show_char_3/page_3', 'Poprzednia strona') . "</small>";
+	?>
+	</div>
 </div>

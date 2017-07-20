@@ -32,6 +32,7 @@ class Show_char_2 extends CI_Controller {
 	public function page_2() {
 		$player_id = $_SESSION['p_id'];
 		$data = $this -> get_inventory($player_id);
+		$data['id'] = $player_id;
 		$data['sz'] = $this -> get_stats($player_id, 'sz');
 		$data['intel'] = $this -> get_stats($player_id, 'intel');
 		$data['i'] = $this -> get_stats($player_id, 'i');
@@ -39,7 +40,10 @@ class Show_char_2 extends CI_Controller {
 		$data['speed'] = $this -> show_speed($data['sz']);
 		$data['title'] = "Karta postaci";
 		$this -> load -> view('templates/header', $data);
-		$this -> load -> view('characters/character_2', $data);
+		$this -> load -> view('characters/page_2', $data);
 		$this -> load -> view('templates/footer');
+		/*echo "<pre>";
+		var_dump($data);
+		echo "</pre>";*/
 	}
 }
