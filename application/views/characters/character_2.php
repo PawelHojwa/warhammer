@@ -88,7 +88,7 @@
 			</table>
 			<table id="inv_sum">
 				<tr>
-					<th>Plecka:</th>
+					<th>Plecak:</th>
 					<td></td>
 					<th>Broń</th>
 					<td></td>
