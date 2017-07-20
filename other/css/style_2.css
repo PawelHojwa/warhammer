@@ -172,3 +172,78 @@ table td > span {
 	height: 530px;
 	background: url("../img/dwarf.jpg");
 }
+
+.tables-3 {
+	width: 1106px;
+	margin: 0 auto;
+}
+
+#company {
+	height: 156px;
+	margin-top: 20px;
+}
+
+#company th {
+	width: 40px;
+}
+
+#company th:first-of-type {
+	width: 326px;
+}
+
+#company th {
+	width: 55px;
+}
+
+#img-3 {
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 656px;
+	height: 448px;
+	background: url('../img/img-3.jpg');
+}
+
+#allies_enemy {
+	margin-top: 30px;
+}
+
+#allies_enemy th:first-of-type {
+	width: 344px;
+}
+
+#allies_enemy th:nth-of-type(2) {
+	width: 164px;
+}
+
+#allies_enemy th:nth-of-type(3) {
+	width: 110px;
+}
+
+#allies_enemy th:nth-of-type(4) {
+	width: 295px;
+}
+
+#allies_enemy tr:nth-child(2) td {
+	height: 306px;
+}
+
+#allies_enemy tr:last-of-type td {
+	height: 167px;
+}
+
+#magic-items {
+	height: 341px;
+	margin-top: 24px;
+}
+
+#magic-items th:first-of-type {
+	width: 208px;
+}
+
+#magic-items th:nth-of-type(2), #magic-items th:nth-of-type(3){
+	width: 68px;
+}
+
+#magic-items th:nth-of-type(4), #magic-items th:nth-of-type(5) {
+	width: 79px;
+}
