@@ -487,7 +487,26 @@ function showR($val) {
           <th>Inicjatywa</th><th>MOB</th><th>GIB</th><th>PW</th>
         </tr>
         <tr>
-          <td></td><td></td><td></td><td></td>
+          <td class="lead">
+          <?php
+          	echo $ini;
+          ?>
+          </td>
+          <td class="lead">
+          <?php
+          	echo ceil(($ini + $zr) / 2);
+          ?>
+          </td>
+          <td class="lead">
+          <?php
+          	echo ceil(($s * 10 + $zr) / 2);
+          ?>
+          </td>
+          <td class="lead">
+          <?php
+          	echo ceil($ww / 10);
+          ?>
+          </td>
         </tr>
       </table>
       <table id="dl4" class="armour">
