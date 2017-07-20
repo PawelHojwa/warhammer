@@ -172,6 +172,11 @@ table td > span {
 	height: 530px;
 	background: url("../img/dwarf.jpg");
 }
+/*--------------------------------
+/*|-trzecia strona karty postaci-|
+/*--------------------------------*/
+
+/* -- tabele ogólnie -- */
 
 .tables-3 {
 	width: 1106px;
@@ -246,4 +251,57 @@ table td > span {
 
 #magic-items th:nth-of-type(4), #magic-items th:nth-of-type(5) {
 	width: 79px;
+}
+
+/*----------------------
+ * czwarta strona karty|
+ * ---------------------
+*/
+
+#casts {
+	height: 643px;
+	margin-top: 10px;
+}
+
+#casts th:first-of-type {
+	width: 229px;
+}
+
+#casts th:nth-of-type(2) {
+	width: 68px;
+}
+
+#casts th:nth-of-type(3), #casts th:nth-of-type(4), #casts th:nth-of-type(5) {
+	width: 80px;
+}
+
+#casts th:nth-of-type(6) {
+	width: 213px;
+}
+
+#img-4 {
+	background: url('../img/img-4.jpg');
+	height: 504px;
+}
+
+#important_info {
+	height: 193px; 
+	margin-top: 20px;
+}
+
+#money {
+	height: 194px;
+	margin-top: 20px;
+}
+
+#money th:first-of-type {
+	width: 114px;
+}
+
+#money th:nth-of-type(2) {
+	width: 113px;
+}
+
+#money th:nth-of-type(3) {
+	width: 435px;
 }
