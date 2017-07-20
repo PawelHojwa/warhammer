@@ -271,6 +271,8 @@ label {
 	vertical-align: top;
 }
 
-.bottom {
-	width: 1000px;
+#footer {
+	margin-top: 15px;
+	padding: 15px;
+	font-size: 12px;
 }
