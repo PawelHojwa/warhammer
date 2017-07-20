@@ -132,13 +132,22 @@ class Create_player extends CI_Controller {
 					} else {
 						$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
 						$this -> universal_model -> insert('characters', $data_char);
-						$data_char['id'] = $this -> get_char_id('characters', $val);
-						$this -> session -> set_userdata(['p_id' => $data_char['id']]);
+						$data_char = $this -> get_char_id($val);
+						$player_id;
+						foreach ($data_char as $item) {
+							$player_id = $item['id'];
+						}
+						$this -> session -> set_userdata(['p_id' => $player_id]);
+						redirect('player_skills/skill');
 					}
-					/*$this -> load -> view('templates/header', $data);
+						
+					 /*$this -> load -> view('templates/header', $data);
 					 $this -> load -> view('form/create_character', $data);
-					 $this -> load -> view('templates/footer');*/
-					redirect('player_skills/skill');
+					 $this -> load -> view('templates/footer');
+					 echo "<pre>";
+						var_dump($_SESSION['p_id']);
+						echo "</pre>";*/
+					//redirect('player_skills/skill');
 				} else {
 					$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);

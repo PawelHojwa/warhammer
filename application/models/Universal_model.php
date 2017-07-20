@@ -6,6 +6,7 @@ class Universal_model extends CI_Model{
 	}
 	
 	public function get_user($tab_name, $values = array()) {
+		$this -> db -> select('*');
 		$this -> db -> where($values);
 		$query = $this -> db -> get($tab_name);
 		if ($query !== FALSE && $query -> num_rows() > 0) {
@@ -15,8 +16,12 @@ class Universal_model extends CI_Model{
 	
 	public function get_values($tab_name, $value = array(), $column = "") {
 		$query = $this -> db -> get_where($tab_name, $value);
-		foreach ($query->result_array() as $row) {
-			return $row[$column];
+		$val = "";
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			foreach ($query->result_array() as $row) {
+				$val =  $row[$column];
+			}
+			return $val;
 		}
 	}
 
