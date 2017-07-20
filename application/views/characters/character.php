@@ -503,20 +503,20 @@ function showR($val) {
           <th>Inicjatywa:</th>
           <td class="text-center">
           <?php
-          	if($a == 1 || $a == 2 || $a == 3 || $a == 4 || $a == 5) {
+          	if($a >= 1) {
           		echo $ini;
           	}
           ?>
           </td>
           <td class="text-center">
           <?php
-          	if ($a == 2) {
+          	if ($a > 1) {
           		echo ceil($ini * 0.5);
-          	} else if ($a == 3) {
+          	} else if ($a > 2) {
           		echo ceil($ini * 0.66);
-          	} else if ($a == 4) {
+          	} else if ($a > 3) {
           		echo ceil($ini * 0.75);
-          	} else {
+          	} else  if ($a > 4) {
           		echo ceil($ini * 0.8);
           	}
           ?>
@@ -527,7 +527,7 @@ function showR($val) {
           		echo ceil($ini * 0.33);
           	} else if ($a == 4) {
           		echo ceil($ini * 0.5);
-          	} else {
+          	} else if ($a == 5){
           		echo ceil($ini * 0.6);
           	}
           ?>
@@ -536,7 +536,7 @@ function showR($val) {
           <?php
           	if ($a == 4) {
           		echo ceil($ini * 0.25);
-          	} else {
+          	} else if ($a == 5){
           		echo ceil($ini * 0.4);
           	}
           ?>
