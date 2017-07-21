@@ -74,7 +74,7 @@ class Inventory extends CI_Controller
 					$this -> universal_model -> delete('char_inv', array('char_id' => $player_id));
 					$arr = $this -> verify_data($full_inv);
 					$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
-					redirect('show_char/show');
+					redirect('show_char/page_1');
 				}
 			}
 		}

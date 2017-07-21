@@ -19,7 +19,7 @@ class Create_player extends CI_Controller {
 	}
 
 	public function character_data($id = "") {
-		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('p_age'), 'nskill' => rand(1, 4), 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rse'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), );
+		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('p_age'), 'nskill' => rand(1, 4), 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), );
 		return $data;
 	}
 
@@ -129,6 +129,7 @@ class Create_player extends CI_Controller {
 						$data_char['id'] = $_SESSION['p_id'];
 						$data_char['nskill'] = $n_skill;
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
+						redirect('player_skills/skill');
 					} else {
 						$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
 						$this -> universal_model -> insert('characters', $data_char);
@@ -147,7 +148,7 @@ class Create_player extends CI_Controller {
 					 echo "<pre>";
 						var_dump($_SESSION['p_id']);
 						echo "</pre>";*/
-					//redirect('player_skills/skill');
+					
 				} else {
 					$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);
