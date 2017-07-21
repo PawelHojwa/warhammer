@@ -42,8 +42,5 @@ class Show_char_2 extends CI_Controller {
 		$this -> load -> view('templates/header', $data);
 		$this -> load -> view('characters/page_2', $data);
 		$this -> load -> view('templates/footer');
-		/*echo "<pre>";
-		var_dump($data);
-		echo "</pre>";*/
 	}
 }

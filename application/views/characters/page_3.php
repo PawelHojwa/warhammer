@@ -35,7 +35,19 @@
   		<th>Ogd</th>
   	</tr>
   	<tr>
-  		<td></td>
+  		<td class="text-top">
+  		<?php
+  			if (!empty($company)) {
+  				foreach($company as $item) {
+  					if ($item['items_group_id'] == 6) {
+  						echo $item['item'];
+  					}
+  				}
+  			} else {
+  				echo "";
+  			}
+  		?>
+  		</td>
     	<td></td>
     	<td></td>
     	<td></td>
