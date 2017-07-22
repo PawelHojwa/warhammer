@@ -59,12 +59,12 @@
 					<th>Obc:</th>
 				</tr>
 				<tr>
-					<td class="inv" style="vertical-align: top;">
+					<td class="inv text-top">
 					<?php
 					if (!empty($inventory)) {
 						foreach ($inventory as $item) {
 							if ($item['items_group_id'] == 4) {
-								echo $item['item'] . "<br>";
+								echo "<span class='shows'>" . $item['item'] . "</span>";
 							}
 						}
 					} else {
@@ -73,12 +73,12 @@
 					?>
 					</td>
 					<td class="place"></td>
-					<td class="obc" style="vertical-align: top; text-align: center;">
+					<td class="obc text-top text-center">
 					<?php
 					if (!empty($inventory)) {
 						foreach ($inventory as $item) {
 							if ($item['items_group_id'] == 4) {
-								echo $item['weight'] . "<br>";
+								echo "<span class='shows'>" . $item['weight'] . "</span>";
 							}
 						}
 					} else {
@@ -243,3 +243,17 @@
 	?>
 	</div>
 </div>
+<p id="result"></p>
+<script>
+$('documnet').ready(function() {
+	var list = $('.inv .shows');
+	var a = [];
+	var list2 = $('.obc .shows');
+	list.each(function(index) {
+		a[index] = $(this).css('height');
+	});
+	list2.each(function(index) {
+		$(this).css('height', a[index]);
+	});
+});
+</script>

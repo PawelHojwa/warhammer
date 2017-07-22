@@ -276,3 +276,16 @@ label {
 	padding: 15px;
 	font-size: 12px;
 }
+
+.shows {
+	display: inline-block;
+	width: 100%;
+	padding-left: 5px;
+	margin: 0;
+	font-weight: normal;
+	border-bottom: 1px solid black;
+}
+
+.obc .shows {
+	padding-left: 0;
+}
