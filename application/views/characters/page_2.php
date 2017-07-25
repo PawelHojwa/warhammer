@@ -34,7 +34,7 @@
 					<td colspan="2"><span>Przeznaczenie: </span><?php echo $pp; ?></td>
 				</tr>
 				<tr>
-					<td colspan="2"><span>Doświadczenie:</span></td>
+					<td colspan="2"><span>Doświadczenie: </span><?php echo $exp; ?></td>
 				</tr>
 				<tr>
 					<td colspan="2"><span>Rodzina:</span></td>
