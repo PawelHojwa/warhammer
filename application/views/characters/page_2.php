@@ -156,7 +156,19 @@
 							echo ceil(($i + $intel) / 2);
 						?>
 						</td>
-						<td></td>
+						<td class='text-top text-left tracking'>
+						<?php
+						foreach ($skills as $skill) {
+							if ($skill == "Ukrywanie się na wsi") {
+								echo "<span class='text-top'>Ukrywanie się na wsi</span>";
+							} else if ($skill == "Ukrywanie się w mieście") {
+								echo "<span class='text-top'>Ukrywanie się w mieście</span>";
+							} else if ($skill == "Bystry wzrok") {
+								echo "<span class='text-top'>Bystry wzrok</span>";
+							}
+						}
+						?>
+						</td>
 					</tr>
 					<tr>
 						<th>Ukrywanie się</th>
@@ -165,7 +177,21 @@
 							echo ceil(($op + $intel) / 2);
 						?>
 						</td>
-						<td></td>
+						<td class='text-top text-left tracking'>
+						<?php
+						foreach ($skills as $skill) {
+							if ($skill == "Ukrywanie się na wsi") {
+								echo "<span class='text-top'>Ukrywanie się na wsi </span>";
+							} else if ($skill == "Ukrywanie się w mieście") {
+								echo "<span class='text-top'>Ukrywanie się w mieście </span>";
+							} else if ($skill == "Cichy chód na wsi") {
+								echo "<span class='text-top'>Cichy chód na wsi </span>";
+							} else if ($skill == "Cichy chód w mieście") {
+								echo "<span class='text-top'>Cichy chód w mieście </span>";
+							}
+						}
+						?>
+						</td>
 					</tr>
 					<tr>
 						<th>Nasłuchiwanie</th>
@@ -174,7 +200,19 @@
 							echo ceil(($i + $intel) / 2);
 						?>
 						</td>
-						<td></td>
+						<td class='text-top text-left tracking'>
+						<?php
+						foreach ($skills as $skill) {
+							if ($skill == "Cichy chód się na wsi") {
+								echo "<span class='text-top'>Cichy chód się na wsi </span>";
+							} else if ($skill == "Cichy chód w mieście") {
+								echo "<span class='text-top'>Cichy chód w mieście </span>";
+							} else if ($skill == "Czuły słuch") {
+								echo "<span class='text-top'>Czuły słuch </span>";
+							}
+						}
+						?>
+						</td>
 					</tr>
 					<tr>
 						<th>Skradanie się</th>
@@ -183,7 +221,19 @@
 							echo ceil(($op + $intel) / 2);
 						?>
 						</td>
-						<td></td>
+						<td class='text-top text-left tracking'>
+						<?php
+						foreach ($skills as $skill) {
+							if ($skill == "Cichy chód na wsi") {
+								echo "<span class='text-top'>Cichy chd na wsi</span>";
+							} else if ($skill == "Cichy chód w mieście") {
+								echo "<span class='text-top'>Cichy chód w mieście</span>";
+							} else if ($skill == "Śledzenie") {
+								echo "<span class='text-top'>Śledzenie</span>";
+							}
+						}
+						?>
+						</td>
 					</tr>
 				</table>
 			</div>

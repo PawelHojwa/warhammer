@@ -7,6 +7,7 @@ class Show_char_2 extends CI_Controller {
 		$this -> load -> model('char_inventory_model');
 		$this -> load -> model('characters_model');
 		$this -> load -> model('speed_model');
+		$this -> load -> model('char_skills_model');
 		$this -> load -> library('session');
 	}
 	
@@ -25,6 +26,13 @@ class Show_char_2 extends CI_Controller {
 		return $s;
 	}
 	
+	public function get_skills($id) {
+		$skill = array();
+		$skills = $this -> char_skills_model -> get_character_skills($id);
+		$skill = $skills['skillid'];
+		return $skill;
+	} 
+	
 	public function show_speed ($id) {
 		return $speed = $this -> speed_model -> get_speed($id);
 	}
@@ -38,6 +46,7 @@ class Show_char_2 extends CI_Controller {
 		$data['i'] = $this -> get_stats($player_id, 'i');
 		$data['op'] = $this -> get_stats($player_id, 'op');
 		$data['speed'] = $this -> show_speed($data['sz']);
+		$data['skills'] = $this -> get_skills($_SESSION['p_id']);
 		$data['title'] = "Karta postaci";
 		$this -> load -> view('templates/header', $data);
 		$this -> load -> view('characters/page_2', $data);
