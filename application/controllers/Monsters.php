@@ -10,12 +10,11 @@ class Monsters extends CI_Controller {
 	}
 	
 	public function get_monsters() {
-		if (isset($_REQUEST['cat']) === TRUE || $_REQUEST['cat'] === FALSE) {
+		if (isset($_REQUEST['cat']) === TRUE && $_REQUEST['cat'] !== FALSE) {
 			$monsters = $this -> monster_model -> monsters($_REQUEST['cat']);
 			echo "<table class='table'>";
 			echo "<tr>";
 			echo "<th style='border-top: 1px solid black;'>Nazwa</th>";
-			echo "<th style='border-top: 1px solid black;'>Kategoria</th>";
 			echo "<th style='border-top: 1px solid black;'>Sz</th>";
 			echo "<th style='border-top: 1px solid black;'>WW</th>";
 			echo "<th style='border-top: 1px solid black;'>US</th>";
@@ -34,7 +33,6 @@ class Monsters extends CI_Controller {
 			foreach ($monsters as $monster) {
 				echo "<tr>";
 				echo "<td	class='text-center'>" . $monster['monsterName'] . "</td>";
-				echo "<td class='text-center'>" . $monster['monsterCategory'] . "</td>";
 				echo "<td class='text-center'>" . $monster['sz'] . "</td>";
 				echo "<td class='text-center'>" . $monster['ww'] . "</td>";
 				echo "<td class='text-center'>" . $monster['us'] . "</td>";

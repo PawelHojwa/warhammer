@@ -51,7 +51,6 @@ class Inventory extends CI_Controller
 			} else {
 				$inv = $b_inv;
 			}
-			
 			$full_inv = array();
 			foreach ($inv as $item) {
 				if ($item['options'] == 0) {
@@ -70,16 +69,20 @@ class Inventory extends CI_Controller
 				if ($char_id = NULL) {
 					$arr = $this -> verify_data($full_inv);
 					$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
-					redirect('show_char/show');
+					if ($prof_id == 49) {
+						redirect('spells/spell_form');
+					} else {
+						redirect('show_char/page_1');
+					}
 				} else {
-					
 					$this -> universal_model -> delete('char_inv', array('char_id' => $player_id));
 					$arr = $this -> verify_data($full_inv);
-					echo "<pre>";
-					var_dump($full_inv);
-					echo "</pre>";
 					$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
-					redirect('show_char/page_1');
+					if ($prof_id == 49) {
+						redirect('spells/spell_form');
+					} else {
+						redirect('show_char/page_1');
+					}
 				}
 			}
 		}

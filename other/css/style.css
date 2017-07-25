@@ -289,3 +289,11 @@ label {
 .obc .shows {
 	padding-left: 0;
 }
+
+#spell {
+	margin-left: 20px;
+}
+
+#spells {
+	display: inline;
+}
