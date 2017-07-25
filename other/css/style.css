@@ -283,7 +283,6 @@ label {
 	padding-left: 5px;
 	margin: 0;
 	font-weight: normal;
-	border-bottom: 1px solid black;
 }
 
 .obc .shows {
@@ -296,4 +295,10 @@ label {
 
 #spells {
 	display: inline;
+}
+
+.spell_show {
+	font-weight: normal;
+	display: inline-block;
+	width: 100%;
 }

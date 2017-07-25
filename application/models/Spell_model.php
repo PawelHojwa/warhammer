@@ -24,4 +24,18 @@ class Spell_model extends CI_Model {
 			$this -> db -> insert($tab_name, $record);
 		}
 	}
+	
+	public function get_spells($id = 1) {
+		$this -> db -> select('*');
+		$this -> db -> from('casts_names');
+		$this -> db -> from('char_spells');
+		$this -> db -> join('spells', 'spells.spell_name_id = char_spells.spell AND spells.spell_name_id = casts_names.id');
+		$this -> db -> where('char_id', $id);
+		$query  = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return "Błąd zapytania!";
+		}
+	}
 }
