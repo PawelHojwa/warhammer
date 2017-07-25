@@ -74,6 +74,10 @@ echo form_open('create_player/create', ['id' => 'basic']);
 	<td><?php echo form_label('Opis: ', 'description'); ?></th>
 	<td><?php echo form_input('description'); ?></td>
 </tr>
+<tr>
+	<td><?php echo form_label('Punkty przeznaczenia', 'pp'); ?></td>
+	<td><?php echo form_input('pp', '', array('readonly' => 'readonly', 'size' => 1, 'id' => 'dp', 'class' => 'text-center')); ?></td>
+</tr>
 </table>
 </div>
 <div class="form-group">
@@ -134,3 +138,22 @@ echo form_submit('submit', 'Stwórz', ['class' => 'btn btn-primary']); ?>
 <?php echo form_close(); ?>
 <?php echo validation_errors('<p class="alert alert-danger">', '</p>'); ?>
 </div>
+<script>
+$('document').ready(function() {
+	$('#race').change(function() {
+		var race = $('#race').val();
+		$('#race option:selected').each(function() {
+			$.ajax({
+				url: 'destiny_points',
+				type: 'post',
+				data: {
+					race: race
+				},
+				success: function(data) {
+					$('#dp').val(data);
+				}
+			});
+		});
+	}).change();
+});
+</script>

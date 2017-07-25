@@ -31,7 +31,7 @@
 			</table>
 			<table id="other_info">
 				<tr>
-					<td colspan="2"><span>Przeznaczenie:</span></td>
+					<td colspan="2"><span>Przeznaczenie: </span><?php echo $pp; ?></td>
 				</tr>
 				<tr>
 					<td colspan="2"><span>Doświadczenie:</span></td>
