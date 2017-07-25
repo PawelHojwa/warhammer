@@ -49,6 +49,7 @@ class Show_char_2 extends CI_Controller {
 		$data['skills'] = $this -> get_skills($_SESSION['p_id']);
 		$data['pp'] = $this -> get_stats($player_id, 'dp');
 		$data['exp'] = $this -> get_stats($player_id, 'exp');
+		$data['family'] = $this -> get_stats($player_id, 'family');
 		$data['title'] = "Karta postaci";
 		$this -> load -> view('templates/header', $data);
 		$this -> load -> view('characters/page_2', $data);

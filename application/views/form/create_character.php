@@ -75,7 +75,11 @@ echo form_open('create_player/create', ['id' => 'basic']);
 	<td><?php echo form_input('description'); ?></td>
 </tr>
 <tr>
-	<td><?php echo form_label('Punkty przeznaczenia', 'pp'); ?></td>
+	<td><?php echo form_label('Rodzina: ', 'family'); ?></td>
+	<td><?php echo form_input('family'); ?></td>
+</tr>
+<tr>
+	<td><?php echo form_label('Punkty przeznaczenia: ', 'pp'); ?></td>
 	<td><?php echo form_input('pp', '', array('readonly' => 'readonly', 'size' => 1, 'id' => 'dp', 'class' => 'text-center')); ?></td>
 </tr>
 </table>

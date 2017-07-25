@@ -37,7 +37,15 @@
 					<td colspan="2"><span>Doświadczenie: </span><?php echo $exp; ?></td>
 				</tr>
 				<tr>
-					<td colspan="2"><span>Rodzina:</span></td>
+					<td colspan="2"><span>Rodzina: </span>
+					<?php
+					if ($family != "") {
+						echo $family;
+					} else {
+						echo "brak";
+					}
+					?>
+					</td>
 				</tr>
 				<tr>
 					<td id="blesses"><span>Bogosławieństwo:</span></td>
