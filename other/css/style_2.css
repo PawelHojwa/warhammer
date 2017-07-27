@@ -6,6 +6,12 @@ table td > span {
 	font-weight: bold;
 }
 
+.inventory-list {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
 /*--sekcja top_2--*/
 
 #top_2 {

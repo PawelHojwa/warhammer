@@ -7,7 +7,7 @@ foreach ($b_inv as $item) {
 		$full_inv[] = $item['item'];
 	}
 }
-echo ul($full_inv);
+echo ul($full_inv, array('class' => 'inventory-list'));
 foreach ($b_inv as $item) {	
 	if ($item['options'] == 1 && $item['items_group_id'] == 1) {
 			echo form_radio(array('name' => 'inv[1]', 'value' =>$item['inventory_id']));

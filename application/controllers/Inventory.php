@@ -69,7 +69,7 @@ class Inventory extends CI_Controller
 				if ($char_id = NULL) {
 					$arr = $this -> verify_data($full_inv);
 					$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
-					if ($prof_id == 49) {
+					if ($prof_id == 69) {
 						redirect('spells/spell_form');
 					} else {
 						redirect('show_char/page_1');
@@ -78,7 +78,7 @@ class Inventory extends CI_Controller
 					$this -> universal_model -> delete('char_inv', array('char_id' => $player_id));
 					$arr = $this -> verify_data($full_inv);
 					$this -> char_inventory_model -> multi('char_inv', 'inv', $arr);
-					if ($prof_id == 49) {
+					if ($prof_id == 69) {
 						redirect('spells/spell_form');
 					} else {
 						redirect('show_char/page_1');

@@ -82,7 +82,7 @@ class Create_player extends CI_Controller {
 			return false;
 		} else if ($class == 3 && $i < 65 && $race == 2) {
 			return false;
-		} else if ($class == 4 && ($sw < 30 || $int < 30)) {
+		} else if ($class == 4 && $sw < 30 && $int < 30) {
 			return false;
 		} else {
 			return true;
