@@ -73,7 +73,17 @@ function showR($val) {
             <td colspan="3"><label>Kariera: </label><?php echo " " . $profession; ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Profesje wyjściowe: </label></td>
+            <td colspan="3"><label>Profesje wyjściowe: </label>
+            <?php
+            if (!empty($exit_professions) && is_array($exit_professions)) {
+            	foreach ($exit_professions as $exit) {
+            		echo $exit['profession_name'] . ", ";
+            	}
+            } else if (!is_array($exit_professions)){
+            	echo $exit_professions;
+            }
+            ?>
+            </td>
           </tr>
         </table>
         

@@ -8,6 +8,9 @@ class Show_char extends CI_Controller {
 		$this -> load -> helper('html');
 		$this -> load -> helper('url_helper');
 		$this -> load -> library('session');
+		$this -> load -> library('char_skill');
+		$this -> load -> model('universal_model');
+		$this -> load -> model('exit_profession_model');
 	}
 
 	public function get_char($id) {
@@ -35,10 +38,16 @@ class Show_char extends CI_Controller {
 			if (!isset($_SESSION['p_id'])) {
 				$_SESSION['p_id'] = $_GET['id'];
 			}
+			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'profId');
 			$data = $this -> get_char($_SESSION['p_id']);
-			/*echo "<pre>";
-			var_dump($data);
-			echo "</pre>";*/
+			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
+			foreach ($data['exit_professions'] as $exit) {
+				if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {
+					$data['exit_professions'] = "Kolejna profesja cyrkowca lub podstawowa profesja Łotra, lub losowo wybrana klasa Rangera, Wojownika lub Uczonego";
+				} else if (($profession_id > 141 && $profession_id < 161  || $profession_id == 169) && $exit['exit_profession'] == 0) {
+					$data['exit_professions'] = "Brak";
+				}
+			}
 			foreach($data['sk'] as $skill) {
 				if ($skill == 'Bardzo wytrzymały') {
 					$data['wt']++;
