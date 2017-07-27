@@ -9,8 +9,9 @@ if (empty($name_list)) {
 } else {
     foreach ($name_list as $name) {
 		echo "<tr>";
-		echo "<td>" . anchor('show_char/page_1?id=' . $name['id'],  $name['name']) . "</td>";
-		echo "<td>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
+			echo "<td>" . $name['name'] . "</td>";
+			echo "<td class='text-center'>" . anchor('show_char/page_1?id=' . $name['id'],  'Pokaż') . "</td>";
+			echo "<td class='text-center'>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
 		echo "</tr>";
 	}
 }

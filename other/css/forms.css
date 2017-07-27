@@ -115,13 +115,14 @@ caption.name_caption
 table.name_table, table.name_table tr, table.name_table td
 {
 	margin: 10px;
-	border: none;
+	border-collapse: collapse;
+	border: 1px solid black;
 	min-width: 80px;
 }
 
 table.name_table td
 {
-	padding: 1px 3px;
+	padding: 3px 10px;
 }
 
 .anchor {
