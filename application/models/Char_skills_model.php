@@ -14,13 +14,14 @@ class Char_skills_model extends CI_Model {
 	public function get_character_skills($id = 1) {
 		$this -> db -> select('*');
 		$this -> db -> from('umiejetnosci');
-		$this -> db -> from('profesje');
-		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND profesje.profID = char_skills.profId', 'right');
+		$this -> db -> from('professions');
+		$this -> db -> from('professions_statistics');
+		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND professions.id = char_skills.profId AND professions.id = professions_statistics.id', 'right');
 		$this -> db -> where(['char_id' => $id]);
 		$query = $this -> db -> get();
 		$arr = array();
 		foreach ($query->result_array() as $key => $value) {
-			$arr['profName'] = $value['professionName'];
+			$arr['profName'] = $value['profession_name'];
 			$arr['skillid'][$key] = $value['skillName'];
 			$arr['sz'] = $value['sz'];
 			$arr['ww'] = $value['ww'];
@@ -28,7 +29,7 @@ class Char_skills_model extends CI_Model {
 			$arr['s'] = $value['s'];
 			$arr['wt'] = $value['wt'];
 			$arr['zw'] = $value['zw'];
-			$arr['i'] = $value['i'];
+			$arr['i'] = $value['ini'];
 			$arr['a'] = $value['a'];
 			$arr['zr'] = $value['zr'];
 			$arr['cp'] = $value['cp'];

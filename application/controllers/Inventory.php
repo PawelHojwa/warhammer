@@ -18,7 +18,7 @@ class Inventory extends CI_Controller
 	}
 	
 	public function prof_inv($id) {
-		return $this -> item_model -> get_inv('prof_inv', ['profID' => $id]);
+		return $this -> item_model -> get_inv('professions_inventory', ['profession_id' => $id]);
 	}
 	
 	public function verify_data($arr, $id = '') {
@@ -54,7 +54,7 @@ class Inventory extends CI_Controller
 			$full_inv = array();
 			foreach ($inv as $item) {
 				if ($item['options'] == 0) {
-					$full_inv[] = $item['name'];
+					$full_inv[] = $item['inventory_id'];
 				}
 			}
 			$data['b_inv'] = $inv;

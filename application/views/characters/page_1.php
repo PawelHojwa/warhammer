@@ -1,6 +1,6 @@
 <?php 
 function showR($val) {
-	if ($val != null) {
+	if ($val > 0) {
 	echo "+" . $val;
 	} else {
 		echo " ";
@@ -67,7 +67,7 @@ function showR($val) {
             <td colspan="2"><label>Opis: </label><?php echo " " . $description; ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Pochodzenie: </label></td>
+            <td colspan="3"><label>Pochodzenie: </label><?php echo " " . $origin; ?></td>
           </tr>
           <tr>
             <td colspan="3"><label>Kariera: </label><?php echo " " . $profession; ?></td>

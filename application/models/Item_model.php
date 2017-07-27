@@ -8,7 +8,7 @@ class Item_model extends CI_Model {
 	{
 		$this -> db -> select('*');
 		$this -> db -> from($tab_name);
-		$this -> db -> join('items', $tab_name.'.name = items.id', 'left');
+		$this -> db -> join('items', $tab_name.'.inventory_id = items.id', 'left');
 		$this -> db -> where($where);
 		$query = $this -> db -> get();
 		$arr = array();

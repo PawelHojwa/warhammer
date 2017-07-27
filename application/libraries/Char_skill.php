@@ -33,13 +33,13 @@ class Char_skill {
 	public function prof_id($id) {
 		$CI = &get_instance();
 		$CI -> load -> model('profession_model');
-		return $CI -> profession_model -> get_professions('profesje', 'profID', $id, 1);
+		return $CI -> profession_model -> get_professions('professions', 'id', $id);
 	}
 	
 	public function profession($id) {
 		$CI = &get_instance();
 		$CI -> load -> model('profession_model');
-		return $CI -> profession_model -> get_professions('profesje', 'professionName',$id, 1);
+		return $CI -> profession_model -> get_professions('professions', 'profession_name',$id);
 	}
 	
 	public function check_age($r, $a, $s) {

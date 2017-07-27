@@ -62,7 +62,7 @@ class Player_skills extends CI_Controller {
 			$arr = array();
 			$skills = $this -> get_skill($_POST['prof']);
 			foreach ($skills as $skill) {
-				$arr[] = $skill['skillid'];
+				$arr[] = $skill['skill_id'];
 			}
 			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
 		} else

@@ -35,7 +35,7 @@ class Spell_model extends CI_Model {
 		if ($query !== FALSE && $query -> num_rows() > 0) {
 			return $query -> result_array();
 		} else {
-			return "Błąd zapytania!";
+			return "";
 		}
 	}
 }
