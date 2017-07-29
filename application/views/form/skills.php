@@ -1,7 +1,7 @@
+<div class="container">
 <?php echo heading($title, 1); ?>
 <p class="lead">Imie postaci: <?php echo $player_name; ?></p>
-<p>Pozostało umiejętności: <span id="amount" class="lead"><?php echo $am_skill; ?></span></p>
-<p id="a"></p>
+<p class="moveBar">Wybrano umiejętności: <span id="amount" class="lead"><?php echo $am_skill; ?></span></p>
 <?php
 echo form_open('player_skills/skill',['id' => 'skill_form']);
 echo form_label('Profesje: ', 'prof');
@@ -17,15 +17,25 @@ echo "<br>";
 echo form_submit('btn', 'Wyślij', ['class' => 'btn btn-primary']);
 echo form_close();
 ?>
+</div>
 <script>
+var am = $('#amount').text();
+var boxCount = function() {
+	var len = $('.skill:checked:not(:disabled)').length;
+	if (len > am) {
+		alert('Wybrałeś wszystkie możliwe umiejętności!!');
+	}
+	$('#amount').text(len + "/" + am);
+};
+boxCount();
+$('.skill').on('click', boxCount);
 $('#skill_form').submit(function() {
-	var am = $('#amount').text();
 	var len = $('.skill:checked:not(:disabled)').length;
 	var deff = am - len;
 	if (len == am)
 		return true;
 	else {
-		alert("Pozostało do wybrania: " + deff + " umiejętności");
+		alert("Pozostało do wybrania: " + deff + (deff === 1? " umiejętność": " umiejętności"));
 		return false;
 	}
 });

@@ -310,3 +310,14 @@ table td > span {
 #money th:nth-of-type(3) {
 	width: 435px;
 }
+
+.moveBar {
+	position: absolute;
+	top: 100px;
+	background-color: white;
+}
+
+.fixed {
+	position: fixed;
+	top: 0;
+}

@@ -2,7 +2,7 @@
 <?php
 echo heading($sub_title, 3);
 ?>
-<span id="spell">Ilość czarów do wybrania: <p id="spells" class="lead"><?php echo $amount; ?></p></span>
+<p id="spell" class="moveBar">Ilość czarów do wybrania: <span id="spells" class="lead"><?php echo $amount; ?></span></p>
 <?php
 echo br(2);
 echo form_open('spells/spell_form');

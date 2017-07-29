@@ -50,6 +50,21 @@
   background: url("../img/obraz_1_gora.jpg");
 }
 
+table {
+  border-collapse: collapse;
+}
+
+table ,th ,td {
+  border: 1px solid black;
+  font-size: 14px;
+}
+
+table th {
+  background-color: #bfbfbf;
+  height: 40px;
+  text-align: center;
+}
+
 #tl_table {
   width: 414px;
   height: 521px;

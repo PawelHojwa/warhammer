@@ -152,14 +152,6 @@ $("document").ready(function() {
 		check_class();
 	}).change();
 
-	$('.skill').click(function() {
-		var am = $('#amount').text();
-		$("#a").text();
-		if ($('.skill:checked:not(:disabled)').length > am) {
-			return false;
-		}
-	});
-
 	$('#profession').change(function() {
 		$('.skill').prop('checked', false);
 		$('.skill').prop('disabled', false);
@@ -185,6 +177,15 @@ $("document").ready(function() {
 		//ajax
 	}).change();
 	//change
+	
+	var num = 150;
+	$(window).bind('scroll', function() {
+		if ($(window).scrollTop() > num) {
+			$('.moveBar').addClass('fixed');
+		} else {
+			$('.moveBar').removeClass('fixed');
+		}
+	});
 });
 //ready
 
