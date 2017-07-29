@@ -72,6 +72,7 @@ class Inventory extends CI_Controller
 					if ($prof_id == 69) {
 						redirect('spells/spell_form');
 					} else {
+						$this -> universal_model -> delete('char_spells', array('char_id' => $player_id));
 						redirect('show_char/page_1');
 					}
 				} else {
@@ -81,6 +82,7 @@ class Inventory extends CI_Controller
 					if ($prof_id == 69) {
 						redirect('spells/spell_form');
 					} else {
+						$this -> universal_model -> delete('char_spells', array('char_id' => $player_id));
 						redirect('show_char/page_1');
 					}
 				}
