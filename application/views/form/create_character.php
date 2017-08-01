@@ -1,22 +1,28 @@
 <div class="container">
 <h1><?php echo $title; ?></h1>
 <p class="lead">Witaj <?php echo $user;?></p>
-<p class="name_caption">Twoje postacie:</p>
-<table class="name_table">
-<?php 
-if (empty($name_list)) {
-	echo "Nie masz jeszcze postaci";
-} else {
-    foreach ($name_list as $name) {
+<button class="btn btn-info show-table">Pokaż postacie</button>
+<div class="character-table">
+	<p class="name_caption lead">Twoje postacie:</p>
+	<table class="name_table">
+	<?php 
+	if (empty($name_list)) {
 		echo "<tr>";
-			echo "<td>" . $name['name'] . "</td>";
-			echo "<td class='text-center'>" . anchor('show_char/page_1?id=' . $name['id'],  'Pokaż') . "</td>";
-			echo "<td class='text-center'>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
+		echo "<td class='alert'>Nie masz jeszcze postaci</td>";
 		echo "</tr>";
+	} else {
+	    foreach ($name_list as $name) {
+			echo "<tr>";
+				echo "<td>" . $name['name'] . "</td>";
+				echo "<td class='text-center'>" . anchor('show_char/page_1?id=' . $name['id'],  'Pokaż') . "</td>";
+				echo "<td class='text-center'>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
+			echo "</tr>";
+		}
 	}
-}
-?>
-</table>
+	?>
+	</table>
+</div>
+<br>
 <?php 
 echo anchor('login/logout', "Wyloguj", array('style' => 'display: inline-block;')) . "<br><br>";
 echo form_open('create_player/create', ['id' => 'basic']);
@@ -164,5 +170,8 @@ $('document').ready(function() {
 			});
 		});
 	}).change();
+	$('.show-table').click(function() {
+		$('.character-table').slideToggle("slow");
+	});
 });
 </script>

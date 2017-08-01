@@ -178,7 +178,7 @@ $("document").ready(function() {
 	}).change();
 	//change
 	
-	var num = 150;
+	var num = 96;
 	$(window).bind('scroll', function() {
 		if ($(window).scrollTop() > num) {
 			$('.moveBar').addClass('fixed');

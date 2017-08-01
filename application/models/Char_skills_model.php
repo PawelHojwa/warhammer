@@ -11,13 +11,32 @@ class Char_skills_model extends CI_Model {
 		}
 	}
 	
+	public function get_skills($col) {
+		$this -> db -> select('*');
+		$this -> db -> from('umiejetnosci');
+		$this -> db -> order_by('skillName');
+		$query = $this -> db -> get();
+		$target = array();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			foreach ($query -> result() as $row){
+				$target[] = $row -> $col;
+			}
+			return $target;
+		} else {
+			return "Błąd zapytania!!";
+		}
+		
+	}
+	
 	public function get_character_skills($id = 1) {
 		$this -> db -> select('*');
 		$this -> db -> from('umiejetnosci');
 		$this -> db -> from('professions');
 		$this -> db -> from('professions_statistics');
 		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND professions.id = char_skills.profId AND professions.id = professions_statistics.id', 'right');
+		$this -> db -> order_by('skillName', 'ASC');
 		$this -> db -> where(['char_id' => $id]);
+		
 		$query = $this -> db -> get();
 		$arr = array();
 		foreach ($query->result_array() as $key => $value) {

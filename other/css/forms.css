@@ -115,8 +115,8 @@ caption.name_caption
 table.name_table, table.name_table tr, table.name_table td
 {
 	margin: 10px;
-	border-collapse: collapse;
-	border: 1px solid black;
+	/*border-collapse: collapse;
+	border: 1px solid black;*/
 	min-width: 80px;
 }
 
@@ -135,4 +135,15 @@ table.name_table td
 
 #speed td {
 	text-align: center;
+}
+
+.character-table {
+	display: none;
+	position: absolute;
+	background-color: #ebf3d6;
+	top: 155px;
+	min-width: 200px;
+	box-shadow: 3px 3px 3px black;
+	border-radius: 5px;
+	padding: 5px;
 }

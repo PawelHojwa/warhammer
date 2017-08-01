@@ -24,6 +24,7 @@ var boxCount = function() {
 	var len = $('.skill:checked:not(:disabled)').length;
 	if (len > am) {
 		alert('Wybrałeś wszystkie możliwe umiejętności!!');
+		return false;
 	}
 	$('#amount').text(len + "/" + am);
 };

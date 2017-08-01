@@ -13,13 +13,17 @@ class Char_skill {
 		$prof_id = $this -> prof_id($class_id);
 		$prof_name = $this -> profession($class_id);
 		$profession = array_combine($prof_id, $prof_name);
+		$skill_id = $this -> skill_id('skillid');
+		$skill_name = $this -> skill_id('skillName');
+		$skills = array_combine($skill_id, $skill_name);
 		$data['age'] = $age;
 		$am_skill = $this -> check_age($race, $age, $as);
 		$data['am_skill'] = $am_skill;
 		$data['player_name'] = $name;
 		$data['title'] = "Wybór umiejętności";
-		$data['skills'] = $this -> skills('skillName');
-		$data['skills_id'] = $this -> skills('skillid');
+		/*$data['skills'] = $this -> skills('skillName');
+		$data['skills_id'] = $this -> skills('skillid');*/
+		$data['skills'] = $skills;
 		$data['profession'] = $profession;	
 		return $data;
 	}
@@ -29,6 +33,14 @@ class Char_skill {
 		$CI -> load -> model('universal_model');
 		return $CI -> universal_model -> arr_conv('umiejetnosci', $column, 1);
 	}
+
+	public function skill_id($col) {
+		$CI = &get_instance();
+		$CI -> load -> model('char_skills_model');
+		return $CI -> char_skills_model -> get_skills($col);
+	}
+	
+	
 	
 	public function prof_id($id) {
 		$CI = &get_instance();
