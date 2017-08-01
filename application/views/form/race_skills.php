@@ -1,6 +1,5 @@
 <div class="container">
 <?php 
-echo $amount;
 echo heading($title, 3); 
 echo form_open('race_skills/choose_skills');
 if ($amount > 1) {

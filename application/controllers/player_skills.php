@@ -16,7 +16,11 @@ class Player_skills extends CI_Controller {
 	public function verify_data($p_id, $id = "") {
 		$skill_1 = $this -> input -> post('skills');
 		$skill_2 = $this -> input -> post('s');
-		$skills = array_merge($skill_1, $skill_2);
+		if (!empty($skill_1) && is_array($skill_1)) {
+			$skills = array_merge($skill_2, $skill_1);
+		} else {
+			$skills = $skill_2;
+		}
 		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $this -> input -> post('prof'), 'skill_id' => $skills);
 		return $data;
 	}
