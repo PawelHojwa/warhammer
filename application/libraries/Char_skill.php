@@ -6,23 +6,17 @@ class Char_skill {
 		$CI = &get_instance();
 		$CI -> load -> model('universal_model');
 		$name = $CI -> universal_model -> get_values('characters', array('id' => $id), 'name');
-		$as = $CI -> universal_model -> get_values('characters', array('id' => $id), 'nskill');
-		$age = $CI -> universal_model -> get_values('characters', array('id' => $id), 'age');
-		$race = $CI -> universal_model -> get_values('characters', array('id' => $id), 'raceID');
 		$class_id = $CI -> universal_model -> get_values('characters', array('id' => $id), 'classID');
+		$race = $CI -> universal_model -> get_values('characters', array('id' => $id), 'raceID');
 		$prof_id = $this -> prof_id($class_id);
 		$prof_name = $this -> profession($class_id);
 		$profession = array_combine($prof_id, $prof_name);
 		$skill_id = $this -> skill_id('skillid');
 		$skill_name = $this -> skill_id('skillName');
 		$skills = array_combine($skill_id, $skill_name);
-		$data['age'] = $age;
-		$am_skill = $this -> check_age($race, $age, $as);
-		$data['am_skill'] = $am_skill;
+		$data['race'] = $race;
 		$data['player_name'] = $name;
 		$data['title'] = "Wybór umiejętności";
-		/*$data['skills'] = $this -> skills('skillName');
-		$data['skills_id'] = $this -> skills('skillid');*/
 		$data['skills'] = $skills;
 		$data['profession'] = $profession;	
 		return $data;

@@ -157,12 +157,14 @@ $("document").ready(function() {
 		$('.skill').prop('disabled', false);
 		$("input[type='text']").remove();
 		var prof_id = $(this).val();
+		var id = $('#p_id').val();
 		var skill_name = $('label').text();
 		$.ajax({
 			url : 'get_prof',
 			type : 'post',
 			data : {
-				prof : prof_id
+				prof : prof_id,
+				id : id
 			},
 			dataType : 'json',
 			success : function(data) {

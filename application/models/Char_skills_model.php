@@ -6,7 +6,7 @@ class Char_skills_model extends CI_Model {
 	
 	public function multi_insert($tab_name, $column ,$arr) {
 		foreach ($arr[$column] as $skill) {
-			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'profId' => $arr['profId'], 'skillid' => $skill);
+			$record = array('id' => $arr['id'], 'char_id' => $arr['char_id'], 'profId' => $arr['profId'], 'skill_id' => $skill);
 			$this -> db -> insert($tab_name, $record);
 		}
 	}
@@ -33,7 +33,7 @@ class Char_skills_model extends CI_Model {
 		$this -> db -> from('umiejetnosci');
 		$this -> db -> from('professions');
 		$this -> db -> from('professions_statistics');
-		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skillid AND professions.id = char_skills.profId AND professions.id = professions_statistics.id', 'right');
+		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skill_id AND professions.id = char_skills.profId AND professions.id = professions_statistics.id', 'right');
 		$this -> db -> order_by('skillName', 'ASC');
 		$this -> db -> where(['char_id' => $id]);
 		
@@ -58,5 +58,22 @@ class Char_skills_model extends CI_Model {
 			$arr['ogd'] = $value['ogd'];
 		}
 		return $arr;
+	}
+
+	public function race_skills($race_id) {
+		$this -> db -> select('*');
+		$this -> db -> from('race_skills');
+		$this -> db -> join('umiejetnosci', 'umiejetnosci.skillid = race_skills.skill_id');
+		$this -> db -> where('race_id', $race_id);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			$target = array();
+			foreach ($query -> result() as $row) {
+				$target[] = $row;
+			}
+			return $target;
+		} else {
+			return "Błąd zapytania!!";
+		}
 	}
 }

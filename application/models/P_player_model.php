@@ -4,8 +4,8 @@ class P_player_model extends CI_Model {
 		$this -> load -> database();
 	}
 	
-	public function get_skill($id) {
-		$query = $this -> db -> get_where('professions_skills', ['profession_id' => $id]);
+	public function get_skill($tab_name, $key, $id) {
+		$query = $this -> db -> get_where($tab_name, [$key => $id]);
 		return $query -> result_array();
 	}
 }

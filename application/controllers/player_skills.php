@@ -17,7 +17,7 @@ class Player_skills extends CI_Controller {
 		$skill_1 = $this -> input -> post('skills');
 		$skill_2 = $this -> input -> post('s');
 		$skills = array_merge($skill_1, $skill_2);
-		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $this -> input -> post('prof'), 'skillid' => $skills);
+		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $this -> input -> post('prof'), 'skill_id' => $skills);
 		return $data;
 	}
 
@@ -31,7 +31,8 @@ class Player_skills extends CI_Controller {
 			$this -> load -> view('templates/footer');
 		} else {
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
-			$name = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'name');
+			$data['amount'] = $_SESSION['amount'];
+			$data['id'] = $_SESSION['p_id'];
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
 			if ($this -> form_validation -> run() === false) {
@@ -41,12 +42,12 @@ class Player_skills extends CI_Controller {
 			} else {
 				if ($char_id == NULL) {
 					$arr = $this -> verify_data($_SESSION['p_id']);
-					$this -> char_skills_model -> multi_insert('char_skills', 'skillid', $arr);
+					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
 					redirect('inventory/form_inventory');
 				} else {
 					$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 					$arr = $this -> verify_data($_SESSION['p_id']);
-					$this -> char_skills_model -> multi_insert('char_skills', 'skillid', $arr);
+					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
 					redirect('inventory/form_inventory');
 				}
 			}
@@ -54,13 +55,23 @@ class Player_skills extends CI_Controller {
 	}
 
 	public function get_skill($id) {
-		return $this -> p_player_model -> get_skill($id);
+		return $this -> p_player_model -> get_skill('professions_skills', 'profession_id' ,$id);
+	}
+	
+	public function get_race_skills($id) {
+		return $this -> p_player_model -> get_skill('char_skills', 'char_id', $id);
 	}
 
 	public function get_prof() {
-		if (isset($_POST['prof'])) {
+		if (isset($_POST['prof']) && isset($_POST['id'])) {
 			$arr = array();
-			$skills = $this -> get_skill($_POST['prof']);
+			$prof_skills = $this -> get_skill($_POST['prof']);
+			$race_skills = $this -> get_race_skills($_POST['id']);
+			if (!empty($race_skills)) {
+				$skills = array_merge($prof_skills, $race_skills);
+			} else {
+				$skills = $prof_skills;
+			}
 			foreach ($skills as $skill) {
 				$arr[] = $skill['skill_id'];
 			}
