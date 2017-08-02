@@ -37,6 +37,10 @@ class Player_skills extends CI_Controller {
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
 			$data['amount'] = $_SESSION['amount'];
 			$data['id'] = $_SESSION['p_id'];
+			$skills = $prof_skills = $this -> get_skill(2);
+			/*echo "<pre>";
+			var_dump($skills);
+			echo "</pre>";*/
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
 			if ($this -> form_validation -> run() === false) {
@@ -69,16 +73,51 @@ class Player_skills extends CI_Controller {
 	public function get_prof() {
 		if (isset($_POST['prof']) && isset($_POST['id'])) {
 			$arr = array();
+			$p_skills = array();
 			$prof_skills = $this -> get_skill($_POST['prof']);
 			$race_skills = $this -> get_race_skills($_POST['id']);
-			if (!empty($race_skills)) {
-				$skills = array_merge($prof_skills, $race_skills);
-			} else {
-				$skills = $prof_skills;
+			$skills = array();
+			if (!empty($race_skills) && is_array($race_skills)) {
+				foreach ($race_skills as $skill) {
+					$skills[] = $skill['skill_id'];
+				}
 			}
-			foreach ($skills as $skill) {
-				$arr[] = $skill['skill_id'];
+			foreach ($prof_skills as $skill) {
+				if ($skill['chance'] == 0) {
+					$p_skills[] = $skill['skill_id'];
+				}
+				if ($skill['chance'] == 1) {
+					if (mt_rand(1,100) <= 5) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 2) {
+					if (mt_rand(1,100) <= 10) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 3) {
+					if (mt_rand(1,100) <= 20) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 4) {
+					if (mt_rand(1,100) <= 25) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 5) {
+					if (mt_rand(1,100) <= 50) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 6) {
+					if (mt_rand(1,100) <= 75) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
 			}
+			$arr = array_merge($p_skills, $skills);
 			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
 		} else
 			echo "Błąd";
