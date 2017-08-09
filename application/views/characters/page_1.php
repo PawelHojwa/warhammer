@@ -311,19 +311,33 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
-          		if ($item['placement'] == 1) {
-          			$pp += $item['pp'];
+          		if ($item['placement'] == 2) {
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
           }
-					if ($pp == 0) {
+          if ($pp == 0) {
 						$pp = "";
 					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
           ?>
           </th>
           <th class="small_th">PWT:</th>
@@ -438,19 +452,33 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
           		if ($item['placement'] == 4) {
-          			$pp += $item['pp'];
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
           }
-					if ($pp == 0) {
+          if ($pp == 0) {
 						$pp = "";
 					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
           ?>
           </th>
           <th class="small_th">PWT:</th>
@@ -479,20 +507,35 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
           		if ($item['placement'] == 5) {
-          			$pp += $item['pp'];
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
           }
-					if ($pp == 0) {
+          if ($pp == 0) {
 						$pp = "";
 					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
-          ?></th>
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
+          ?>
+          </th>
           <th class="small_th">PWT:</th>
           <th class="small_th">WO:</th>
           <th class="small_th">Żw B:</th>
@@ -609,19 +652,33 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
           		if ($item['placement'] == 4) {
-          			$pp += $item['pp'];
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
-          } 
-					if ($pp == 0) {
+          }
+          if ($pp == 0) {
 						$pp = "";
 					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
           ?>
           </th>
           <th class="small_th">PWT:</th>
@@ -650,19 +707,33 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
           		if ($item['placement'] == 3) {
-          			$pp += $item['pp'];
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
           }
           if ($pp == 0) {
-          	$pp ="";
-          }
+						$pp = "";
+					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
           ?>
           </th>
           <th class="small_th">PWT:</th>
@@ -691,11 +762,21 @@ function showR($val) {
         <tr>
           <th class="small_th text-center">PP:
           <?php
-          $pp = 0;
           if (!empty($armour)) {
+          	$pp = array();
+          	$arr = array();
           	foreach ($armour as $item) {
           		if ($item['placement'] == 5) {
-          			$pp += $item['pp'];
+          			if(strlen($item['pp']) > 1) {
+          				$arr = explode("/" , $item['pp']);
+									foreach($arr as $p) {
+										$pp[] = $p; 
+									}
+          			} else if (strlen($item['pp']) == 1){
+          				foreach ($armour as $item) {
+          					$pp = $item['pp'];
+          				}
+          			}
           		}
           	}
           }
@@ -703,7 +784,11 @@ function showR($val) {
 						$pp = "";
 					}
 					echo br();
-					echo "<span class='lead'>" . $pp . "</span>";
+					if (is_array($pp)) {
+						echo "<span class='lead'>" . implode("/", $pp) . "</span>";
+					} else {
+						echo "<span class='lead'>" . $pp . "</span>";
+					}
           ?>
           </th>
           <th class="small_th">PWT:</th>
@@ -728,9 +813,16 @@ function showR($val) {
 	</div>
 	<div class="text-center">
 	<?php
-		echo br();
+		/*echo br();
 		echo "<small>" . anchor('show_char_2/page_2', 'Następna strona') . "</small>";
 		echo br();
+		echo "<pre>";
+		var_dump($armour);
+		echo "</pre>";
+		echo br();
+		echo "<pre>";
+		var_dump($pp);
+		echo "</pre>";*/
 	?>
 	</div>
 </div>

@@ -9,6 +9,7 @@ class Trade_model extends CI_Model {
 		$this -> db -> from('availability');
 		$this -> db -> from('items');
 		$this -> db -> join('trades', 'trades.availability = availability.lp AND items.id = trades.name', 'left');
+		$this -> db -> order_by('trades.name');
 		$this -> db -> where('type', $type);
 		$query = $this -> db -> get();
 		$arr = array();

@@ -321,3 +321,13 @@ table td > span {
 	position: fixed;
 	top: 0;
 }
+
+.trade-radio {
+	margin-right: 10px;
+	padding-right: 10px;
+	border-right: 1px solid black;
+}
+
+.trade-radio:last-of-type {
+	border-right: none;
+}
