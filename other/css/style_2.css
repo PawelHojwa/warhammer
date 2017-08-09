@@ -331,3 +331,15 @@ table td > span {
 .trade-radio:last-of-type {
 	border-right: none;
 }
+
+#search_monster {
+	margin-right: 10px;
+	float: right;
+}
+
+.search-btn {
+	float:right;
+	border-radius: 8px; 
+	border:none; 
+	padding: 3.5px 5px;
+}

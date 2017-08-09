@@ -16,4 +16,16 @@ class Monster_model extends CI_Model {
 			return "Błąda zapytania";
 		}
 	}
+	
+	public function search($name) {
+		$this -> db -> select('*');
+		$this -> db -> from('monsters');
+		$this -> db -> like('monsterName', $name);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result_array();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
 }
