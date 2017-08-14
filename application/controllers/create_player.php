@@ -104,6 +104,7 @@ class Create_player extends CI_Controller {
 			redirect('login/form_login');
 		} else {
 			$user_id = $_SESSION['userID'];
+			$this -> session -> unset_userdata('p_id');
 			$this -> form_validation -> set_rules('name', 'Imie', 'trim|required|max_length[40]', array('required' => "Pole '{field}' jest wymagane", "max_length" => "'{field}' - wymagane {param} liter"));
 			$this -> form_validation -> set_rules('age', 'Wiek', 'trim|required', array('required' => "Pole '{field}' jest wymagane"));
 			$this -> form_validation -> set_rules('height', 'Wzrost', 'trim|required|numeric|min_length[3]|max_length[3]', array('required' => "Pole '{field}' jest wymagane", 'numeric' => "'{field}' musi być liczbą", 'min_length' => "'{field}' musi mieć {param} cyfry", 'max_length' => "'{field}' musi mieć {param} cyfry"));
