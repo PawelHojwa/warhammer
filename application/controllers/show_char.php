@@ -53,22 +53,30 @@ class Show_char extends CI_Controller {
 			foreach($data['sk'] as $skill) {
 				if ($skill == 'Bardzo wytrzymały') {
 					$data['wt']++;
+					$data['current_schematic']['wt']++;
 				}
 				if ($skill == 'Bardzo silny') {
 					$data['s']++;
+					$data['current_schematic']['s']++;
 				}
 				if ($skill == 'Bardzo szybki') {
 					$data['sz']++;
+					$data['current_schematic']['sz']++;
 				}
 				if ($skill == 'Celne strzelanie') {
 					$data['us'] += 10;
+					$data['current_schematic']['us'] += 10;
 				}
 				if ($skill == "Szybki refleks") {
 					$data['ini'] += 10;
+					$data['current_schematic']['i'] += 10;
 				}
 				if ($skill == 'Siłacz') {
 					$data['s']++;
 					$data['zw'] += $data['add_zw'];
+					$data['current_schematic']['s']++;
+					$data['current_schematic']['wt'] += $data['add_zw'];
+					
 				}
 			}
 			$data['title'] = "Karta postaci";

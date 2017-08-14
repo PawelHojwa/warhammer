@@ -827,10 +827,6 @@ function showR($val) {
 		echo br();
 		echo "<small>" . anchor('show_char_2/page_2', 'Następna strona') . "</small>";
 		echo br();
-		echo "<pre>";
-		var_dump($current_schematic);
-		echo "</pre>";
-		echo $current_schematic['sz'];
 	?>
 	</div>
 </div>
