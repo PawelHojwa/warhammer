@@ -813,16 +813,9 @@ function showR($val) {
 	</div>
 	<div class="text-center">
 	<?php
-		/*echo br();
+		echo br();
 		echo "<small>" . anchor('show_char_2/page_2', 'Następna strona') . "</small>";
 		echo br();
-		echo "<pre>";
-		var_dump($armour);
-		echo "</pre>";
-		echo br();
-		echo "<pre>";
-		var_dump($pp);
-		echo "</pre>";*/
 	?>
 	</div>
 </div>
