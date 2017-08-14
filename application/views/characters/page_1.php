@@ -139,18 +139,29 @@ function showR($val) {
 							echo "<td></td>";
             ?>
           </tr>
+          
           <tr>
             <th rowspan="2">Akt:</th>
-            <?php
+	          <td><?php echo $current_schematic['sz']; ?></td>
+	          <td><?php echo $current_schematic['ww']; ?></td>
+	          <td><?php echo $current_schematic['us']; ?></td>
+	          <td><?php echo $current_schematic['s']; ?></td>
+	          <td><?php echo $current_schematic['wt']; ?></td>
+	          <td><?php echo $current_schematic['zw']; ?></td>
+	          <td><?php echo $current_schematic['i']; ?></td>
+	          <td><?php echo $current_schematic['a']; ?></td>
+	          <td><?php echo $current_schematic['zr']; ?></td>
+	          <td><?php echo $current_schematic['cp']; ?></td>
+	          <td><?php echo $current_schematic['intel']; ?></td>
+	          <td><?php echo $current_schematic['op']; ?></td>
+	          <td><?php echo $current_schematic['sw']; ?></td>
+	          <td><?php echo $current_schematic['ogd']; ?></td>
+          </tr>
+          <tr>
+          	<?php
 						for ($i = 0; $i < 14; $i++)
 							echo "<td></td>";
             ?>
-          </tr>
-          <tr>
-            <?php
-						for ($i = 0; $i < 14; $i++)
-							echo "<td></td>";
-            ?> 
           </tr>
         </table>
       </div>
@@ -816,6 +827,10 @@ function showR($val) {
 		echo br();
 		echo "<small>" . anchor('show_char_2/page_2', 'Następna strona') . "</small>";
 		echo br();
+		echo "<pre>";
+		var_dump($current_schematic);
+		echo "</pre>";
+		echo $current_schematic['sz'];
 	?>
 	</div>
 </div>

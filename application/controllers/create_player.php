@@ -88,6 +88,28 @@ class Create_player extends CI_Controller {
 			return true;
 		}
 	}
+	
+	public function curr_schema($char_id = "", $id = "") {
+		$arr = array(
+			'id' => $id,
+			'char_id' => $char_id,
+			'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))),
+			'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))),
+			'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))),
+			's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))),
+			'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))),
+			'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))),
+			'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))),
+			'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))),
+			'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))),
+			'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))),
+			'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))),
+			'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))),
+			'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))),
+			'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd')))
+		);
+		return $arr;
+	}
 
 	public function get_race() {
 		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE) {
@@ -144,19 +166,21 @@ class Create_player extends CI_Controller {
 				$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
 				$p_id = $this -> get_char_id($val);
 				$_SESSION['p_id'] = $p_id[0]['id'];
-				//$n_skill = $p_id[0]['nskill'];
 				if ($this -> valid_class()) {
 					$as = mt_rand(1,4);
 					$age = $_POST['p_age'];
 					$race = $_POST['race'];
 					$amount = $this -> char_skill -> check_age($race, $age, $as);
 					$data_char = $this -> character_data();
+					
 					$data_char['amount'] = $amount;
+					//$char_id = $data_char['id'];
+					
 					if (!empty($p_id)) {
 						$data_char['id'] = $_SESSION['p_id'];
-						//$data_char['nskill'] = $n_skill;
+						$curr_schema = $this -> curr_schema($_SESSION['p_id']);
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
-						
+						$this -> universal_model -> update('current_schematic', $curr_schema, array('char_id' => $_SESSION['p_id']));
 						$this -> session -> set_userdata(array('amount' => $amount));
 						if ($_POST['race'] == 1) {
 							redirect('player_skills/skill');
@@ -172,25 +196,14 @@ class Create_player extends CI_Controller {
 							$player_id = $item['id'];
 						}
 						$this -> session -> set_userdata(['p_id' => $player_id]);
-						/*$as = mt_rand(1,4);
-						$age = $_POST['p_age'];
-						$race = $_POST['race'];
-						$amount = $this -> char_skill -> check_age($race, $age, $as);
-						$this -> session -> set_userdata(array('amount' => $amount));*/
+						$curr_schema = $this -> curr_schema($player_id);
+						$this -> universal_model -> insert('current_schematic', $curr_schema);
 						if ($_POST['race'] == 1) {
 							redirect('player_skills/skill');
 						} else {
 							redirect('race_skills/choose_skills');
 						}
 					}
-						
-					 /*$this -> load -> view('templates/header', $data);
-					 $this -> load -> view('form/create_character', $data);
-					 $this -> load -> view('templates/footer');
-					 echo "<pre>";
-						var_dump($_SESSION['p_id']);
-						echo "</pre>";*/
-					
 				} else {
 					$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);

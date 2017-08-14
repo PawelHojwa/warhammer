@@ -10,6 +10,7 @@ class Show_char extends CI_Controller {
 		$this -> load -> library('session');
 		$this -> load -> library('char_skill');
 		$this -> load -> model('universal_model');
+		$this -> load -> model('current_schematic_model');
 		$this -> load -> model('exit_profession_model');
 	}
 
@@ -41,6 +42,7 @@ class Show_char extends CI_Controller {
 			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'profId');
 			$data = $this -> get_char($_SESSION['p_id']);
 			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
+			$data['current_schematic'] = $this -> current_schematic_model -> get_current_schematic($_SESSION['p_id']);
 			foreach ($data['exit_professions'] as $exit) {
 				if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {
 					$data['exit_professions'] = "Kolejna profesja cyrkowca lub podstawowa profesja Łotra, lub losowo wybrana klasa Rangera, Wojownika lub Uczonego";
