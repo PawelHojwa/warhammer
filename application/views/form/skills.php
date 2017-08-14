@@ -22,26 +22,56 @@ echo form_close();
 ?>
 </div>
 <script>
-
-var am = $('#amount').text();
-var boxCount = function() {
-	var len = $('.skill:checked:not(:disabled)').length;
-	if (len > am) {
-		alert('Wybrałeś wszystkie możliwe umiejętności!!');
-		return false;
-	}
-	$('#amount').text(len + "/" + am);
-};
-boxCount();
-$('.skill').on('click', boxCount);
-$('#skill_form').submit(function() {
-	var len = $('.skill:checked:not(:disabled)').length;
-	var deff = am - len;
-	if (len == am)
-		return true;
-	else {
-		alert("Pozostało do wybrania: " + deff + (deff === 1? " umiejętność": " umiejętności"));
-		return false;
-	}
+$('document').ready(function() {
+	$('#profession').change(function() {
+	$('.skill').prop('checked', false);
+	$('.skill').prop('disabled', false);
+	$("input[type='text']").remove();
+	var prof_id = $(this).val();
+	var id = $('#p_id').val();
+	var skill_name = $('label').text();
+	$.ajax({
+		url : 'get_prof',
+		type : 'post',
+		data : {
+			prof : prof_id,
+			id : id
+		},
+		dataType : 'json',
+		success : function(data) {
+			$.each(data, function(key, value) {
+				$('.skill[value="' + value + '"]').prop('checked', true);
+		$('.skill[value="' + value + '"]').prop('disabled', true);
+		$('form').add("<input type='text' value='" + value + "' hidden name='s[]'>").appendTo('form');
+		});
+		//each
+			}
+		});
+	//ajax
+	}).change();
+	//change
+	
+	var am = $('#amount').text();
+	var boxCount = function() {
+		var len = $('.skill:checked:not(:disabled)').length;
+		if (len > am) {
+			alert('Wybrałeś wszystkie możliwe umiejętności!!');
+			return false;
+		}
+		$('#amount').text(len + "/" + am);
+	};
+	boxCount();
+	$('.skill').on('click', boxCount);
+	$('#skill_form').submit(function() {
+		var len = $('.skill:checked:not(:disabled)').length;
+		var deff = am - len;
+		if (len == am)
+			return true;
+		else {
+			alert("Pozostało do wybrania: " + deff + (deff === 1? " umiejętność": " umiejętności"));
+			return false;
+		}
+	});
 });
+
 </script>

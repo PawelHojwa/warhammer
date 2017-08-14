@@ -15,7 +15,7 @@
 			echo "<tr>";
 				echo "<td>" . $name['name'] . "</td>";
 				echo "<td class='text-center'>" . anchor('show_char/page_1?id=' . $name['id'],  'Pokaż') . "</td>";
-				echo "<td class='text-center'>" . anchor('edit_char/edit?id=' . $name['id'], 'Edytuj') . "</td>";
+				echo "<td class='text-center'>" . anchor('edit_character/edit?id=' . $name['id'], 'Edytuj') . "</td>";
 			echo "</tr>";
 		}
 	}
@@ -51,7 +51,7 @@ echo form_open('create_player/create', ['id' => 'basic']);
 </tr>
 <tr>
 	<td><?php echo form_label('Wiek: ', 'age'); ?></td>
-	<td><?php echo form_input('p_age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly']); ?></td>
+	<td><?php echo form_input('p_age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly', 'class' => 'text-center']); ?></td>
 </tr>
 <tr>
 	<td><?php echo form_label('Młody ', 'age'); ?> </td>

@@ -12,9 +12,9 @@ table#info {
 	border: none;
 }
 
-input[name=age] {
+/*input[name=age] {
 	text-align: center;
-}
+}*/
 
 table#info tr, table#info  td {
 	border: none;
@@ -146,4 +146,12 @@ table.name_table td
 	box-shadow: 3px 3px 3px black;
 	border-radius: 5px;
 	padding: 5px;
+}
+
+.form-container {
+	width: 300px;
+}
+
+.form-container input {
+	float: right;
 }

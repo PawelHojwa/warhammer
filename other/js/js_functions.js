@@ -152,33 +152,7 @@ $("document").ready(function() {
 		check_class();
 	}).change();
 
-	$('#profession').change(function() {
-		$('.skill').prop('checked', false);
-		$('.skill').prop('disabled', false);
-		$("input[type='text']").remove();
-		var prof_id = $(this).val();
-		var id = $('#p_id').val();
-		var skill_name = $('label').text();
-		$.ajax({
-			url : 'get_prof',
-			type : 'post',
-			data : {
-				prof : prof_id,
-				id : id
-			},
-			dataType : 'json',
-			success : function(data) {
-				$.each(data, function(key, value) {
-					$('.skill[value="' + value + '"]').prop('checked', true);
-					$('.skill[value="' + value + '"]').prop('disabled', true);
-					$('form').add("<input type='text' value='" + value + "' hidden name='s[]'>").appendTo('form');
-				});
-				//each
-			}
-		});
-		//ajax
-	}).change();
-	//change
+
 	
 	var num = 96;
 	$(window).bind('scroll', function() {
