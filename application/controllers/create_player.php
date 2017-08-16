@@ -179,6 +179,7 @@ class Create_player extends CI_Controller {
 					if (!empty($p_id)) {
 						$data_char['id'] = $_SESSION['p_id'];
 						$curr_schema = $this -> curr_schema($_SESSION['p_id']);
+						$curr_schema['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
 						$this -> universal_model -> update('current_schematic', $curr_schema, array('char_id' => $_SESSION['p_id']));
 						$this -> session -> set_userdata(array('amount' => $amount));

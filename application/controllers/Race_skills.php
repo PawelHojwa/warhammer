@@ -36,6 +36,9 @@ class Race_skills extends CI_Controller {
 		$data['skills'] = $this -> get_race_skills($race);
 		$data['title'] = "Umiejętności rasowe";
 		$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+		if ($data['amount'] == 1) {
+			redirect('player_skills/skill');
+		}
 		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('form/race_skills', $data);

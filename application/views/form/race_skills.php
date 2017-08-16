@@ -29,6 +29,7 @@ if ($amount > 1) {
 echo br(2);
 echo form_submit('btn', 'Wyślij', array('class' => 'btn btn-primary'));
 echo form_close();
+echo validation_errors("<p class='alert alert-danger'>", "</p>");
 $_SESSION['amount'] = $amount;
 ?>
 </div>

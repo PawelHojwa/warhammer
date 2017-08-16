@@ -43,12 +43,12 @@ class Spells extends CI_Controller {
 				if ($char_id == NULL) {
 					$arr = $this -> verifity_data();
 					$this -> spell_model -> multi_insert('char_spells', $arr);
-					redirect('show_char/page_1');
+					redirect('free_stat/rise_stat');
 				} else {
 					$this -> universal_model -> delete('char_spells', array('char_id' => $_SESSION['p_id']));
 					$arr = $this -> verifity_data();
 					$this -> spell_model -> multi_insert('char_spells', $arr);
-					redirect('show_char/page_1');
+					redirect('free_stat/rise_stat');
 				}
 			}
 		}

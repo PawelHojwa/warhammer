@@ -72,6 +72,7 @@ $('document').ready(function() {
 			return false;
 		}
 	});
+	$('.moveBar').hide();
 });
 
 </script>

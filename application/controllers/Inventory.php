@@ -83,7 +83,7 @@ class Inventory extends CI_Controller
 						redirect('spells/spell_form');
 					} else {
 						$this -> universal_model -> delete('char_spells', array('char_id' => $player_id));
-						redirect('show_char/page_1');
+						redirect('free_stat/rise_stat');
 					}
 				}
 			}
