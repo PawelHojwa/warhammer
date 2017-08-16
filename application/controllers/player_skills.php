@@ -34,13 +34,14 @@ class Player_skills extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
 			$data['amount'] = $_SESSION['amount'];
 			$data['id'] = $_SESSION['p_id'];
-			$skills = $this -> get_skill($_SESSION['p_id']);
+			/*$skills = $this -> get_skill($_SESSION['p_id']);
 			echo "<pre>";
 			var_dump($skills);
-			echo "</pre>";
+			echo "</pre>";*/
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
 			if ($this -> form_validation -> run() === false) {
