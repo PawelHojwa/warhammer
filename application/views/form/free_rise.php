@@ -30,30 +30,24 @@ echo form_open('free_stat/rise_stat');
 	</tr>
 	<tr>
 		<th>P.</th>
-		<td><?php echo $sz; ?></td>
-		<td><?php echo $ww; ?></td>
-		<td><?php echo $us; ?></td>
-		<td><?php echo $s; ?></td>
-		<td><?php echo $wt; ?></td>
-		<td><?php echo $zw; ?></td>
-		<td><?php echo $i; ?></td>
-		<td><?php echo $a; ?></td>
-		<td><?php echo $zr; ?></td>
-		<td><?php echo $cp; ?></td>
-		<td><?php echo $int; ?></td>
-		<td><?php echo $op; ?></td>
-		<td><?php echo $sw; ?></td>
-		<td><?php echo $ogd; ?></td>
+		<td class="basic"><?php echo $sz; ?></td>
+		<td class="basic"><?php echo $ww; ?></td>
+		<td class="basic"><?php echo $us; ?></td>
+		<td class="basic"><?php echo $s; ?></td>
+		<td class="basic"><?php echo $wt; ?></td>
+		<td class="basic"><?php echo $zw; ?></td>
+		<td class="basic"><?php echo $i; ?></td>
+		<td class="basic"><?php echo $a; ?></td>
+		<td class="basic"><?php echo $zr; ?></td>
+		<td class="basic"><?php echo $cp; ?></td>
+		<td class="basic"><?php echo $int; ?></td>
+		<td class="basic"><?php echo $op; ?></td>
+		<td class="basic"><?php echo $sw; ?></td>
+		<td class="basic"><?php echo $ogd; ?></td>
 	</tr>
 	<tr>
-		<th rowspan="3">S.R.</th>
-		<?php
-		for ($i = 0; $i < 14; $i++) {
-			echo "<td class='diff'><span class='glyphicon glyphicon-minus'></span></td>";
-		}
-		?>
-	</tr>
-	<tr>
+		<th rowspan="2">S.R.</th>
+	
 		<td class="dev"><?php echo dev_schema($rsz); ?></td>
 		<td class="dev"><?php echo dev_schema($rww); ?></td>
 		<td class="dev"><?php echo dev_schema($rus); ?></td>
@@ -72,7 +66,7 @@ echo form_open('free_stat/rise_stat');
 	<tr>
 		<?php
 		for ($i = 0; $i < 14; $i++) {
-			echo "<td class='add'><span class='glyphicon glyphicon-plus'></span></td>";
+			echo "<td class='rise'><span class='glyphicon glyphicon-plus'></span></td>";
 		}
 		?>
 	</tr>
@@ -96,6 +90,20 @@ echo form_open('free_stat/rise_stat');
 </table>
 <?php
 	echo br();
+	echo form_hidden('csz', $csz);
+	echo form_input('cww', $cww);
+	echo form_input('cus', $cus);
+	echo form_input('cs', $cs);
+	echo form_input('cwt', $cwt);
+	echo form_input('czw', $czw);
+	echo form_input('ci', $ci);
+	echo form_input('ca', $ca);
+	echo form_input('czr', $czr);
+	echo form_input('ccp', $ccp);
+	echo form_input('cint', $cint);
+	echo form_input('cop', $cop);
+	echo form_input('csw', $csw);
+	echo form_input('cogd', $cogd);
 	echo form_submit('submit', 'Wyślij', array('class' => 'btn btn-primary'));
 	echo form_close();
 	echo validation_errors("<p class='alert alert-danger'>", "</p>");
@@ -104,7 +112,11 @@ echo form_open('free_stat/rise_stat');
 </div>
 <script>
 $('document').ready(function() {
-	$('.add, .diff').css('height', '20px');
+	//$('input[type=text]').hide();
+	var styles = {
+		height : "20px"
+	};
+	$('.add, .diff').css(styles);
 	var width = [];
 	var th_width = $('table th')
 	th_width.each(function(i) {
@@ -128,42 +140,48 @@ $('document').ready(function() {
 	$('.current').each(function(i) {
 		current[i] = $(this).text()
 	});
+	var basic_stats = [];
+	$('.basic').each(function(i) {
+		basic_stats[i] = $(this).text();
+	});
 	var stats = [1, 10, 10, 1, 1, 1, 10, 1, 10, 10, 10, 10, 10, 10];
 	var name_stats = ['Szykość', 'Walka wręcz', 'Umiejętności strzeleckie', 'Siła', 'Wytrzymałość', 'Żywotność', 'Inicjatywa', 'Atak', 'Zręczność',
 	'Cechy przywódcze', 'Inteligencja', 'Opanowanie', 'Siła woli', 'Ogłada'];
 	var att = 1;
+	$('.rise').addClass('add');
 	var rise = function() {
-		var index = $('.add').index(this);
-		current[index] = parseInt(current[index]) + parseInt(stats[index]);
-		if (att > 0) {
-			if (dev[index] != "-") {
-				$("#demo").text("Zwiększono: " + name_stats[index] + " o " + stats[index]);
-				$('.current').eq(index).text(current[index]);
-				att--;
-			} else {
-				$("#demo").text("");
-				return false;
-			}
+		var index = $('.rise').index(this);
+		if (att > 0 && dev[index] != "-") {
+			current[index] = parseInt(current[index]) + parseInt(stats[index]);
+			$("#demo").text("Zwiększono: " + name_stats[index] + " o " + stats[index]);
+			$('.current').eq(index).text(current[index]);
+			att--;
+			$('.rise').removeClass("add");
+			$('.rise span').removeClass("glyphicon-plus");
+			$('.rise').addClass("diff");
+			$('.rise span').addClass("glyphicon-minus");
 		} else {
+			if (current[index] == basic_stats[index]) {
+				return false;
+			} else {
+				current[index] = parseInt(current[index]) - parseInt(stats[index]);
+			}
+			$('.current').eq(index).text(current[index]);
+			att++;
+			$('#demo').text("");
+			$('.rise').removeClass("diff");
+			$('.rise span').removeClass("glyphicon-minus");
+			$('.rise').addClass("add");
+			$('.rise span').addClass("glyphicon-plus");
+		}
+		$('input').eq(index).val(current[index]);
+	}
+	$('.rise').on('click', rise);
+	$('form').submit(function() {
+		if (current[i] == basic_stats[i]) {
+			alert("Nie podwyższono statystyki!");
 			return false;
 		}
-	}
-	var dec = function() {
-		var index = $('.diff').index(this);
-		current[index] = parseInt(current[index]) - parseInt(stats[index]);
-		if (att == 0) {
-			if (dev[index] != "-") {
-				$('.current').eq(index).text(current[index]);
-				att++;
-				$('#demo').text("");
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	$('.add').on('click', rise);
-	$('.diff').on('click', dec);
+	})
 });
 </script>

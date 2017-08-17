@@ -46,31 +46,36 @@ class Free_stat extends CI_Controller {
 	}
 	
 	public function rise_stat() {
-		$id = $_SESSION['p_id'];
-		$data = $this -> get_stats($id);
-		$data['title'] = "Pierwsze rozwinięcie";
-		$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cww', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cus', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cs', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cwt', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('czw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('ci', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('ca', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('czr', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('ccp', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cint', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cop', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('csw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		$this -> form_validation -> set_rules('cogd', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-		if ($this -> form_validation -> run() === FALSE) {
-			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/free_rise', $data);
-			$this -> load -> view('templates/footer');
+		if (!isset($_SESSION['user'])) {
+			redirect('Login/form_login');
 		} else {
-			$current_schematic = $this -> update_stats();
-			$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $_SESSION['p_id']));
-			redirect('show_char/page_1');
+			$id = $_SESSION['p_id'];
+			$data = $this -> get_stats($id);
+			$data['title'] = "Pierwsze rozwinięcie";
+			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cww', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cus', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cs', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cwt', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('czw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('ci', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('ca', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('czr', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('ccp', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cint', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cop', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('csw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			$this -> form_validation -> set_rules('cogd', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('form/free_rise', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$current_schematic = $this -> update_stats();
+				$current_schematic['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $id), 'id');
+				$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $id));
+				redirect('show_char/page_1');
+			}
 		}
 	}
 }
