@@ -36,7 +36,11 @@ class Player_skills extends CI_Controller {
 		} else {
 			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
-			$data['amount'] = $_SESSION['amount'];
+			if (!isset($_SESSION['amount'])) {
+				$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+			} else {
+				$data['amount'] = $_SESSION['amount'];
+			}
 			$data['id'] = $_SESSION['p_id'];
 			/*$skills = $this -> get_skill($_SESSION['p_id']);
 			echo "<pre>";

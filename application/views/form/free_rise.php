@@ -91,19 +91,19 @@ echo form_open('free_stat/rise_stat');
 <?php
 	echo br();
 	echo form_hidden('csz', $csz);
-	echo form_input('cww', $cww);
-	echo form_input('cus', $cus);
-	echo form_input('cs', $cs);
-	echo form_input('cwt', $cwt);
-	echo form_input('czw', $czw);
-	echo form_input('ci', $ci);
-	echo form_input('ca', $ca);
-	echo form_input('czr', $czr);
-	echo form_input('ccp', $ccp);
-	echo form_input('cint', $cint);
-	echo form_input('cop', $cop);
-	echo form_input('csw', $csw);
-	echo form_input('cogd', $cogd);
+	echo form_hidden('cww', $cww);
+	echo form_hidden('cus', $cus);
+	echo form_hidden('cs', $cs);
+	echo form_hidden('cwt', $cwt);
+	echo form_hidden('czw', $czw);
+	echo form_hidden('ci', $ci);
+	echo form_hidden('ca', $ca);
+	echo form_hidden('czr', $czr);
+	echo form_hidden('ccp', $ccp);
+	echo form_hidden('cint', $cint);
+	echo form_hidden('cop', $cop);
+	echo form_hidden('csw', $csw);
+	echo form_hidden('cogd', $cogd);
 	echo form_submit('submit', 'Wyślij', array('class' => 'btn btn-primary'));
 	echo form_close();
 	echo validation_errors("<p class='alert alert-danger'>", "</p>");
@@ -178,7 +178,7 @@ $('document').ready(function() {
 	}
 	$('.rise').on('click', rise);
 	$('form').submit(function() {
-		if (current[i] == basic_stats[i]) {
+		if (att > 0) {
 			alert("Nie podwyższono statystyki!");
 			return false;
 		}

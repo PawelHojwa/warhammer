@@ -26,12 +26,12 @@ class Free_stat extends CI_Controller {
 	public function update_stats($id = "") {
 		$arr = array(
 			'id' => $id,
-			'char_id' => $_SESSION['char_id'],
+			'char_id' => $_SESSION['p_id'],
 			'sz' => $this -> input -> post('csz'),
 			'ww' => $this -> input -> post('cww'),
 			'us' => $this -> input -> post('cus'),
 			's' => $this -> input -> post('cs'),
-			'wt' => $this -> input -> post('cswt'),
+			'wt' => $this -> input -> post('cwt'),
 			'zw' => $this -> input -> post('czw'),
 			'i' => $this -> input -> post('ci'),
 			'a' => $this -> input -> post('ca'),
@@ -66,14 +66,17 @@ class Free_stat extends CI_Controller {
 			$this -> form_validation -> set_rules('cop', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('csw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cogd', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
+			/*echo "<pre>";
+			var_dump($_SESSION);
+			echo "</pre>";*/
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/free_rise', $data);
 				$this -> load -> view('templates/footer');
 			} else {
 				$current_schematic = $this -> update_stats();
-				$current_schematic['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $id), 'id');
-				$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $id));
+				$current_schematic['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
+				$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $_SESSION['p_id']));
 				redirect('show_char/page_1');
 			}
 		}

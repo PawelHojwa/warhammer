@@ -89,7 +89,7 @@ class Create_player extends CI_Controller {
 		}
 	}
 	
-	public function curr_schema($char_id = "", $id = "") {
+	public function curr_schema($char_id, $id = "") {
 		$arr = array(
 			'id' => $id,
 			'char_id' => $char_id,
@@ -164,6 +164,8 @@ class Create_player extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
+				$char_id = $this -> universal_model -> get_values('characters', array('name' => $_POST['name']), 'id');
+				var_dump($char_id);
 				$p_id = $this -> get_char_id($val);
 				$_SESSION['p_id'] = $p_id[0]['id'];
 				if ($this -> valid_class()) {
@@ -174,14 +176,15 @@ class Create_player extends CI_Controller {
 					$data_char = $this -> character_data();
 					
 					$data_char['amount'] = $amount;
-					//$char_id = $data_char['id'];
+					
 					
 					if (!empty($p_id)) {
 						$data_char['id'] = $_SESSION['p_id'];
-						$curr_schema = $this -> curr_schema($_SESSION['p_id']);
+						
+						$curr_schema = $this -> curr_schema($char_id);
 						$curr_schema['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
-						$this -> universal_model -> update('current_schematic', $curr_schema, array('char_id' => $_SESSION['p_id']));
+						$this -> universal_model -> update('current_schematic', $curr_schema, array('char_id' => $char_id));
 						$this -> session -> set_userdata(array('amount' => $amount));
 						if ($_POST['race'] == 1) {
 							redirect('player_skills/skill');
