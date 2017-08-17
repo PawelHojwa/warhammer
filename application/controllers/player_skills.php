@@ -24,6 +24,13 @@ class Player_skills extends CI_Controller {
 		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $this -> input -> post('prof'), 'skill_id' => $skills);
 		return $data;
 	}
+	
+	public function race_skills($r_skills, $p_id, $id = "") {
+		$arr = array(
+			'id' => $id, 'char_id' => $p_id, 'profId' => 1, 'skill_id' => $r_skills
+		);
+		return $arr;
+	}
 
 	public function skill() {
 		if (!isset($_SESSION['user'])) {
@@ -34,7 +41,16 @@ class Player_skills extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			$r_skills = $this -> universal_model -> get_user('char_skills', array('char_id' => $_SESSION['p_id']));
+			$race_skills = array();
 			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
+			if (!empty($r_skills) && is_array($r_skills)) {
+				foreach ($r_skills as $skill) {
+					$race_skills[] = $skill['skill_id'];
+				}
+				$r_s = $this -> race_skills($race_skills, $_SESSION['p_id']);
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $r_s);
+			}
 			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
 			if (!isset($_SESSION['amount'])) {
 				$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
@@ -42,9 +58,8 @@ class Player_skills extends CI_Controller {
 				$data['amount'] = $_SESSION['amount'];
 			}
 			$data['id'] = $_SESSION['p_id'];
-			/*$skills = $this -> get_skill($_SESSION['p_id']);
-			echo "<pre>";
-			var_dump($skills);
+			/*echo "<pre>";
+			var_dump($r_s);
 			echo "</pre>";*/
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
