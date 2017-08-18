@@ -54,10 +54,10 @@ $('document').ready(function() {
 	var am = $('#amount').text();
 	var boxCount = function() {
 		var len = $('.skill:checked:not(:disabled)').length;
-		/*if (len > am) {
+		if (len > am) {
 			alert('Wybrałeś wszystkie możliwe umiejętności!!');
 			return false;
-		}*/
+		}
 		$('#amount').text(len + "/" + am);
 		if (am == len) {
 			$('.moveBar').hide();

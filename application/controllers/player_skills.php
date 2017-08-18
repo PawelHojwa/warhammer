@@ -58,9 +58,6 @@ class Player_skills extends CI_Controller {
 				$data['amount'] = $_SESSION['amount'];
 			}
 			$data['id'] = $_SESSION['p_id'];
-			/*echo "<pre>";
-			var_dump($r_s);
-			echo "</pre>";*/
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
 			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
 			if ($this -> form_validation -> run() === false) {

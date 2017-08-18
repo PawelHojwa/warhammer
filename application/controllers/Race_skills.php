@@ -33,10 +33,15 @@ class Race_skills extends CI_Controller {
 	public function choose_skills() {
 		$this -> form_validation -> set_rules('skill[]', 'Umiejętność', 'required', array('required' => '{field} jest wymagana'));
 		$race = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'raceID');
+		$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 		$data['skills'] = $this -> get_race_skills($race);
 		$data['title'] = "Umiejętności rasowe";
 		$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
 		if ($data['amount'] == 1) {
+			$skill = $data['skills'][0] -> skill_id;
+			$this -> universal_model -> insert('char_skills', array('id' => '', 'char_id' => $_SESSION['p_id'], 'profId' => 1, 'skill_id' => $skill));
+			$this -> universal_model -> change('characters', array('amount' => 0), array('id' => $_SESSION['p_id']));
+			$this -> session -> unset_userdata('amount');
 			redirect('player_skills/skill');
 		}
 		if ($this -> form_validation -> run() === FALSE) {
@@ -50,7 +55,7 @@ class Race_skills extends CI_Controller {
 					$arr[] = $skill -> skillid;
 				}
 			}
-			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
+			
 			$datas = $this -> verify_data($arr);
 			$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $datas);
 			redirect('player_skills/skill');
