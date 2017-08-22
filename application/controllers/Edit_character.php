@@ -34,8 +34,8 @@ class Edit_character extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$arr = $this -> verify_data($exp);
-				$this -> universal_model -> update('characters', $arr, array('name' => $this -> input -> post('name')));
-				redirect('edit_skills/edit');
+				$this -> universal_model -> update('characters', $arr, array('id' => $_SESSION['p_id']));
+				redirect('add_choose/show_options');
 			}	
 		}
 	}
