@@ -25,37 +25,46 @@
 </div>
 <script>
 $('document').ready(function() {
-	$('input:radio').change(function() {
-		$('input:radio').click(function() {
-			var radio = $('input:radio:checked').val();
-			
-			$('#trade').change(function() {
-				$('#trade option:selected').each(function() {
-				
-					var trade = $('#trade').val();
-					var path = 'get_trade_list';
-					if (trade > 1 && trade < 7) {
-						$('input:radio').prop('disabled', false);
-						
-					} else {
-						$('input:radio').prop('disabled', true);
-					}
-					$.ajax({
-						url : path,
-						type : "post",
-						data : {
-							trade : trade,
-							radio : radio
-						},
-						success : function(data) {
-							$('#result').html(data);
-						}
-					});
-				});
-			}).change();
-			
+$('#quality').hide();
+$('#trade').change(function() {
+	$('#trade').each(function() {
+		var list = $('#trade option:selected').val();
+		$.ajax({
+			url : 'get_trade_list',
+			type : 'post',
+			data : {
+				trade : list
+			},
+			success : function(data){
+				$('#result').html(data);
+				if (list > 1 && list < 7) {
+					$('#quality').show();
+					$('input:radio').change(function() {
+						var times = $('input:radio:checked').val();
+						$.ajax({
+							url : 'compute_price',
+							type : 'post',
+							data : {
+								trade : list,
+								radio : times
+							},
+							dataType : 'json',
+							success : function (data) {
+								$('.item-price').each(function(index) {
+									$(this).text(data[index]);
+								});
+							}
+						});
+					}).change();
+				} else {
+					$('#quality').hide();
+				}
+			}
 		});
+		
 	});
+	
+}).change();
 	
 	
 });
