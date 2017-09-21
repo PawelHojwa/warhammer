@@ -51,6 +51,7 @@ class Login extends CI_Controller
 			$user = array('login' => $_POST['username'], 'pass' => sha1($_POST['password']));
 			$users = $this->universal_model->get_user('users', $user);
       $user_id = $this->universal_model->get_values('users', array('login' => $_POST['username']), 'userID');
+			$user_type = $this -> universal_model -> get_values('users', array('login' => $_POST['username']), 'type');
       $s_data = array(
           'user' => $_POST['username'],
           'userID' => $user_id
@@ -62,8 +63,14 @@ class Login extends CI_Controller
 			}
 			else
 			{
-                
-				$this->success();
+        if ($user_type == 'admin') {
+        	/*$data['type'] = $user_type;
+        	$data['admin_panel'] = 'Panel administracyjny';*/
+					
+        	redirect('home/index');
+        } else {
+        	$this->success();
+        }
 			}
 		}
 	}
