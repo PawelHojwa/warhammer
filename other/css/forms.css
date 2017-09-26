@@ -1,3 +1,7 @@
+/* RESET STYLÓW */
+margin: 0;
+padding: 0;
+
 /*..::stylowanie formularzy::..*/
 form {
 	margin: 15px;
@@ -11,10 +15,6 @@ table#info {
 	padding: 10px;
 	border: none;
 }
-
-/*input[name=age] {
-	text-align: center;
-}*/
 
 table#info tr, table#info  td {
 	border: none;
