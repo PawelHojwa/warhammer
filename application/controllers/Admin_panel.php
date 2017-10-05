@@ -8,6 +8,7 @@ class Admin_panel extends CI_Controller {
 		$this -> load -> model('admin_model');
 		$this -> load -> library('form_validation');
 		$this -> load -> model('universal_model');
+		$this -> load -> model('char_skills_model');
 		$this -> load -> helper('form');
 	}
 	
@@ -125,6 +126,146 @@ class Admin_panel extends CI_Controller {
 			var_dump($spell);
 			echo "</pre>";
 			redirect('admin_panel/add_spell');
+		}
+	}
+	
+	public function check_val($str) {
+		if ($str > 0) {
+			return "+" . $str;
+		} else {
+			return "";
+		}
+	}
+	
+	public function get_profession() {
+		if (isset($_POST['profession']) === TRUE && $_POST['profession'] !== FALSE) {
+			$professions = $this -> admin_model -> get_professions($_POST['profession']);
+			$title = "";
+			if ($_POST['profession'] == 0) {
+				$title = "Profesje podstawowe";
+			} else {
+				$title = "Profesje zaawansowane";
+			}
+			echo "<table>";
+			echo "<caption>" . $title . "</caption>";
+			echo "<tr>";
+			echo "<th>Profesja</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int</th><th>Op</th><th>SW</th><th>Ogd</th><th></th>";
+			echo "</tr>";
+			foreach ($professions as $profession) {
+				echo "<tr>";
+				echo "<td>" . $profession -> profession_name . "</td>";
+				echo "<td>" . $this -> check_val($profession -> sz) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> ww) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> us) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> s) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> wt) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> zw) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> ini) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> a) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> zr) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> cp) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> intel) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> op) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> sw) . "</td>";
+				echo "<td>" . $this -> check_val($profession -> ogd) . "</td>";
+				echo "<td><a href='delete/del_prof?id='" . $profession -> id . "'>Usuń</a></td>";
+				echo "</tr>";
+ 			}
+			echo "</table>";
+		} else {
+			echo "Błąd! Nie znaleziono profesji...!!";
+		}
+	}
+
+	public function valid_profession_name($id = "") {
+		$profession_type = $this -> input -> post('profession_type');
+		$class_id = 0;
+		$advance = 0;
+		if ($profession_type == 1) {
+			$class_id = $this -> input -> post('class_type');
+		} else {
+			$advance = 1;
+		}
+		$arr = array(
+			'id' => $id,
+			'profession_name' => $this -> input -> post('profession_name'),
+			'class_id' => $class_id,
+			'advancement' => $advance
+		);
+		return $arr;
+	}
+
+	public function valid_skills($prof_id, $id = '') {
+		$skills = $this -> input -> post('skill');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $prof_id,
+			'skill_id' => $skills,
+			'chance' => 0
+		);
+		return $arr;
+	}
+	
+	public function valid_item($prof_id, $id = '') {
+		$items = $this -> input -> post('item');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $prof_id,
+			'inventory_id' => $items,
+			'quality' => 1,
+			'options' => 0 
+		);
+		return $arr;
+	}
+
+	public function valid_statistics($prof_id) {
+		$arr = array(
+			'id' => $prof_id,
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'ini' => $this -> input -> post('ini'),
+			'a' => $this -> input -> post('sz'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd')
+		); 
+		return $arr;
+	}
+	
+	public function add_profession() {
+		$skill_id = $this -> char_skills_model -> get_skills('skillid');
+		$skill_name = $this -> char_skills_model -> get_skills('skillName');
+		$class_id = $this -> admin_model -> get_classes('classID');	
+		$class_name = $this -> admin_model -> get_classes('className');
+		$data['classes'] = array_combine($class_id, $class_name);
+		$data['items'] = $this -> admin_model -> get_items();
+		$data['subtitle'] = 'Dodawanie/usuwanie profesji';
+		$data['skills'] = array_combine($skill_id, $skill_name);
+		$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
+		//$this -> form_validation -> set_rules('skills[]', 'Umiejętność', 'required', array('required' => 'Proszę wygrać co najmniej jedną {field}'));
+		//$this -> form_validation -> set_rules('items[]', 'Ekwipunek', 'required', array('required' => 'Proszę wybarć co najmniej jeden przedmito {field}u'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('admin/add_profession', $data);
+		} else {
+			$profession_name = $this -> valid_profession_name();
+			$this -> universal_model -> insert('professions', $profession_name);
+			$id = $this -> admin_model -> get_profession_id();
+			$profession_id = $id -> id;
+			$profession_skill = $this -> valid_skills($profession_id);
+			$profession_items = $this -> valid_item($profession_id);
+			$profession_statistics = $this -> valid_statistics($profession_id);
+			$this -> admin_model -> profession_skill_insert($profession_skill);
+			$this -> admin_model -> profession_items_insert($profession_items);
+			$this -> universal_model -> insert('professions_statistics', $profession_statistics);
+			redirect('admin_panel/admin');
 		}
 	}
 }

@@ -51,4 +51,80 @@ class Admin_model extends CI_Model {
 			return "Błąd zapytania!";
 		}
 	}
+	
+	public function get_professions($value) {
+		$this -> db -> select('*');
+		$this -> db -> from('professions');
+		$this -> db -> join('professions_statistics', 'professions.id = professions_statistics.id');
+		$this -> db -> where('professions.advancement', $value);
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
+	
+	public function get_items() {
+		$this -> db -> select('*');
+		$this -> db -> from('items');
+		$this -> db -> order_by('items_group_id');
+		$query = $this -> db -> get();
+		if ($query !== false && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
+	
+	public function get_classes($col = "") {
+		$target = array();
+		$this -> db -> select('*');
+		$this -> db -> from('classes');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			foreach($query -> result() as $row) {
+				$target[] = $row -> $col;
+			}
+			return $target;
+		} else {
+			return "Błąd zapytania!!";
+		}
+	}
+
+	public function get_profession_id() {
+		$this -> db -> select('id');
+		$this -> db -> from('professions');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> last_row();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
+	
+	public function profession_skill_insert($arr) {
+		foreach ($arr['skill_id'] as $skill) {
+			$record = array(
+				'id' => $arr['id'],
+				'profession_id' => $arr['profession_id'],
+				'skill_id' => $skill,
+				'chance' => $arr['chance']
+			);
+			$this -> db -> insert('professions_skills', $record);
+		}
+	}
+	
+	public function profession_items_insert($arr) {
+		foreach ($arr['inventory_id'] as $item) {
+			$record = array(
+				'id' => $arr['id'],
+				'profession_id' => $arr['profession_id'],
+				'inventory_id' => $item,
+				'quality' => $arr['quality'],
+				'options' => $arr['options'] 
+			);
+			$this -> db -> insert('professions_inventory', $record);
+		}
+	}
 }

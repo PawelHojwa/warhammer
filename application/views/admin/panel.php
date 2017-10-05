@@ -20,7 +20,7 @@
 	?>
 	</div>
 	<div class="main" style="margin-left: 200px; padding: 10px;">
-		
+		<div class="result"></div>
 	</div>
 	
 </div>
@@ -53,6 +53,12 @@ $(document).ready(function() {
 	});
 	$('#add_spell').click(function() {
 		$('.main').load('add_spell', function(data) {
+			$('.main').html(data);
+		});
+		return false;
+	});
+	$('#add_profession').click(function() {
+		$('.main').load('add_profession', function(data) {
 			$('.main').html(data);
 		});
 		return false;
