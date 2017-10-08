@@ -7,6 +7,9 @@ echo form_close();
 echo validation_errors('<p class="alert alert-danger">', '</p>');
 echo br(2);
 $lp = 0;
+?>
+<div class='result'>
+<?php
 foreach ($skills as $row) {
 	echo ++$lp . ". ";
 	echo $row -> skillName . " ";
@@ -14,3 +17,5 @@ foreach ($skills as $row) {
 	echo br();
 }
 ?>
+</div>
+</div>

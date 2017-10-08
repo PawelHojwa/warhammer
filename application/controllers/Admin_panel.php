@@ -12,21 +12,6 @@ class Admin_panel extends CI_Controller {
 		$this -> load -> helper('form');
 	}
 	
-	public function admin() {
-		$data = array(
-			'title' => 'Panel administratora',
-			'char_names' => 'Postacie',
-			'add_skill' => 'Dodaj umiejętność',
-			'add_spell' => 'Dodaj czar',
-			'add_profession' => 'Dodaj profesje',
-			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
-		);
-		$this -> load -> view('templates/header', $data);
-		$this -> load -> view('admin/panel', $data);
-		$this -> load -> view('templates/footer');
-	}
-	
 	public function get_character_names() {
 		$arr = array();
 		return $arr = $this -> admin_model -> get_names();
@@ -46,21 +31,45 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function show_list() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$data['chars'] = $this -> get_character_names();
 		$data['subtitle'] = 'Wszystkie postacie';
+		$this -> load -> view('templates/header', $data);
+		$this -> load -> view('admin/admin_menu', $data);
 		$this -> load -> view('admin/show_list', $data);
+		$this -> load -> view('templates/footer');
 	}
 	
 	public function add_skill() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$data['skills'] = $this -> get_skills();
 		$data['subtitle'] = "Dodaj/usuń umiejętność";
 		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
 		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_skills', $data);
+			$this -> load -> view('templates/footer');
 		} else {
 			$skill_data = $this -> skills_data();
 			$this -> universal_model -> insert('umiejetnosci', $skill_data);
-			redirect('admin_panel/admin');
+			redirect('admin_panel/add_skill');
 		}
 	}
 	
@@ -93,8 +102,17 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_spell() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$data['spells'] = $this -> admin_model -> get_spells();
-		$data['subtitle'] = "Dodaj/Usuń czar";
+		$data['subtitle'] = "Dodaj/usuń czar";
 		$spells = $this -> universal_model -> get_data('casts_type');
 		$spell_id = array();
 		$spell_type = array();
@@ -114,7 +132,10 @@ class Admin_panel extends CI_Controller {
 		$this -> form_validation -> set_rules('spell_components', 'Komponenty', 'required', array('required' => '{field} są wymagane'));
 		$this -> form_validation -> set_rules('spell_effect', 'Efekt', 'required', array('required' => '{field} jest wymagany'));
 		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_spells', $data);
+			$this -> load -> view('templates/footer');
 		} else {
 			$spell_name = $this -> sp_name();
 			$this -> universal_model -> insert('casts_names', $spell_name);
@@ -240,20 +261,32 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_profession() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
 		$class_id = $this -> admin_model -> get_classes('classID');	
 		$class_name = $this -> admin_model -> get_classes('className');
 		$data['classes'] = array_combine($class_id, $class_name);
 		$data['items'] = $this -> admin_model -> get_items();
-		$data['subtitle'] = 'Dodawanie/usuwanie profesji';
+		$data['subtitle'] = 'Dodaj/usun profesję';
 		$data['skills'] = array_combine($skill_id, $skill_name);
 		$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
 		$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
 		//$this -> form_validation -> set_rules('skills[]', 'Umiejętność', 'required', array('required' => 'Proszę wygrać co najmniej jedną {field}'));
 		//$this -> form_validation -> set_rules('items[]', 'Ekwipunek', 'required', array('required' => 'Proszę wybarć co najmniej jeden przedmito {field}u'));
 		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_profession', $data);
+			$this -> load -> view('templates/footer');
 		} else {
 			$profession_name = $this -> valid_profession_name();
 			$this -> universal_model -> insert('professions', $profession_name);
@@ -265,7 +298,7 @@ class Admin_panel extends CI_Controller {
 			$this -> admin_model -> profession_skill_insert($profession_skill);
 			$this -> admin_model -> profession_items_insert($profession_items);
 			$this -> universal_model -> insert('professions_statistics', $profession_statistics);
-			redirect('admin_panel/admin');
+			redirect('admin_panel/add_prefession');
 		}
 	}
 
@@ -303,15 +336,27 @@ class Admin_panel extends CI_Controller {
 	}
 
 	public function add_race() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$races = $this -> admin_model -> get_race();
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
 		$data['race'] = $races;
-		$data['subtitle'] = 'Dodawanie/usuwanie rasy';
+		$data['subtitle'] = 'Dodaj/usuń rasy';
 		$data['skills'] = array_combine($skill_id, $skill_name);
 		$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
 		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_races', $data);
+			$this -> load -> view('templates/footer');
 		} else {
 			$race_name = $this -> valid_race();
 			$this -> universal_model -> insert('rasa', $race_name);
@@ -319,19 +364,31 @@ class Admin_panel extends CI_Controller {
 			$race_id = $id -> raceID;
 			$race_skill = $this -> valid_race_skill($race_id);
 			$this -> admin_model -> race_skill_insert($race_skill);
-			redirect('admin_panel/admin');
+			redirect('admin_panel/add_race');
 		}
 	}
 
 	public function add_class() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase'
+		);
 		$classes = $this -> admin_model -> get_classess();
 		$items = $this -> admin_model -> get_items();
 		$data['classes'] = $classes;
 		$data['items'] = $items;
-		$data['subtitle'] = 'Dodawanie/usuwanie klasy';
+		$data['subtitle'] = 'Dodaj/usuń klase';
 		$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
 		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_class', $data);
+			$this -> load -> view('templates/footer');
 		} else {
 			$class_name = $this -> valid_class();
 			$this -> universal_model -> insert('classes', $class_name);
@@ -339,13 +396,8 @@ class Admin_panel extends CI_Controller {
 			$class_id = $id -> classID;
 			$class_items = $this -> valid_class_items($class_id);
 			$this -> admin_model -> class_items_multi_insert($class_items);
-			redirect('admin_panel/admin');
+			redirect('admin_panel/add_class');
 		}
-		/*echo "<pre>";
-		var_dump($classes);
-		var_dump($items);
-		echo "</pre>";
-		$this -> load -> view('admin/add_class');*/
 	}
 	
 	public function valid_class($id = "") {

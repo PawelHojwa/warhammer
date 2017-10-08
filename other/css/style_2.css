@@ -343,3 +343,25 @@ table td > span {
 	border:none; 
 	padding: 3.5px 5px;
 }
+
+/*-- admin panel menu --*/
+
+#menu {
+	display: block;
+	list-style-type: none;
+}
+
+#menu li {
+	float: left;
+	padding: 3px;
+	border-right: 1px solid black;
+}
+
+#menu li:first-child {
+	margin-left: 0;
+}
+
+#menu li:last-child {
+	margin-right: 0;
+	border-right: none;
+}

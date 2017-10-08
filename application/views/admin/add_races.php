@@ -2,7 +2,7 @@
 echo heading($subtitle, 4);
 echo form_open('admin_panel/add_race');
 echo form_input('race_name', '', array('placeholder' => 'Nazwa rasy...'));
-echo br();
+echo br(2);
 ?>
 <p class="lead">Statysyki</p>
 <?php
@@ -66,8 +66,7 @@ echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
 ?>
-</div>
-<div class="profession-skills">
+<div class="race-skills">
 <?php
 echo br();
 echo "<p class='lead'>Wybór umiejętności:</p>";
@@ -84,6 +83,9 @@ echo br();
 echo form_submit('btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo validation_errors("<p class='alert alert-danger'", "</p>");
 echo br(2);
+?>
+<div class='result'>
+<?php
 echo "<table class='race_table'>";
 echo "<tr>";
 echo "<th>Rasa</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int<th>Op</th><th>SW</th><th>Ogd</th><th></th>";
@@ -110,6 +112,8 @@ foreach ($race as $row) {
 }
 echo "</table>";
 ?>
+</div>
+</div>
 <script>
 $(document).ready(function() {
 	$('span').css({

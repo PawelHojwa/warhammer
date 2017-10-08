@@ -3,7 +3,7 @@ echo heading($subtitle, 4);
 echo validation_errors('<p class="alert alert-danger">', '</p>');
 echo form_open('admin_panel/add_profession');
 echo form_input('profession_name', '', array('placeholder' => 'Nazwa profesji...'));
-echo br();
+echo br(2);
 ?>
 <div class="prof_type">
 <p class="lead">Rodzaj profesji:</p>
@@ -14,7 +14,7 @@ echo form_radio('profession_type', 2, false);
 echo form_label('Profesja zaawansowana');
 echo br();
 echo form_dropdown('class_type', $classes, 1);
-echo br(2);
+echo br();
 ?>
 </div>
 <div class="profession-statistics">
@@ -81,6 +81,7 @@ echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
 ?>
 </div>
+<br>
 <div class="profession-skills">
 <?php
 echo "<p class='lead'>Wybór umiejętności:</p>";
@@ -92,6 +93,7 @@ foreach ($skills as $key => $value) {
 }
 ?>
 </div>
+<br>
 <div class="profession-items">
 <p class="lead">Ekwipunek:</p>
 <?php

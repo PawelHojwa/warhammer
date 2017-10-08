@@ -72,6 +72,9 @@ foreach ($items as $item) {
 echo form_submit('submit_btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo validation_errors("<p class='alert alert-danger'", "</p>");
 echo br(2);
+?>
+<div class='result'>
+<?php
 echo "<table class='class-table'>";
 echo "<tr>";
 echo "<th>Nazwa klasy</th><th></th>";
@@ -83,6 +86,8 @@ foreach ($classes as $row) {
 }
 echo "</table>";
 ?>
+</div>
+</div>
 <script>
 $('document').ready(function() {
 	$('span').css({'width': 305, 'display' : 'inline-block'});
