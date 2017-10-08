@@ -127,4 +127,39 @@ class Admin_model extends CI_Model {
 			$this -> db -> insert('professions_inventory', $record);
 		}
 	}
+	
+	public function get_race() {
+		$this -> db -> select('*');
+		$this -> db -> from('rasa');
+		$this -> db -> order_by('raceName');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return 'Błąd zapytania!!';
+		}
+	}
+	
+	public function race_skill_insert($arr) {
+		foreach($arr['skill_id'] as $skill) {
+			$record = array(
+				'id' => $arr['id'],
+				'race_id' => $arr['race_id'],
+				'skill_id' => $skill,
+				'options' => $arr['options']
+			);
+			$this -> db -> insert('race_skills', $record);
+		}
+	}
+	
+	public function get_race_id() {
+		$this -> db -> select('raceID');
+		$this -> db -> from('rasa');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> last_row();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
 }

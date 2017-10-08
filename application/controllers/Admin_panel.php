@@ -268,4 +268,59 @@ class Admin_panel extends CI_Controller {
 			redirect('admin_panel/admin');
 		}
 	}
+
+	public function valid_race($id = '') {
+		$arr = array(
+			'raceID' => $id,
+			'raceName' => $this -> input -> post('race_name'),
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'i' => $this -> input -> post('ini'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('cp'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd'),
+		);
+		return $arr;
+	}
+	
+	public function valid_race_skill($r_id, $id ='') {
+		$skills = $this -> input -> post('skill');	
+		$arr = array(
+			'id' => $id,
+			'race_id' => $r_id,
+			'skill_id' => $skills,
+			'options' => 0
+		);
+		return $arr;
+	}
+
+	public function add_race() {
+		$races = $this -> admin_model -> get_race();
+		$skill_id = $this -> char_skills_model -> get_skills('skillid');
+		$skill_name = $this -> char_skills_model -> get_skills('skillName');
+		$data['race'] = $races;
+		$data['subtitle'] = 'Dodawanie/usuwanie rasy';
+		$data['skills'] = array_combine($skill_id, $skill_name);
+		$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('admin/add_races', $data);
+		} else {
+			$race_name = $this -> valid_race();
+			$this -> universal_model -> insert('rasa', $race_name);
+			$id = $this -> admin_model -> get_race_id();
+			$race_id = $id -> raceID;
+			$race_skill = $this -> valid_race_skill($race_id);
+			$this -> admin_model -> race_skill_insert($race_skill);
+			redirect('admin_panel/admin');
+			
+		}
+	}
 }

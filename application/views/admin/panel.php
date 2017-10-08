@@ -63,5 +63,11 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	$('#add_race').click(function() {
+		$('.main').load('add_race', function(data) {
+			$('.main').html(data);
+		});
+		return false;
+	});
 });
 </script>
