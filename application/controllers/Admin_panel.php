@@ -320,7 +320,51 @@ class Admin_panel extends CI_Controller {
 			$race_skill = $this -> valid_race_skill($race_id);
 			$this -> admin_model -> race_skill_insert($race_skill);
 			redirect('admin_panel/admin');
-			
 		}
+	}
+
+	public function add_class() {
+		$classes = $this -> admin_model -> get_classess();
+		$items = $this -> admin_model -> get_items();
+		$data['classes'] = $classes;
+		$data['items'] = $items;
+		$data['subtitle'] = 'Dodawanie/usuwanie klasy';
+		$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('admin/add_class', $data);
+		} else {
+			$class_name = $this -> valid_class();
+			$this -> universal_model -> insert('classes', $class_name);
+			$id = $this -> admin_model -> get_class_id();
+			$class_id = $id -> classID;
+			$class_items = $this -> valid_class_items($class_id);
+			$this -> admin_model -> class_items_multi_insert($class_items);
+			redirect('admin_panel/admin');
+		}
+		/*echo "<pre>";
+		var_dump($classes);
+		var_dump($items);
+		echo "</pre>";
+		$this -> load -> view('admin/add_class');*/
+	}
+	
+	public function valid_class($id = "") {
+		$arr = array(
+			'classID' => $id,
+			'className' => $this -> input -> post('class_name')
+		);
+		return $arr;
+	}
+	
+	public function valid_class_items($c_id, $id = '') {
+		$items = $this -> input -> post('item');
+		$arr = array(
+			'id' => $id,
+			'inventory_id' => $items,
+			'classID' => $c_id,
+			'amount' => 1,
+			'options' => 0
+		);
+		return $arr;
 	}
 }

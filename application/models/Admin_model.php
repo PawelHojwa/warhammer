@@ -162,4 +162,40 @@ class Admin_model extends CI_Model {
 			return "Błąd zapytania";
 		}
 	}
+
+	public function get_classess() {
+		$this -> db -> select('*');
+		$this -> db -> from('classes');
+		$this -> db -> order_by('className');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "Błąd zapytania!!";
+		}
+	}
+	
+	public function get_class_id() {
+		$this -> db -> select('classID');
+		$this -> db -> from('classes');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> last_row();
+		} else {
+			return "Błąd zapytania!!";
+		}
+	}
+	
+	public function class_items_multi_insert($arr) {
+		foreach ($arr['inventory_id'] as $item) {
+			$record = array(
+				'id' => $arr['id'],
+				'inventory_id' => $item,
+				'classID' => $arr['classID'],
+				'amount' => $arr['amount'],
+				'options' => $arr['options']
+			);
+			$this -> db -> insert('basic_inv', $record);
+		}
+	}
 }

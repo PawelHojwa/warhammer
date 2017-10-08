@@ -69,5 +69,11 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	$('#add_class').click(function() {
+		$('.main').load('add_class', function(data) {
+			$('.main').html(data);
+		});
+		return false;
+	});
 });
 </script>
