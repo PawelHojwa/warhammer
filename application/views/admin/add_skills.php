@@ -1,5 +1,6 @@
 <?php
 echo heading($subtitle, 4);
+echo "<p>" . $added . "</p>";
 echo form_open('admin_panel/add_skill');
 echo form_input('skill_name', '', array('id' => 'skill', 'placeholder' => 'Nazwa umiejętności...'));
 echo form_submit('', 'Dodaj', array('class' => 'btn btn-primary'));
@@ -19,3 +20,5 @@ foreach ($skills as $row) {
 ?>
 </div>
 </div>
+<script>
+</script>

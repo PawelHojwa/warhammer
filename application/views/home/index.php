@@ -3,7 +3,7 @@
 <?php
 echo br();
 	if ($type == 'admin') {
-		echo anchor('admin_panel/admin', $admin_panel, array('class' => 'btn_anchor btn btn-primary anchor'));
+		echo anchor('admin_panel/show_list', $admin_panel, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo br(2);
 		echo anchor('create_player/create', $create, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('trade/price_list', $price_list, array('class' => 'btn_anchor btn btn-primary anchor'));

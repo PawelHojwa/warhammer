@@ -60,6 +60,7 @@ class Admin_panel extends CI_Controller {
 		);
 		$data['skills'] = $this -> get_skills();
 		$data['subtitle'] = "Dodaj/usuń umiejętność";
+		
 		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
 		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
@@ -69,7 +70,12 @@ class Admin_panel extends CI_Controller {
 		} else {
 			$skill_data = $this -> skills_data();
 			$this -> universal_model -> insert('umiejetnosci', $skill_data);
-			redirect('admin_panel/add_skill');
+			$last_skill = $this -> universal_model -> last_index('umiejetnosci', 'skillName');
+			$data['added'] = "Wprowadzono <b>" . $last_skill . "</b>";
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_skills', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
