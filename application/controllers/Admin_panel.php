@@ -146,13 +146,14 @@ class Admin_panel extends CI_Controller {
 			$spell_name = $this -> sp_name();
 			$this -> universal_model -> insert('casts_names', $spell_name);
 			$spell_name_id = $this -> get_spell_id();
-			
 			$spell = $this -> spell($spell_name_id -> id);
 			$this -> universal_model -> insert('spells', $spell);
-			echo "<pre>";
-			var_dump($spell);
-			echo "</pre>";
-			redirect('admin_panel/add_spell');
+			$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
+			$data['added'] = "Wprowadzono <b>" . $last_spell . "</b>";
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_spells', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
@@ -375,7 +376,12 @@ class Admin_panel extends CI_Controller {
 			$race_id = $id -> raceID;
 			$race_skill = $this -> valid_race_skill($race_id);
 			$this -> admin_model -> race_skill_insert($race_skill);
-			redirect('admin_panel/add_race');
+			$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
+			$data['added'] = "Wprowadzono <b>" . $last_race . "</b>";
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_races', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 

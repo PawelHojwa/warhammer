@@ -1,5 +1,7 @@
 <?php
 echo heading($subtitle, 4);
+echo "<p>" . $added . "</p>";
+echo validation_errors('<p class="alert alert-danger"', '</p>');
 echo form_open('admin_panel/add_spell');
 echo form_input('spell_name', '', array('placeholder' => 'Nazwa czaru...'));
 echo br();
@@ -21,7 +23,7 @@ echo form_input('spell_effect', '', array('placeholder' => 'Efekt...'));
 echo br(2);
 echo form_submit('submit_btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo form_close();
-echo validation_errors('<p class="alert alert-danger"', '</p>');
+
 echo br();
 ?>
 <div class='result'>
