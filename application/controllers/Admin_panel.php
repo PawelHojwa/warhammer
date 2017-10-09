@@ -304,7 +304,12 @@ class Admin_panel extends CI_Controller {
 			$this -> admin_model -> profession_skill_insert($profession_skill);
 			$this -> admin_model -> profession_items_insert($profession_items);
 			$this -> universal_model -> insert('professions_statistics', $profession_statistics);
-			redirect('admin_panel/add_prefession');
+			$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
+			$data['added'] = "Wprowadzono <b>" . $last_profession . "</b>";
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_profession', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 

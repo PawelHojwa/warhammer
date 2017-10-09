@@ -1,5 +1,6 @@
 <?php
 echo heading($subtitle, 4);
+echo "<p>" . $added . "</p>";
 echo validation_errors('<p class="alert alert-danger">', '</p>');
 echo form_open('admin_panel/add_profession');
 echo form_input('profession_name', '', array('placeholder' => 'Nazwa profesji...'));
