@@ -1,5 +1,6 @@
 <?php
 echo heading($subtitle, 4);
+echo "<p>" . $added . "</p>";
 echo form_open('admin_panel/add_class');
 echo form_input('class_name', '', array('placeholder' => 'Nazwa klasy...'));
 echo br(2);

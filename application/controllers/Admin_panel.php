@@ -402,7 +402,12 @@ class Admin_panel extends CI_Controller {
 			$class_id = $id -> classID;
 			$class_items = $this -> valid_class_items($class_id);
 			$this -> admin_model -> class_items_multi_insert($class_items);
-			redirect('admin_panel/add_class');
+			$last_class = $this -> universal_model -> last_index('classes', 'className');
+			$data['added'] = "Wprowadzono <b>" . $last_class . "</p>";
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_class', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
