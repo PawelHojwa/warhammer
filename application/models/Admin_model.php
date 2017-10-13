@@ -28,17 +28,6 @@ class Admin_model extends CI_Model {
 		}
 	}
 	
-	public function get_spell_id() {
-		$this -> db -> select('id');
-		$this -> db -> from('casts_names');
-		$query = $this -> db -> get();
-		if ($query -> num_rows() > 0) {
-			return $query -> last_row();
-		} else {
-			return "Błąd zapytania";
-		}
-	}
-	
 	public function get_spells() {
 		$this -> db -> select('*');
 		$this -> db -> from('spells');
@@ -91,17 +80,6 @@ class Admin_model extends CI_Model {
 			return "Błąd zapytania!!";
 		}
 	}
-
-	public function get_profession_id() {
-		$this -> db -> select('id');
-		$this -> db -> from('professions');
-		$query = $this -> db -> get();
-		if ($query !== FALSE && $query -> num_rows() > 0) {
-			return $query -> last_row();
-		} else {
-			return "Błąd zapytania";
-		}
-	}
 	
 	public function profession_skill_insert($arr) {
 		foreach ($arr['skill_id'] as $skill) {
@@ -151,17 +129,6 @@ class Admin_model extends CI_Model {
 			$this -> db -> insert('race_skills', $record);
 		}
 	}
-	
-	public function get_race_id() {
-		$this -> db -> select('raceID');
-		$this -> db -> from('rasa');
-		$query = $this -> db -> get();
-		if ($query !== FALSE && $query -> num_rows() > 0) {
-			return $query -> last_row();
-		} else {
-			return "Błąd zapytania";
-		}
-	}
 
 	public function get_classess() {
 		$this -> db -> select('*');
@@ -170,17 +137,6 @@ class Admin_model extends CI_Model {
 		$query = $this -> db -> get();
 		if ($query !== FALSE && $query -> num_rows() > 0) {
 			return $query -> result();
-		} else {
-			return "Błąd zapytania!!";
-		}
-	}
-	
-	public function get_class_id() {
-		$this -> db -> select('classID');
-		$this -> db -> from('classes');
-		$query = $this -> db -> get();
-		if ($query !== FALSE && $query -> num_rows() > 0) {
-			return $query -> last_row();
 		} else {
 			return "Błąd zapytania!!";
 		}
@@ -196,6 +152,20 @@ class Admin_model extends CI_Model {
 				'options' => $arr['options']
 			);
 			$this -> db -> insert('basic_inv', $record);
+		}
+	}
+	
+	public function search_data($tab_name, $col_name, $data) {
+		$msg = "";
+		$this -> db -> select($col_name);
+		$this -> db -> from($tab_name);
+		$this -> db -> like($col_name, $data);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			$msg = "Błąd zapytania";
+			return $msg;
 		}
 	}
 }

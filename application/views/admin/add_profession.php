@@ -182,20 +182,20 @@ $('document').ready(function() {
 	});
 	$('input:radio:last-of-type').css('margin-left', 15);
 	$('.show-profession input:radio').change(function() {
-			var prof = $('input:radio:checked').val();
-			$.ajax({
-				url : 'get_profession',
-				data: {profession : prof},
-				type : 'post',
-				success : function(data) {
-					$('.result').html(data);
-					$('th:first-child').css('min-width', 200);
-					$('th:not(th:first-child)').css('width', 35);
-					$('td:not(td:first-child)').addClass('text-center');
-					$('td').css('padding', 3);
-					$('caption').addClass('text-center').css('font-weight', 'bold');
-				}
-			});
+		var prof = $('input:radio:checked').val();
+		$.ajax({
+			url : 'get_profession',
+			data: {profession : prof},
+			type : 'post',
+			success : function(data) {
+				$('.result').html(data);
+				$('th:first-child').css('min-width', 200);
+				$('th:not(th:first-child)').css('width', 35);
+				$('td:not(td:first-child)').addClass('text-center');
+				$('td').css('padding', 3);
+				$('caption').addClass('text-center').css('font-weight', 'bold');
+			}
+		});
 	}).change();
 	var width = $('.stats').css('width');
 	$('button').css('width', width);

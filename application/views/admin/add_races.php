@@ -87,31 +87,7 @@ echo br(2);
 ?>
 <div class='result'>
 <?php
-echo "<table class='race_table'>";
-echo "<tr>";
-echo "<th>Rasa</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int<th>Op</th><th>SW</th><th>Ogd</th><th></th>";
-echo "</tr>";
-foreach ($race as $row) {
-	echo "<tr>";	
-	echo "<td>" . $row -> raceName . "</td>";
-	echo "<td>" . $row -> sz . "</td>";
-	echo "<td>" . $row -> ww . "</td>";
-	echo "<td>" . $row -> us . "</td>";
-	echo "<td>" . $row -> s . "</td>";
-	echo "<td>" . $row -> wt . "</td>";
-	echo "<td>" . $row -> zw . "</td>";
-	echo "<td>" . $row -> i . "</td>";
-	echo "<td>" . $row -> a . "</td>";
-	echo "<td>" . $row -> zr . "</td>";
-	echo "<td>" . $row -> cp . "</td>";
-	echo "<td>" . $row -> intel . "</td>";
-	echo "<td>" . $row -> op . "</td>";
-	echo "<td>" . $row -> sw . "</td>";
-	echo "<td>" . $row -> ogd . "</td>";
-	echo "<td>" . anchor('delete/del_race$id= ' . $row -> raceID,  'Usuń') . "</td>";
-	echo "</tr>";
-}
-echo "</table>";
+
 ?>
 </div>
 </div>
@@ -120,6 +96,9 @@ $(document).ready(function() {
 	$('span').css({
 		'display' : 'inline-block',
 		'width' : 305
+	});
+	$.get('get_race', function(data) {
+		$('.result').html(data);
 	});
 	$('.race_table th:not(th:first-child)').css('width', 30);
 	$('.race_table td:not(td:first-child)').addClass('text-center');

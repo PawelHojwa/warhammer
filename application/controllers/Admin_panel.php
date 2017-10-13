@@ -18,9 +18,26 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function get_skills() {
-		$arr = array();
-		return $arr = $this -> admin_model -> get_skills();
+		$arr = $this -> admin_model -> get_skills();
+		$lp = 0;
+		echo "<table>";
+		echo "<tr>";
+		echo "<th>Lp.</th><th>Umiejętność</th><th></th>";
+		foreach ($arr as $row) {
+			echo "<tr>";
+			echo "<td>" . ++$lp . "</td>";
+			echo "<td>" . $row -> skillName . "</td>";
+			echo "<td>" . anchor('delete/del_skill?=' . $row -> skillID, 'Usuń') . "</td>";
+			echo "</tr>";
+		}
+		echo "</table>";
 	}
+	
+	public function check_data($data_name, $tab_name, $col_name) {
+		$name = $this -> input -> post($data_name);
+		$data = $this -> universal_model -> get_values($tab_name, array($col_name => $name), $col_name);
+		return $data;
+	} 
 	
 	public function skills_data($id = '') {
 		$arr = array(
@@ -58,9 +75,7 @@ class Admin_panel extends CI_Controller {
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase'
 		);
-		$data['skills'] = $this -> get_skills();
 		$data['subtitle'] = "Dodaj/usuń umiejętność";
-		
 		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
 		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
@@ -68,10 +83,17 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('admin/add_skills', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$skill_data = $this -> skills_data();
-			$this -> universal_model -> insert('umiejetnosci', $skill_data);
-			$last_skill = $this -> universal_model -> last_index('umiejetnosci', 'skillName');
-			$data['added'] = "Wprowadzono <b>" . $last_skill . "</b>";
+			$skill_name = $this -> check_data('skill_name', 'umiejetnosci', 'skillName');
+			$add = "";
+			if (empty($skill_name)) {
+				$skill_data = $this -> skills_data();
+				$this -> universal_model -> insert('umiejetnosci', $skill_data);
+				$last_skill = $this -> universal_model -> last_index('umiejetnosci', 'skillName');
+				$add = "Wprowadzono <b>" . $last_skill . "</b>";
+			} else {
+				$add = $skill_name . " już istnieje!";
+			}
+			$data['added'] = $add;
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_skills', $data);
@@ -107,6 +129,27 @@ class Admin_panel extends CI_Controller {
 		return $arr;
 	}
 	
+	public function get_spells() {
+		$spells = $this -> admin_model -> get_spells();
+		echo "<table>";
+		echo "<tr>";
+		echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
+		echo "</tr>";
+		foreach ($spells as $spell) {
+			echo "<tr>";
+			echo "<td>" . $spell -> cast_name . "</td>";
+			echo "<td>" . $spell -> type . "</td>";
+			echo "<td>" . $spell -> spell_lvl . "</td>";
+			echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
+			echo "<td>" . $spell -> spell_duration . "</td>";
+			echo "<td>" . $spell -> spell_range . "</td>";
+			echo "<td>" . $spell -> spell_components  . "</td>";
+			echo "<td>" . $spell -> spell_effect . "</td>";
+			echo "<tr>";
+		 }
+		echo "</table>";
+	}
+	
 	public function add_spell() {
 		$data = array(
 			'title' => 'Panel administratora',
@@ -117,7 +160,6 @@ class Admin_panel extends CI_Controller {
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase'
 		);
-		$data['spells'] = $this -> admin_model -> get_spells();
 		$data['subtitle'] = "Dodaj/usuń czar";
 		$spells = $this -> universal_model -> get_data('casts_type');
 		$spell_id = array();
@@ -143,13 +185,20 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('admin/add_spells', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$spell_name = $this -> sp_name();
-			$this -> universal_model -> insert('casts_names', $spell_name);
-			$spell_name_id = $this -> get_spell_id();
-			$spell = $this -> spell($spell_name_id -> id);
-			$this -> universal_model -> insert('spells', $spell);
-			$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
-			$data['added'] = "Wprowadzono <b>" . $last_spell . "</b>";
+			$spell = $this -> check_data('spell_name', 'casts_names', 'cast_name');
+			$add = "";
+			if (empty($spell)) {
+				$spell_name = $this -> sp_name();
+				$this -> universal_model -> insert('casts_names', $spell_name);
+				$spell_name_id = $this -> get_spell_id();
+				$spell = $this -> spell($spell_name_id -> id);
+				$this -> universal_model -> insert('spells', $spell);
+				$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
+				$add = "Wprowadzono <b>" . $last_spell . "</b>";
+			} else {
+				$add = $spell . " już istnieje!";
+			}
+			$data['added'] = $add;
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_spells', $data);
@@ -295,18 +344,24 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('admin/add_profession', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$profession_name = $this -> valid_profession_name();
-			$this -> universal_model -> insert('professions', $profession_name);
-			$id = $this -> admin_model -> get_profession_id();
-			$profession_id = $id -> id;
-			$profession_skill = $this -> valid_skills($profession_id);
-			$profession_items = $this -> valid_item($profession_id);
-			$profession_statistics = $this -> valid_statistics($profession_id);
-			$this -> admin_model -> profession_skill_insert($profession_skill);
-			$this -> admin_model -> profession_items_insert($profession_items);
-			$this -> universal_model -> insert('professions_statistics', $profession_statistics);
-			$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
-			$data['added'] = "Wprowadzono <b>" . $last_profession . "</b>";
+			$profession = $this -> check_data('profession_name', 'professions', 'profession_name');
+			$add = "";
+			if (empty($profession)) {
+				$profession_name = $this -> valid_profession_name();
+				$this -> universal_model -> insert('professions', $profession_name);
+				$profession_id = $this -> universal_model -> last_index('profesje', 'id');
+				$profession_skill = $this -> valid_skills($profession_id);
+				$profession_items = $this -> valid_item($profession_id);
+				$profession_statistics = $this -> valid_statistics($profession_id);
+				$this -> admin_model -> profession_skill_insert($profession_skill);
+				$this -> admin_model -> profession_items_insert($profession_items);
+				$this -> universal_model -> insert('professions_statistics', $profession_statistics);
+				$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
+				$add = "Wprowadzono <b>" . $last_profession . "</b>";
+			} else {
+				$add = $profession . " już istnieje!";
+			}
+			$data['added'] = $add;
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_profession', $data);
@@ -347,6 +402,35 @@ class Admin_panel extends CI_Controller {
 		return $arr;
 	}
 
+	public function get_race() {
+		$races = $this -> admin_model -> get_race();
+		echo "<table class='race_table'>";
+		echo "<tr>";
+		echo "<th>Rasa</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int<th>Op</th><th>SW</th><th>Ogd</th><th></th>";
+		echo "</tr>";
+		foreach ($races as $row) {
+			echo "<tr>";	
+			echo "<td>" . $row -> raceName . "</td>";
+			echo "<td>" . $row -> sz . "</td>";
+			echo "<td>" . $row -> ww . "</td>";
+			echo "<td>" . $row -> us . "</td>";
+			echo "<td>" . $row -> s . "</td>";
+			echo "<td>" . $row -> wt . "</td>";
+			echo "<td>" . $row -> zw . "</td>";
+			echo "<td>" . $row -> i . "</td>";
+			echo "<td>" . $row -> a . "</td>";
+			echo "<td>" . $row -> zr . "</td>";
+			echo "<td>" . $row -> cp . "</td>";
+			echo "<td>" . $row -> intel . "</td>";
+			echo "<td>" . $row -> op . "</td>";
+			echo "<td>" . $row -> sw . "</td>";
+			echo "<td>" . $row -> ogd . "</td>";
+			echo "<td>" . anchor('delete/del_race$id= ' . $row -> raceID,  'Usuń') . "</td>";
+			echo "</tr>";
+		}
+		echo "</table>";
+	}
+
 	public function add_race() {
 		$data = array(
 			'title' => 'Panel administratora',
@@ -357,10 +441,8 @@ class Admin_panel extends CI_Controller {
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase'
 		);
-		$races = $this -> admin_model -> get_race();
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
-		$data['race'] = $races;
 		$data['subtitle'] = 'Dodaj/usuń rasy';
 		$data['skills'] = array_combine($skill_id, $skill_name);
 		$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
@@ -370,21 +452,41 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('admin/add_races', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$race_name = $this -> valid_race();
-			$this -> universal_model -> insert('rasa', $race_name);
-			$id = $this -> admin_model -> get_race_id();
-			$race_id = $id -> raceID;
-			$race_skill = $this -> valid_race_skill($race_id);
-			$this -> admin_model -> race_skill_insert($race_skill);
-			$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
-			$data['added'] = "Wprowadzono <b>" . $last_race . "</b>";
+			$race = $this -> check_data('race_name', 'rasa', 'raceName');
+			$add = "";
+			if (empty($race)) {
+				$race_name = $this -> valid_race();
+				$this -> universal_model -> insert('rasa', $race_name);
+				$race_id = $this -> universal_model -> last_index('rasa', 'raceID');
+				$race_skill = $this -> valid_race_skill($race_id);
+				$this -> admin_model -> race_skill_insert($race_skill);
+				$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
+				$add = "Wprowadzono <b>" . $last_race . "</b>";
+			} else {
+				$add = $race . " już istnieje!";
+			}
+			$data['added'] = $add;
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_races', $data);
 			$this -> load -> view('templates/footer');
 		}
 	}
-
+	
+	public function get_classes() {
+		$classes = $this -> admin_model -> get_classess();
+		echo "<table class='class-table'>";
+		echo "<tr>";
+		echo "<th>Nazwa klasy</th><th></th>";
+		foreach ($classes as $row) {
+			echo "<tr>";
+			echo "<td>" . $row -> className . "</td>";
+			echo "<td>" . anchor('delete/del_class?=' . $row -> classId, "Usuń") . "</td>";
+			echo "</tr>";
+		}
+		echo "</table>";
+	}
+	
 	public function add_class() {
 		$data = array(
 			'title' => 'Panel administratora',
@@ -395,9 +497,7 @@ class Admin_panel extends CI_Controller {
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase'
 		);
-		$classes = $this -> admin_model -> get_classess();
 		$items = $this -> admin_model -> get_items();
-		$data['classes'] = $classes;
 		$data['items'] = $items;
 		$data['subtitle'] = 'Dodaj/usuń klase';
 		$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
@@ -407,14 +507,19 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('admin/add_class', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$class_name = $this -> valid_class();
-			$this -> universal_model -> insert('classes', $class_name);
-			$id = $this -> admin_model -> get_class_id();
-			$class_id = $id -> classID;
-			$class_items = $this -> valid_class_items($class_id);
-			$this -> admin_model -> class_items_multi_insert($class_items);
-			$last_class = $this -> universal_model -> last_index('classes', 'className');
-			$data['added'] = "Wprowadzono <b>" . $last_class . "</p>";
+			$class = $this -> check_data('class_name', 'classes' ,'className');
+			if (empty($class)) {
+				$class_name = $this -> valid_class();
+				$this -> universal_model -> insert('classes', $class_name);
+				$class_id = $this -> universal_model -> last_index('classes', 'classID');
+				$class_items = $this -> valid_class_items($class_id);
+				$this -> admin_model -> class_items_multi_insert($class_items);
+				$last_class = $this -> universal_model -> last_index('classes', 'className');
+				$add = "Wprowadzono <b>" . $last_class . "</b>";
+			} else {
+				$add = $class . " już istnieje!";
+			}
+			$data['added'] = $add;
 			$this -> load -> view('templates/header', $data);
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/add_class', $data);

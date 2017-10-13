@@ -26,25 +26,12 @@ echo form_close();
 
 echo br();
 ?>
-<div class='result'>
-<?php
-echo "<table>";
-echo "<tr>";
-echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
-echo "</tr>";
-foreach ($spells as $spell) {
-	echo "<tr>";
-	echo "<td>" . $spell -> cast_name . "</td>";
-	echo "<td>" . $spell -> type . "</td>";
-	echo "<td>" . $spell -> spell_lvl . "</td>";
-	echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
-	echo "<td>" . $spell -> spell_duration . "</td>";
-	echo "<td>" . $spell -> spell_range . "</td>";
-	echo "<td>" . $spell -> spell_components  . "</td>";
-	echo "<td>" . $spell -> spell_effect . "</td>";
-	echo "<tr>";
- }
-echo "</table>";
-?>
+<div class='result'></div>
 </div>
-</div>
+<script>
+$('document').ready(function() {
+	$.get('get_spells', function(data) {
+		$('.result').html(data);
+	});
+});
+</script>

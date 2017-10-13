@@ -2,7 +2,7 @@
 echo heading($subtitle, 4);
 echo "<p>" . $added . "</p>";
 echo form_open('admin_panel/add_class');
-echo form_input('class_name', '', array('placeholder' => 'Nazwa klasy...'));
+echo form_input('class_name', '', array('id' => 'class_name', 'placeholder' => 'Nazwa klasy...'));
 echo br(2);
 ?>
 <div class="class-items">
@@ -74,23 +74,13 @@ echo form_submit('submit_btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo validation_errors("<p class='alert alert-danger'", "</p>");
 echo br(2);
 ?>
-<div class='result'>
-<?php
-echo "<table class='class-table'>";
-echo "<tr>";
-echo "<th>Nazwa klasy</th><th></th>";
-foreach ($classes as $row) {
-	echo "<tr>";
-	echo "<td>" . $row -> className . "</td>";
-	echo "<td>" . anchor('delete/del_class?=' . $row -> classId, "Usuń") . "</td>";
-	echo "</tr>";
-}
-echo "</table>";
-?>
-</div>
+<div class='result'></div>
 </div>
 <script>
 $('document').ready(function() {
 	$('span').css({'width': 305, 'display' : 'inline-block'});
+	$.get('get_classes', function(data) {
+		$('.result').html(data);
+	});
 });
 </script>
