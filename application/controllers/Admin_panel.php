@@ -139,7 +139,7 @@ class Admin_panel extends CI_Controller {
 			echo "<tr>";
 			echo "<td>" . $spell -> cast_name . "</td>";
 			echo "<td>" . $spell -> type . "</td>";
-			echo "<td>" . $spell -> spell_lvl . "</td>";
+			echo "<td class='text-center'>" . $spell -> spell_lvl . "</td>";
 			echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
 			echo "<td>" . $spell -> spell_duration . "</td>";
 			echo "<td>" . $spell -> spell_range . "</td>";

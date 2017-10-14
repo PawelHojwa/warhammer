@@ -365,3 +365,28 @@ table td > span {
 	margin-right: 0;
 	border-right: none;
 }
+
+/*-- ukrywanie elementów --*/
+
+#one-hand, #two-hand, #ranged, #prof-armour, #daily, #pets, .prof-type, .prof-stats, .prof-skills, .prof-items, .show-result {
+	color: black;
+	text-decoration: underline;
+	cursor: pointer;
+	max-width: 150px;
+}
+
+#one-hand:hover, #two-hand:hover, #prof-armour:hover, #daily:hover, #pets:hover, .prof-type:hover, .prof-stats:hover, .prof-skills:hover, .prof-items:hover, .show-result:hover {
+	text-decoration: none;
+	color: #4169E1;
+}
+
+.hide-items {
+	text-decoration: underline;
+	padding: 8px;
+	cursor: pointer;
+}
+
+.hide-items:hover {
+	text-decoration: none;
+	color: red;
+}

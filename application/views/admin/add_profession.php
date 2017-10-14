@@ -6,8 +6,8 @@ echo form_open('admin_panel/add_profession');
 echo form_input('profession_name', '', array('placeholder' => 'Nazwa profesji...'));
 echo br(2);
 ?>
-<div class="prof_type">
-<p class="lead">Rodzaj profesji:</p>
+<p class="lead prof-type" title="Kliknij aby rozwinąć">Rodzaj profesji:</p>
+<div class="profession-type">
 <?php
 echo form_radio('profession_type', 1, false);
 echo form_label('Porfesja podstawowa');
@@ -18,8 +18,8 @@ echo form_dropdown('class_type', $classes, 1);
 echo br();
 ?>
 </div>
+<p class="lead prof-stats" title="Kliknij aby rozwinąć">Statysyki</p>
 <div class="profession-statistics">
-<p class="lead">Statysyki</p>
 <?php
 echo form_input('', 'Sz', array('class' => 'text-center', 'size' => 2));
 echo form_input('', 'WW', array('class' => 'text-center', 'size' => 2));
@@ -80,25 +80,26 @@ echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
 echo form_button('btn', '- 10', array('class' => 'def'));
+echo "<p class='hide-items'>Ukryj</p>";
 ?>
 </div>
-<br>
+<p class='lead prof-skills' title="Kliknij aby rozwinąć">Umiejętności:</p>
 <div class="profession-skills">
 <?php
-echo "<p class='lead'>Wybór umiejętności:</p>";
 foreach ($skills as $key => $value) {
 	echo "<span>";
 	echo form_checkbox('skill[]', $key, false);
 	echo form_label($value, 'skill[]');
 	echo "</span>"; 
 }
+echo "<p class='hide-items'>Ukryj</p>";
 ?>
 </div>
-<br>
+<p class="lead prof-items" title='Kliknij aby rozwinąć'>Ekwipunek:</p>
 <div class="profession-items">
-<p class="lead">Ekwipunek:</p>
 <?php
-echo "<p>Broń jednoręczna:</p>";
+echo "<p id='one-hand' title='Kliknij aby rozwinąć'>Broń jednoręczna:</p>";
+echo "<div class='one-hand'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 1) {
 		echo "<span>";
@@ -107,8 +108,11 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
 echo br();
-echo "<p>Broń dwuręczna:</p>";
+echo "<p id='two-hand' title='Kliknij aby rozwinąć'>Broń dwuręczna:</p>";
+echo "<div class='two-hand'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 2) {
 		echo "<span>";
@@ -117,8 +121,11 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
 echo br();
-echo "<p>Broń strzelecka/palna:</p>";
+echo "<p id='ranged' title='Kliknij aby rozwinąć'>Broń strzelecka/palna:</p>";
+echo "<div class='ranged'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 3) {
 		echo "<span>";
@@ -127,8 +134,11 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
 echo br();
-echo "<p>Przedmioty codziennego użytku:</p>";
+echo "<p id='daily' title='Kliknij aby rozwinąć'>Przedmioty codziennego użytku:</p>";
+echo "<div class='daily'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 4) {
 		echo "<span>";
@@ -137,8 +147,11 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
 echo br();
-echo "<p>Uzbrojenie:</p>";
+echo "<p id='prof-armour' title='Kliknij aby rozwinąć'>Uzbrojenie:</p>";
+echo "<div class='prof-armour'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 5) {
 		echo "<span>";
@@ -147,8 +160,11 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
 echo br();
-echo "<p>Zwierzęta:</p>";
+echo "<p id='pets'>Zwierzęta:</p>";
+echo "<div class='pets'>";
 foreach ($items as $item) {
 	if ($item -> items_group_id == 6) {
 		echo "<span>";
@@ -157,6 +173,9 @@ foreach ($items as $item) {
 		echo "</span>";
 	}
 }
+echo "<p class='hide-items'>Ukryj</p>";
+echo "</div>";
+echo "<p class='hide-items'>Ukryj</p>";
 ?>
 </div>
 <?php
@@ -164,21 +183,76 @@ echo form_submit('btn_submit', 'Dodaj profesję', array('class' => 'btn btn-prim
 echo form_close();
 echo br();
 ?>
-<div class="show-profession">
-<?php
-echo form_radio('profession', 0, true);
-echo form_label('Profesje podstawowe');
-echo form_radio('profession', 1, false);
-echo form_label('Profesje zaawansowane');
-
-?>
+<p class="show-result" title="Kliknij aby rozwinąć">Pokaż profesje</p>
+<div class="professions">
+	<div class="show-profession">
+	<?php
+	echo form_radio('profession', 0, true);
+	echo form_label('Profesje podstawowe');
+	echo form_radio('profession', 1, false);
+	echo form_label('Profesje zaawansowane');
+	?>
+	</div>
+	<div class="result"></div>
 </div>
-<div class="result"></div>
 <script>
 $('document').ready(function() {
 	$('span').css({
 		'display' : 'inline-block',
 		'width' : 305
+	});
+	var width = $('.stats').css('width');
+	$('button').css('width', width);
+	$('.hide-items').click(function() {
+		$(this).parent().hide();
+	});
+	$('.professions').hide();
+	$('.profession-type').hide();
+	$('.profession-skills').hide();
+	$('.profession-statistics').hide();
+	$('.profession-items').hide();
+	$('.one-hand, .two-hand, .ranged, .prof-armour, .daily, .pets').hide();
+	$('.show-result').click(function() {
+		$('.professions').slideToggle('slow', function() {
+			if ($(this).css('display') == 'none') {
+				$('.show-result').text('Pokaż profesje');
+				$('.show-result').css({'color' : 'black', 'text-decoration' : 'underline'});
+			} else {
+				$('.show-result').text('Ukryj profesje');
+				$('.show-result').css({'color': '#4169E1', 'text-decoration' : 'none'});
+				
+			}
+		});
+	});
+	$('.prof-type').click(function() {
+		$('.profession-type').slideToggle('slow');
+	});
+	$('.prof-stats').click(function() {
+		$('.profession-statistics').slideToggle('slow');
+	});
+	$('.prof-skills').click(function() {
+		$('.profession-skills').slideToggle('slow');
+	});
+	$('.prof-items').click(function() {
+		$('.profession-items').slideToggle('slow');
+	});
+	$('#one-hand').click(function() {
+		$('.one-hand').slideToggle('slow');
+	});
+	$('#two-hand').click(function() {
+		$('.two-hand').slideToggle('slow');
+	});
+	$('#ranged').click(function() {
+		$('.ranged').slideToggle('slow');
+	});
+	$('#daily').click(function() {
+		$('.daily').slideToggle('slow');
+	});
+	$('#prof-armour').click(function() {
+		$('.prof-armour').slideToggle('slow');
+	});
+	$('#pets').click(function() {
+		$('.pets').slideToggle('slow');
 	});
 	$('input:radio:last-of-type').css('margin-left', 15);
 	$('.show-profession input:radio').change(function() {
@@ -197,8 +271,7 @@ $('document').ready(function() {
 			}
 		});
 	}).change();
-	var width = $('.stats').css('width');
-	$('button').css('width', width);
+	
 	var stats = [1, 10, 10, 1, 1, 1, 10, 1, 10, 10, 10, 10, 10, 10];
 	var stats_val = [];
 	$('.stats').each(function(a) {
