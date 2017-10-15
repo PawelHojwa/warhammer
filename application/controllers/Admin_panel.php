@@ -55,7 +55,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$data['chars'] = $this -> get_character_names();
 		$data['subtitle'] = 'Wszystkie postacie';
@@ -73,7 +74,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$data['subtitle'] = "Dodaj/usuń umiejętność";
 		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
@@ -158,7 +160,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$data['subtitle'] = "Dodaj/usuń czar";
 		$spells = $this -> universal_model -> get_data('casts_type');
@@ -324,7 +327,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -439,7 +443,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -495,7 +500,8 @@ class Admin_panel extends CI_Controller {
 			'add_spell' => 'Dodaj czar',
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
-			'add_class' => 'Dodaj klase'
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
 		);
 		$items = $this -> admin_model -> get_items();
 		$data['items'] = $items;
@@ -545,5 +551,105 @@ class Admin_panel extends CI_Controller {
 			'options' => 0
 		);
 		return $arr;
+	}
+	
+	public function get_monsters() {
+		if (isset($_POST['monster']) === TRUE && $_POST['monster'] !== FALSE) {
+			$monsters = $this -> admin_model -> get_monster($_POST['monster']);
+			echo "<table>";
+			echo "<tr>";
+			echo "<th>Nazwa potwora</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int</th><th>Op</th><th>SW</th><th>Ogd</th>";
+			echo "</tr>";
+			foreach ($monsters as $monster) {
+				echo "<tr>";
+				echo "<td>" . $monster -> monsterName . "</td>";
+				echo "<td>" . $monster -> sz . "</td>";
+				echo "<td>" . $monster -> ww . "</td>";
+				echo "<td>" . $monster -> us . "</td>";
+				echo "<td>" . $monster -> s . "</td>";
+				echo "<td>" . $monster -> wt . "</td>";
+				echo "<td>" . $monster -> zw . "</td>";
+				echo "<td>" . $monster -> i . "</td>";
+				echo "<td>" . $monster -> a . "</td>";
+				echo "<td>" . $monster -> zr . "</td>";
+				echo "<td>" . $monster -> cp . "</td>";
+				echo "<td>" . $monster -> intel . "</td>";
+				echo "<td>" . $monster -> op . "</td>";
+				echo "<td>" . $monster -> sw . "</td>";
+				echo "<td>" . $monster -> ogd . "</td>";
+				echo "<td>" . anchor('delete/del_monster?=' . $monster -> monsterID, 'Usuń') . "</td>";
+				echo "</tr>";
+			}
+			echo "</table>";
+		} else {
+			echo "Błąd!";
+		}
+	}
+	
+	public function valid_monster($id = "") {
+		$arr = array(
+			'monsterID' => $id,
+			'monsterName' => $this -> input -> post('monster_name'),
+			'categoryID' => $this -> input -> post('category'),
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'i' => $this -> input -> post('i'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd'),
+		);
+		return $arr;
+	}
+	
+	public function add_monster() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora'
+		);
+		$data['subtitle'] = "Dodaj/usuń potwora";
+		$category = $this -> universal_model -> get_data('kategoria_potwora');
+		$category_name = $category_id = array();
+		foreach ($category as $row) {
+			$category_id[] = $row['categoryID'];
+			$category_name[] = $row['monsterCategory'];
+		}
+		$data['category'] = array_combine($category_id, $category_name);
+		$this -> form_validation -> set_rules('monster_name', 'Nazwa potwora', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_monsters', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			$monster = $this -> check_data('monster_name', 'monsters', 'monsterName');	
+			$add = "";
+			if (empty($monster)) {
+				$monster_data = $this -> valid_monster();
+				$this -> universal_model -> insert('monsters', $monster_data);
+				$last_monster = $this -> universal_model -> last_index('monsters', 'monsterName');
+				$add = "Wprowadzono <b>" . $last_monster . "</b>";
+			} else {
+				$add = $monster . " już istnieje!";
+			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_monsters', $data);
+			$this -> load -> view('templates/footer');
+		}
 	}
 }

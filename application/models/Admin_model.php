@@ -168,4 +168,17 @@ class Admin_model extends CI_Model {
 			return $msg;
 		}
 	}
+	
+	public function get_monster($category_id) {
+		$this -> db -> select('*');
+		$this -> db -> from('monsters');
+		$this -> db -> where('categoryID', $category_id);
+		$this -> db -> order_by('monsterName');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "Błąd zapytania!";
+		}
+	}
 }

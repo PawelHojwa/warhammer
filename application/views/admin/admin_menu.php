@@ -9,7 +9,8 @@ echo heading($title, 1);
 	$profession = anchor('admin_panel/add_profession',$add_profession, array('id' => 'add_profession'));
 	$skill = anchor('admin_panel/add_skill',$add_skill, array('id' => 'skill'));
 	$spell = anchor('admin_panel/add_spell',$add_spell, array('id' => 'add_spell'));
-	$list = array($char, $classes, $race, $profession, $skill, $spell);
+	$monster = anchor('admin_panel/add_monster', $add_monster, array('id' => 'add_monster'));
+	$list = array($char, $classes, $race, $profession, $skill, $spell, $monster);
 	$attr = array('id' => 'menu');
 	echo ul($list, $attr);
 ?>
