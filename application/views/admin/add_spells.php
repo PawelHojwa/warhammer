@@ -27,13 +27,33 @@ echo form_close();
 echo br(2);
 ?>
 <p class="show-result" title="Kliknij aby rozwinąć">Pokaż czary</p>
-<div class='result'></div>
+<div class="spell-result">
+	<div class="spell-type">
+		<?php
+			foreach ($spell_type as $key => $value) {
+				echo form_radio('s_type', $key, false);
+				echo form_label($value);
+			}
+			echo br();
+		?>
+		
+	</div>
+	<div class="spell-lvl">
+		<?php
+			foreach ($spell_lvl as $key => $value) {
+				echo form_radio('s_lvl', $key, false);
+				echo form_label($value);
+			}
+		?>
+		</div>
+	<div class='result'></div>
+</div>
 </div>
 <script>
 $('document').ready(function() {
-	$('.result').hide();
+	$('.spell-result, .spell-lvl').hide();
 	$('.show-result').click(function() {
-		$('.result').slideToggle('slow', function() {
+		$('.spell-result').slideToggle('slow', function() {
 			if ($(this).css('display') == 'none') {
 				$('.show-result').text("Pokaż czary");
 				$('.show-result').css({'color': 'black', 'text-decoration' : 'underline'});
@@ -43,8 +63,30 @@ $('document').ready(function() {
 			}
 		});
 	});
-	$.get('get_spells', function(data) {
-		$('.result').html(data);
+	$('label').css('margin-right', 15);
+	$('.spell-type input:radio, .spell-lvl input:radio').change(function() {
+		var spell_id = $('.spell-type input:radio:checked').val();
+		var spell_lvl = $('.spell-lvl input:radio:checked').val();
+		if (spell_id == 1) {
+			spell_lvl = 0;
+			$('.spell-lvl').hide();
+		} else {
+			$('.spell-lvl').show();
+			$('.spell-lvl input:radio:first-of-type').css('display', 'none');
+			$('.spell-lvl label:first-of-type').css('display', 'none');
+		}
+		$.ajax({
+			url : 'get_spells',
+			type : 'post',
+			data : 
+			{ spell : spell_id, 
+				lvl : spell_lvl
+			},
+			success : function(data) {
+				$('.result').html(data);
+			}
+		});
 	});
+	
 });
 </script>

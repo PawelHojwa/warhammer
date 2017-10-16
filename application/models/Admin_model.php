@@ -28,11 +28,13 @@ class Admin_model extends CI_Model {
 		}
 	}
 	
-	public function get_spells() {
+	public function get_spells($value = array()) {
 		$this -> db -> select('*');
 		$this -> db -> from('spells');
 		$this -> db -> from('casts_type');
+		$this -> db -> where($value);
 		$this -> db -> join('casts_names', 'casts_names.id = spells.spell_name_id AND spells.spell_type = casts_type.id');
+		$this -> db -> order_by('spells.spell_lvl');
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0) {
 			return $query -> result();

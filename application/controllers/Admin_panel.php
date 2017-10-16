@@ -103,11 +103,6 @@ class Admin_panel extends CI_Controller {
 		}
 	}
 	
-	public function get_spell_id() {
-		$data = $this -> admin_model -> get_spell_id();
-		return $data;
-	}
-	
 	public function sp_name($id = '') {
 		$arr = array(
 			'id' => $id,
@@ -132,24 +127,33 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function get_spells() {
-		$spells = $this -> admin_model -> get_spells();
-		echo "<table>";
-		echo "<tr>";
-		echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
-		echo "</tr>";
-		foreach ($spells as $spell) {
-			echo "<tr>";
-			echo "<td>" . $spell -> cast_name . "</td>";
-			echo "<td>" . $spell -> type . "</td>";
-			echo "<td class='text-center'>" . $spell -> spell_lvl . "</td>";
-			echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
-			echo "<td>" . $spell -> spell_duration . "</td>";
-			echo "<td>" . $spell -> spell_range . "</td>";
-			echo "<td>" . $spell -> spell_components  . "</td>";
-			echo "<td>" . $spell -> spell_effect . "</td>";
-			echo "<tr>";
-		 }
-		echo "</table>";
+		if (isset($_POST['spell']) === TRUE && $_POST['spell'] !== FALSE) {
+			$spell_type = $_POST['spell'];
+			$spell_lvl = $_POST['lvl'];
+			$spell = array('spell_type' => $spell_type, 'spell_lvl' => $spell_lvl);
+			$spells = $this -> admin_model -> get_spells($spell);
+			if ($spell_type > 1 && $spell_lvl < 1) {
+				echo "Wybierz poziom czaru";
+			} else {
+				echo "<table>";
+				echo "<tr>";
+				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
+				echo "</tr>";
+				foreach ($spells as $spell) {
+					echo "<tr>";
+					echo "<td>" . $spell -> cast_name . "</td>";
+					echo "<td>" . $spell -> type . "</td>";
+					echo "<td class='text-center'>" . $spell -> spell_lvl . "</td>";
+					echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
+					echo "<td>" . $spell -> spell_duration . "</td>";
+					echo "<td>" . $spell -> spell_range . "</td>";
+					echo "<td>" . $spell -> spell_components  . "</td>";
+					echo "<td>" . $spell -> spell_effect . "</td>";
+					echo "<tr>";
+				 }
+				echo "</table>";
+			}
+		}
 	}
 	
 	public function add_spell() {
@@ -193,9 +197,8 @@ class Admin_panel extends CI_Controller {
 			if (empty($spell)) {
 				$spell_name = $this -> sp_name();
 				$this -> universal_model -> insert('casts_names', $spell_name);
-				$spell_name_id = $this -> get_spell_id();
-				$spell = $this -> spell($spell_name_id -> id);
-				$this -> universal_model -> insert('spells', $spell);
+				$spell__id = $this -> universal_model -> last_index('casts_names', 'id');
+				$this -> universal_model -> insert('spells', $spell_id);
 				$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
 				$add = "Wprowadzono <b>" . $last_spell . "</b>";
 			} else {
