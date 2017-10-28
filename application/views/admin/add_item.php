@@ -1,7 +1,7 @@
 <?php
 echo heading($subtitle, 4);
 echo "<p>" . $added . "</p>";
-echo validation_errors("<p class='alert alert danger'>", "</p>");
+echo validation_errors("<p class='alert alert-danger'>", "</p>");
 echo form_open('admin_panel/add_items');
 echo form_input('item_name', '', array('placeholder' => 'Nazwa przedmiotu...'));
 echo br();
