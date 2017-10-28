@@ -1,8 +1,11 @@
 <?php
+
 echo heading($title, 1);
 ?>
 <div class="container">
 <?php
+	echo anchor('home/index', '<- Menu główne', array('title' => 'Powrót do menu głównego'));
+	echo br(2);
 	$char = anchor('admin_panel/show_list',$char_names, array('id' => 'char'));
 	$classes = anchor('admin_panel/add_class',$add_class, array('id' => 'add_class'));
 	$race = anchor('admin_panel/add_race',$add_race, array('id' => 'add_race'));
