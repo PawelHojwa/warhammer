@@ -10,6 +10,7 @@ class Admin_panel extends CI_Controller {
 		$this -> load -> model('universal_model');
 		$this -> load -> model('char_skills_model');
 		$this -> load -> helper('form');
+		$this -> load -> model('trade_model');
 	}
 	
 	public function get_character_names() {
@@ -56,7 +57,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$data['chars'] = $this -> get_character_names();
 		$data['subtitle'] = 'Wszystkie postacie';
@@ -75,7 +77,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$data['subtitle'] = "Dodaj/usuń umiejętność";
 		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
@@ -156,6 +159,190 @@ class Admin_panel extends CI_Controller {
 		}
 	}
 	
+	public function get_items() {
+		if(isset($_POST['item']) === TRUE && $_POST['item'] !== FALSE) {
+			$arr = $this -> trade_model -> get_trade_table($_POST['item']);
+			if (!empty($arr) && is_array($arr)) {
+				echo "<table>";
+				echo "<tr>";
+				echo "<th>Nazwa przedmiotu</th><th>Cena</th><th>Waga</th><th>Dostępność</th>";
+				echo "</tr>";
+				foreach($arr as $row) {
+					echo "<tr>";
+					echo "<td>" . $row['item'] . "</td>";
+					echo "<td>" . $row['price'] . "</td>";
+					echo "<td>" . $row['weight'] . "</td>";
+					echo "<td>" . $row['availability'] . "</td>";
+					echo "<td>" . anchor('delete/del_item?=' . $row['id'], 'Usuń') . "</td>";
+					echo "</tr>";
+				}
+				echo "</table>";
+			}
+		} else {
+			echo "Błąd!";
+		}
+	}
+
+	public function valid_weapon_hand() {
+		$hand = $this -> input -> post('weapon_hand');
+		return $hand;
+	}
+	
+	public function valid_weapon_type() {
+		$type = $this -> input -> post('weapon_type');
+		return $type;
+	}
+	
+	public function valid_items_name($id = "") {
+		$type = $this -> input -> post ('type');
+		$meele = 0;
+		$ranged = 0;
+		$group = "";
+		if ($type == 1 || $type ==  2 || $type == 7 || $type == 8 || $type == 9 || $type == 10 || $type == 11 || $type == 12) {
+			$group = 4;
+		} else if ($type == 3) {
+			$group = 5; 
+		} else if ($type == 4) {
+			$group = $this -> valid_weapon_hand();
+			$meele = $this -> valid_weapon_type();
+		} else if ($type == 5 || $type == 6) {
+			$group = 3;
+			$ranged = $this -> valid_weapon_type();
+		} else if ($type == 14 || $type == 15) {
+			$group = 6;
+		} else {
+			$group = NULL;
+		}
+		
+		
+		$arr = array(
+			'id' => $id,
+			'item' => $this -> input -> post('item_name'),
+			'items_group_id' => $group,
+			'meele' => $meele,
+			'ranged' => $ranged
+		);
+		return $arr;
+	}
+	
+	public function valid_price() {
+		$zk = $this -> input -> post('zk');
+		$sz = $this -> input -> post('sz');
+		$p = $this -> input -> post('p');
+		if ($zk == "") {
+			$zk = 0;
+		}
+		if ($sz == "") {
+			$sz = 0;
+		}
+		if ($p == "") {
+			$p = 0;
+		}
+		$price = "";
+		if ($sz == 0 && $p == 0) {
+			$price = $zk . " zk";
+		} else if ($zk == 0 && $p == 0) {
+			$price = $sz . "/-";
+		} else if ($zk == 0 && $sz == 0) {
+			$price = $p . "p";
+		} else if ($zk == 0) {
+			$price = $sz . "/" . $p;
+		}
+		return $price;
+	}
+	
+	public function valid_items($item_id, $id = "") {
+		$price = $this -> valid_price();
+		$arr = array(
+			'id' => $id,
+			'name' => $item_id,
+			'type' => $this -> input -> post('type'),
+			'price' => $price,
+			'weight' => $this -> input -> post('weight'),
+			'availability' => $this -> input -> post('availability')
+		);
+		return $arr;
+	}
+	
+	public function valid_armour_placement($id_item, $id = "") {
+		$placement = $this -> input -> post('armour_placement');
+		$arr = array(
+			'id' => $id,
+			'armour_id' => $id_item,
+			'pp' => $this -> input -> post('pp'),
+			'placement' => $placement
+		);
+		return $arr;
+	}
+	
+	public function add_items() {
+		$data = array(
+			'title' => 'Panel administratora',
+			'char_names' => 'Postacie',
+			'add_skill' => 'Dodaj umiejętność',
+			'add_spell' => 'Dodaj czar',
+			'add_profession' => 'Dodaj profesje',
+			'add_race' => 'Dodaj rase',
+			'add_class' => 'Dodaj klase',
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
+		);
+		$data['subtitle'] = "Dodaj/usuń przedmiot";
+		$availability = $this -> universal_model -> get_data('availability');
+		$armour_placement = $this -> universal_model -> get_data('armour_placement');
+		$data['group_id'] = $this -> universal_model -> get_data('items_group');
+		$type = $this -> universal_model -> get_data('things_types');
+		$weapon_type = $this -> universal_model -> get_data('weapon_type_name');
+		$type_id =  $type_name = $availability_id = $availability_name = array();
+		$data['weapon_type'] = $weapon_type;
+		$data['armour_placement'] = $armour_placement;
+		foreach ($type as $row) {
+			$type_id[] = $row['id'];
+			$type_name[] = $row['name'];
+		}
+		$data['item_type'] = array_combine($type_id, $type_name);
+		foreach ($availability as $row) {
+			$availability_id[] = $row['lp'];
+			$availability_name[] = $row['avail'];
+		}
+		$data['availability'] = array_combine($availability_id, $availability_name);
+		$this -> form_validation -> set_rules('item_name', 'Nazwa przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('type', 'Kategoria przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('weight', 'Waga', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_item', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			$name = $this -> check_data('item_name', 'items', 'item');
+			$add = "";
+			if (empty($item_name)) {
+				$item_name = $this -> valid_items_name();
+				$this -> universal_model -> insert('items', $item_name);
+				$last_id = $this -> universal_model -> last_index('items', 'id');
+				$last_item = $this -> universal_model -> last_index('items', 'item');
+				$trade_item = $this -> valid_items($last_id);
+				if ($trade_item['type'] == 3) {
+					$armour = $this -> valid_armour_placement($last_id);
+					if (!empty($armour) && is_array($armour)) {
+						$this -> admin_model -> armour_multi_insert($armour);
+					}
+				}
+				$this -> universal_model -> insert('trades', $trade_item);
+				
+				$add = "Wprowadzono <b>" . $last_item . "</b>";
+			} else {
+				$add = $item_name . " już istnieje!";
+			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_item', $data);
+			$this -> load -> view('templates/footer');
+		}
+	}
+	
 	public function add_spell() {
 		$data = array(
 			'title' => 'Panel administratora',
@@ -165,7 +352,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$data['subtitle'] = "Dodaj/usuń czar";
 		$spells = $this -> universal_model -> get_data('casts_type');
@@ -331,7 +519,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -447,7 +636,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$skill_id = $this -> char_skills_model -> get_skills('skillid');
 		$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -504,7 +694,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$items = $this -> admin_model -> get_items();
 		$data['items'] = $items;
@@ -621,7 +812,8 @@ class Admin_panel extends CI_Controller {
 			'add_profession' => 'Dodaj profesje',
 			'add_race' => 'Dodaj rase',
 			'add_class' => 'Dodaj klase',
-			'add_monster' => 'Dodaj potwora'
+			'add_monster' => 'Dodaj potwora',
+			'add_item' => 'Dodaj przedmiot'
 		);
 		$data['subtitle'] = "Dodaj/usuń potwora";
 		$category = $this -> universal_model -> get_data('kategoria_potwora');

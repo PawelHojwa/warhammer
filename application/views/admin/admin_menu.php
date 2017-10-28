@@ -10,7 +10,8 @@ echo heading($title, 1);
 	$skill = anchor('admin_panel/add_skill',$add_skill, array('id' => 'skill'));
 	$spell = anchor('admin_panel/add_spell',$add_spell, array('id' => 'add_spell'));
 	$monster = anchor('admin_panel/add_monster', $add_monster, array('id' => 'add_monster'));
-	$list = array($char, $classes, $race, $profession, $skill, $spell, $monster);
+	$items = anchor('admin_panel/add_items', $add_item, array('id' => 'add_items'));
+	$list = array($char, $classes, $race, $profession, $skill, $spell, $monster, $items);
 	$attr = array('id' => 'menu');
 	echo ul($list, $attr);
 ?>

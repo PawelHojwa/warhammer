@@ -183,4 +183,16 @@ class Admin_model extends CI_Model {
 			return "Błąd zapytania!";
 		}
 	}
+	
+	public function armour_multi_insert($arr) {
+		foreach($arr['placement'] as $row) {
+			$record = array(
+				'id' => $arr['id'],
+				'armour_id' => $arr['armour_id'],
+				'pp' => $arr['pp'],
+				'placement' => $row
+			);
+			$this -> db -> insert('armour', $record);
+		}
+	}
 }
