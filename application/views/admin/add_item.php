@@ -90,13 +90,25 @@ echo form_dropdown('availability', $availability, 1);
 echo br();
 echo form_submit('submit-btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo form_close();
+echo br();
 ?>
+<p class="show-result" title="Kliknij aby rozwinąć">Pokaż przedmioty</p>
+<div class="items">
+	<div class="result-type">
+		<?php
+			echo form_dropdown('items', $item_type, 1, array('id' => 'items-type'));
+		?>
+	</div>
+	<br>
+	<div class="result"></div>
+</div>
 </div>
 
 <script>
 $('document').ready(function() {
 	$('label').css('margin-right', 15);
 	$('#one-hand-weapon, #two-hand-weapon, #ranged-weapon, #firearm, #armour-item, #weapon-hand, #ranged-type').hide();
+	$('.result').show();
 	$('#type_item').change(function() {
 		var type = $('#type_item option:selected').val();
 		if (type == 3) {
@@ -125,5 +137,33 @@ $('document').ready(function() {
 			$('#one-hand-weapon, #two-hand-weapon, #ranged-weapon, #firearm, #armour-item, #weapon-hand, #ranged-type').hide();
 		}
 	}).change();
+	$('.items').hide();
+	$('.show-result').click(function() {
+		$('.items').slideToggle('slow', function() {
+			if ($(this).css('display') == 'none') {
+				$('.show-result').text('Pokaż przedmioty');
+				$('.show-result').css({'color' : 'black', 'text-decoration' : 'underline'});
+			} else {
+				$('.show-result').text('Ukryj przedmioty');
+				$('.show-result').css({'color': '#4169E1', 'text-decoration' : 'none'});
+			}
+		});
+	});
+	$('#items-type').change(function() {
+		var value = $('#items-type option:selected').val();
+		$.ajax({
+			url : 'get_items',
+			data: {
+				item : value
+			},
+			type: 'post',
+			success: function(data) {
+				$('.result').html(data);
+				$('th:first-child').css('min-width', 200);
+				$('td:not(td:first-child)').addClass('text-center');
+				$('td').css('padding', 3);
+			}
+		});
+	});
 });
 </script>
