@@ -28,7 +28,7 @@ class Admin_panel extends CI_Controller {
 			echo "<tr>";
 			echo "<td>" . ++$lp . "</td>";
 			echo "<td>" . $row -> skillName . "</td>";
-			echo "<td>" . anchor('delete/del_skill?=' . $row -> skillID, 'Usuń') . "</td>";
+			echo "<td>" . anchor('delete/del_skill?id=' . $row -> skillID, 'Usuń') . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
