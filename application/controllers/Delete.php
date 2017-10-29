@@ -19,4 +19,10 @@ class Delete extends CI_Controller {
 		$this -> universal_model -> delete('char_spells', array('char_id' => $_GET['id']));
 		$this -> success('show_list');
 	}
+	
+	public function del_class() {
+		$this -> universal_model -> delete('classes', array('classID' => $_GET['id']));
+		//var_dump($_GET);
+		$this -> success('add_class');
+	}
 }

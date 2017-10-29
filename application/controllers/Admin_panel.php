@@ -731,7 +731,7 @@ class Admin_panel extends CI_Controller {
 		foreach ($classes as $row) {
 			echo "<tr>";
 			echo "<td>" . $row -> className . "</td>";
-			echo "<td>" . anchor('delete/del_class?=' . $row -> classId, "Usuń") . "</td>";
+			echo "<td>" . anchor('delete/del_class?id=' . $row -> classID, "Usuń") . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
