@@ -192,7 +192,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $row['price'] . "</td>";
 					echo "<td>" . $row['weight'] . "</td>";
 					echo "<td>" . $row['availability'] . "</td>";
-					echo "<td>" . anchor('delete/del_item?=' . $row['id'], 'Usuń') . "</td>";
+					echo "<td>" . anchor('delete/del_item?id=' . $row['name'], 'Usuń') . "</td>";
 					echo "</tr>";
 				}
 				echo "</table>";
@@ -344,24 +344,24 @@ class Admin_panel extends CI_Controller {
 			} else {
 				$name = $this -> check_data('item_name', 'items', 'item');
 				$add = "";
-				if (empty($item_name)) {
+				if (empty($name)) {
 					$item_name = $this -> valid_items_name();
 					$this -> universal_model -> insert('items', $item_name);
 					$last_id = $this -> universal_model -> last_index('items', 'id');
 					$last_item = $this -> universal_model -> last_index('items', 'item');
 					$trade_item = $this -> valid_items($last_id);
+					$this -> universal_model -> insert('trades', $trade_item);
 					if ($trade_item['type'] == 3) {
 						$armour = $this -> valid_armour_placement($last_id);
 						if (!empty($armour) && is_array($armour)) {
 							$this -> admin_model -> armour_multi_insert($armour);
 						}
 					}
-					$this -> universal_model -> insert('trades', $trade_item);
-					
 					$add = "Wprowadzono <b>" . $last_item . "</b>";
 				} else {
-					$add = $item_name . " już istnieje!";
+					$add = $name . " już istnieje!";
 				}
+				//var_dump($item_name);
 				$data['added'] = $add;
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('admin/admin_menu', $data);

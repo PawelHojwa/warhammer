@@ -164,6 +164,6 @@ $('document').ready(function() {
 				$('td').css('padding', 3);
 			}
 		});
-	});
+	}).change();
 });
 </script>
