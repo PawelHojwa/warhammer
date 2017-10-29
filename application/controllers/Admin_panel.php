@@ -421,8 +421,9 @@ class Admin_panel extends CI_Controller {
 				if (empty($spell)) {
 					$spell_name = $this -> sp_name();
 					$this -> universal_model -> insert('casts_names', $spell_name);
-					$spell__id = $this -> universal_model -> last_index('casts_names', 'id');
-					$this -> universal_model -> insert('spells', $spell_id);
+					$spell_id = $this -> universal_model -> last_index('casts_names', 'id');
+					$spell_info = $this -> spell($spell_id);
+					$this -> universal_model -> insert('spells', $spell_info);
 					$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
 					$add = "Wprowadzono <b>" . $last_spell . "</b>";
 				} else {

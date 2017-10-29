@@ -43,4 +43,10 @@ class Delete extends CI_Controller {
 		$this -> universal_model -> delete('umiejetnosci', array('skillid' => $_GET['id']));
 		$this -> success('add_skill');
 	}
+	
+	public function del_spell() {
+		$this -> universal_model -> delete('casts_names', array('id' => $_GET['id']));
+		$this -> universal_model -> delete('spells', array('spell_name_id' => $_GET['id']));
+		$this -> success('add_spell');
+	}
 }
