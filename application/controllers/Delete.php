@@ -22,7 +22,12 @@ class Delete extends CI_Controller {
 	
 	public function del_class() {
 		$this -> universal_model -> delete('classes', array('classID' => $_GET['id']));
-		//var_dump($_GET);
 		$this -> success('add_class');
+	}
+	
+	public function del_race() {
+		$this -> universal_model -> delete('rasa', array('raceID' => $_GET['id']));
+		$this -> universal_model -> delete('race_skills', array('race_id' => $_GET['id']));
+		$this -> success('add_race');
 	}
 }
