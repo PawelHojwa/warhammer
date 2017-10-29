@@ -170,6 +170,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $spell -> spell_range . "</td>";
 					echo "<td>" . $spell -> spell_components  . "</td>";
 					echo "<td>" . $spell -> spell_effect . "</td>";
+					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń') . "</td>";
 					echo "<tr>";
 				 }
 				echo "</table>";
