@@ -293,12 +293,14 @@ $('document').ready(function() {
 		}
 	});
 	$('select').hide();
-	$('.prof_type input:radio').change(function() {
-		if ($(this).val() == 1) {
+	$('.profession-type input:radio').change(function() {
+		var prof_type = $('.profession-type input:radio:checked').val();
+		if (prof_type == 1) {
 			$('select').show();
 		} else {
 			$('select').hide();
 		}
+		console.log(prof_type);
 	});
 });
 </script>

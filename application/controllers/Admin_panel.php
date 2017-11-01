@@ -68,6 +68,7 @@ class Admin_panel extends CI_Controller {
 				'add_monster' => 'Dodaj potwora',
 				'add_item' => 'Dodaj przedmiot'
 			);
+			$this -> session -> unset_userdata('p_id');
 			$data['chars'] = $this -> get_character_names();
 			$data['subtitle'] = 'Wszystkie postacie';
 			$this -> load -> view('templates/header', $data);
@@ -232,8 +233,6 @@ class Admin_panel extends CI_Controller {
 		} else {
 			$group = NULL;
 		}
-		
-		
 		$arr = array(
 			'id' => $id,
 			'item' => $this -> input -> post('item_name'),
@@ -361,7 +360,6 @@ class Admin_panel extends CI_Controller {
 				} else {
 					$add = $name . " już istnieje!";
 				}
-				//var_dump($item_name);
 				$data['added'] = $add;
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('admin/admin_menu', $data);
@@ -589,15 +587,15 @@ class Admin_panel extends CI_Controller {
 				if (empty($profession)) {
 					$profession_name = $this -> valid_profession_name();
 					$this -> universal_model -> insert('professions', $profession_name);
-					$profession_id = $this -> universal_model -> last_index('profesje', 'id');
+					$profession_id = $this -> universal_model -> last_index('professions', 'id');
 					$profession_skill = $this -> valid_skills($profession_id);
-					/*$profession_items = $this -> valid_item($profession_id);
+					$profession_items = $this -> valid_item($profession_id);
 					$profession_statistics = $this -> valid_statistics($profession_id);
 					$this -> admin_model -> profession_skill_insert($profession_skill);
 					$this -> admin_model -> profession_items_insert($profession_items);
 					$this -> universal_model -> insert('professions_statistics', $profession_statistics);
 					$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
-					$add = "Wprowadzono <b>" . $last_profession . "</b>";*/
+					$add = "Wprowadzono <b>" . $last_profession . "</b>";
 				} else {
 					$add = $profession . " już istnieje!";
 				}

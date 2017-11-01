@@ -14,9 +14,14 @@ class Characters_model extends CI_Model {
 			AND characters.genderID = gender.genderID');
 		$this -> db -> where(array('id' => $id));
 		$query = $this -> db -> get();
-		$arr = array();
-		foreach ($query->result_array() as $row)
-			$row;
-		return $row;
+		$err = "";
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			foreach ($query -> result_array() as $row) {
+				return $row;
+			}
+		} else {
+			$err = "Błąd!";
+			return $err;
+		}
 	}
 }

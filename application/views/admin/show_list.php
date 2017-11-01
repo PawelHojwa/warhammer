@@ -2,7 +2,7 @@
 echo heading($subtitle, 4);
 echo "<table>";
 echo "<tr>";
-echo "<th>Użytkownik</th><th>Imię postaci</th><th></th><th></th><th></th>";
+echo "<th>Użytkownik</th><th>Imię postaci</th>";
 echo "</tr>";
 foreach ($chars as $char) {
 	echo "<tr>";
