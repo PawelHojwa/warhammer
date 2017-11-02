@@ -32,7 +32,7 @@ class Formable {
 			$nature_id[] = $row['natureID'];
 			$nature_name[] = $row['natureName'];
 		}
-		$nature = array_combine($nature_id, $nature_name); 	
+		$nature = array_combine($nature_id, $nature_name); 
 		$data['title'] = 'Tworzenie postaci';
 		$data['user'] = $_SESSION['user'];
 		$data['id'] = $_SESSION['userID'];

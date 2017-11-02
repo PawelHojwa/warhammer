@@ -50,16 +50,9 @@ echo form_open('create_player/create', ['id' => 'basic']);
 	<td><?php echo form_dropdown('nature', $nature,1 ); ?></td>
 </tr>
 <tr>
-	<td><?php echo form_label('Wiek: ', 'age'); ?></td>
-	<td><?php echo form_input('p_age', '', ['size' => 2, 'id' => 'page', 'readonly' => 'readonly', 'class' => 'text-center']); ?></td>
-</tr>
-<tr>
-	<td><?php echo form_label('Młody ', 'age'); ?> </td>
-	<td><?php echo form_radio(array('name' => 'age', 'value' => 1)); ?></td>
-</tr>
-<tr>
-	<td><?php echo form_label('Stary ', 'age'); ?> </td>
-	<td><?php echo form_radio(array('name' => 'age', 'value' => 2)); ?></td>
+	<td><?php echo form_label('Wiek') ?></td>
+	<td id="age">
+	</td>
 </tr>
 <tr>
 	<td><?php echo form_label('Wzrost: ', 'height'); ?></td>
@@ -168,7 +161,27 @@ $('document').ready(function() {
 					$('#dp').val(data);
 				}
 			});
+			$.ajax({
+				url: 'get_race_age',
+				type: 'post',
+				data: {
+					race: race
+				},
+				success: function(data) {
+					$('#age').html(
+						/*function() {
+							"<select>";
+								for (var i = 16; i <= data; i++) {
+									"<option value =" + i + ">" + i + "</option>";
+								}
+							"</select>";
+						}*/
+						data
+					);
+				} 
+			});
 		});
+		
 	}).change();
 	$('.show-table').click(function() {
 		$('.character-table').slideToggle("slow");

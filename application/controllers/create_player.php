@@ -5,6 +5,7 @@ class Create_player extends CI_Controller {
 		parent::__construct();
 		$this -> load -> model('universal_model');
 		$this -> load -> model('race_model');
+		$this -> load -> model('race_age_model');
 		$this -> load -> helper('form');
 		$this -> load -> helper('url_helper');
 		$this -> load -> library('form_validation');
@@ -42,6 +43,21 @@ class Create_player extends CI_Controller {
 				echo $wor;
 			} else
 				echo "Błąd";
+		}
+	}
+	
+	public function get_race_age() {
+		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE) {
+			$age = $this -> race_age_model -> race_age($_POST['race']);
+			$min = $age -> min_age;
+			$max = $age -> max_age;
+			echo "<select name='age'>";
+			for ($i = $min; $i <= $max; $i++) {
+				echo "<option value= $i > $i </option>";
+			}
+			echo "</select>";
+		} else {
+			echo "Błąd!";
 		}
 	}
 	
@@ -165,22 +181,17 @@ class Create_player extends CI_Controller {
 			} else {
 				$val = array('name' => $_POST['name'], 'userID' => $_SESSION['userID']);
 				$char_id = $this -> universal_model -> get_values('characters', array('name' => $_POST['name']), 'id');
-				var_dump($char_id);
 				$p_id = $this -> get_char_id($val);
 				$_SESSION['p_id'] = $p_id[0]['id'];
 				if ($this -> valid_class()) {
 					$as = mt_rand(1,4);
-					$age = $_POST['p_age'];
+					//$age = $_POST['p_age'];
 					$race = $_POST['race'];
-					$amount = $this -> char_skill -> check_age($race, $age, $as);
+					//$amount = $this -> char_skill -> check_age($race, $age, $as);
 					$data_char = $this -> character_data();
-					
 					$data_char['amount'] = $amount;
-					
-					
 					if (!empty($p_id)) {
 						$data_char['id'] = $_SESSION['p_id'];
-						
 						$curr_schema = $this -> curr_schema($char_id);
 						$curr_schema['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
