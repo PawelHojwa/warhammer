@@ -195,4 +195,40 @@ class Admin_model extends CI_Model {
 			$this -> db -> insert('armour', $record);
 		}
 	}
+	
+	public function add_race_skill_insert($arr) {
+		$record = array(
+			array(
+				'id' => $arr['id'],
+				'raceID' => $arr['raceID'],
+				'min_age' => $arr['min_age'][0],
+				'max_age' => $arr['max_age'][0],
+				'add_skill' => $arr['add_skill'][0],
+				'action' => $arr['action'][0]
+			),
+			array(
+				'id' => $arr['id'],
+				'raceID' => $arr['raceID'],
+				'min_age' => $arr['min_age'][1],
+				'max_age' => $arr['max_age'][1],
+				'add_skill' => $arr['add_skill'][1],
+				'action' => $arr['action'][1]
+			),
+			array(
+				'id' => $arr['id'],
+				'raceID' => $arr['raceID'],
+				'min_age' => $arr['min_age'][2],
+				'max_age' => $arr['max_age'][2],
+				'add_skill' => $arr['add_skill'][2],
+				'action' => $arr['action'][2]
+			),
+		);
+		$this -> db -> insert_batch('race_add_skill', $record);
+	}
+	
+	/*public function multi_update($arr, $value) {
+		foreach($arr[$value] as $row) {
+			
+		}
+	}*/
 }

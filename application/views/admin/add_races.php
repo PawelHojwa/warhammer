@@ -71,6 +71,107 @@ echo form_button('btn', '- 10', array('class' => 'def'));
 echo "<p class='hide-items'>Ukryj</p>";
 ?>
 </div>
+<p class="lead r-age" title="Kliknij aby rozwinąć">Wiek</p>
+<div class="race-age">
+<?php
+echo form_input('min_age', '', array('size' => 2, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max_age', '', array('size' => 2, 'placeholder' => 'Maks...'));
+echo "<p class='hide-items'>Ukryj</p>";
+?>
+</div>
+<p class="lead a-skill" title="Kliknij aby rozwinąć">Dodatkowe umiejętności</p>
+<div class="add-skill">
+<div class="skills">
+<?php
+echo form_input('min[]', '', array('size' => 3, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max[]', '', array('size' => 3, 'placeholder' => 'Max...'));
+echo br();
+echo form_label('Dodatkowa ilść:');
+echo br();
+echo form_input('add_skill[]', '', array('size' => 3));
+echo br();
+echo form_radio('action[0]', 1, false);
+echo form_label('Dodane');
+echo form_radio('action[0]', 2, false);
+echo form_label('Odjęte');
+echo br();
+?>
+</div>
+<div class="skills">
+<?php
+echo form_input('min[]', '', array('size' => 3, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max[]', '', array('size' => 3, 'placeholder' => 'Max...'));
+echo br();
+echo form_label('Dodatkowa ilść:');
+echo br();
+echo form_input('add_skill[]', '', array('size' => 3));
+echo br();
+echo form_radio('aaction[1]', 1, false);
+echo form_label('Dodane');
+echo form_radio('aaction[1]', 2, false);
+echo form_label('Odjęte');
+echo br();
+?>
+</div>
+<div class="skills">
+<?php
+echo form_input('min[]', '', array('size' => 3, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max[]', '', array('size' => 3, 'placeholder' => 'Max...'));
+echo br();
+echo form_label('Dodatkowa ilść:');
+echo br();
+echo form_input('add_skill[]', '', array('size' => 3));
+echo br();
+echo form_radio('aaction[2]', 1, false);
+echo form_label('Dodane');
+echo form_radio('aaction[2]', 2, false);
+echo form_label('Odjęte');
+echo br();
+?>
+</div>
+<div class="skills">
+<?php
+echo form_input('min[]', '', array('size' => 3, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max[]', '', array('size' => 3, 'placeholder' => 'Max...'));
+echo br();
+echo form_label('Dodatkowa ilść:');
+echo br();
+echo form_input('add_skill[]', '', array('size' => 3));
+echo br();
+echo form_radio('action[3]', 1, false);
+echo form_label('Dodane');
+echo form_radio('action[3]', 2, false);
+echo form_label('Odjęte');
+echo br();
+?>
+</div>
+<div class="skills">
+<?php
+echo form_input('min[]', '', array('size' => 3, 'placeholder' => 'Min...'));
+echo br();
+echo form_input('max[]', '', array('size' => 3, 'placeholder' => 'Max...'));
+echo br();
+echo form_label('Dodatkowa ilść:');
+echo br();
+echo form_input('add_skill[]', '', array('size' => 3));
+echo br();
+echo form_radio('action[4]', 1, false);
+echo form_label('Dodane');
+echo form_radio('action[4]', 2, false);
+echo form_label('Odjęte');
+echo br();
+?>
+</div>
+<?php
+echo form_button('btn','Więcej', array('id' => 'dodaj', 'class' => 'btn'));
+?>
+<p class="hide-items">Ukryj</p>
+</div>
 <p class="lead r-skills" title="Kliknij aby rozwinąć">Umiejętności</p>
 <div class="race-skills">
 <?php
@@ -98,6 +199,7 @@ $(document).ready(function() {
 		'display' : 'inline-block',
 		'width' : 305
 	});
+	$('label').css('margin-right', 15);
 	$.get('get_race', function(data) {
 		$('.result').html(data);
 		$('.race_table th:not(th:first-child)').css('width', 30);
@@ -105,7 +207,8 @@ $(document).ready(function() {
 		$('.race_table td').css('padding', 5);
 	});
 	var width = $('.stats').css('width');
-	$('button').css('width', width);
+	$('button').not('#dodaj').css('width', width);
+	
 	var stats = [1, 10, 10, 1, 1, 1, 10, 1, 10, 10, 10, 10, 10, 10];
 	var stats_val = [];
 	$('.stats').each(function(a) {
@@ -126,9 +229,42 @@ $(document).ready(function() {
 			$('.stats').eq(index).val(stats_val[index]);
 		}
 	});
-	$('.result').hide();
-	$('.race-statistics').hide();
-	$('.race-skills').hide();
+	$('.result, .race-statistics, .race-skills, .race-age, .add-skill').hide();
+	$('.r-skills, .race-stats, .r-age').css('text-decoration', 'underline');
+	$('.r-skills').hover(
+		function() {
+			$(this).css({'text-decoration': 'none', 'cursor' : 'pointer'});
+		}, function() {
+			$(this).css('text-decoration', 'underline');
+		}
+	);
+	$('.r-age').hover(
+		function() {
+			$(this).css({'text-decoration': 'none', 'cursor' : 'pointer'});
+		}, function() {
+			$(this).css('text-decoration', 'underline');
+		}
+	);
+	$('.race-stats').hover(
+		function() {
+			$(this).css({'text-decoration': 'none', 'cursor' : 'pointer'});
+		}, function() {
+			$(this).css('text-decoration', 'underline');
+		}
+	);
+	$('.a-skill').hover(
+		function() {
+			$(this).css({'text-decoration': 'none', 'cursor' : 'pointer'});
+		}, function() {
+			$(this).css('text-decoration', 'underline');
+		}
+	);
+	$('.r-age').click(function() {
+		$('.race-age').slideToggle('slow');
+	});
+	$('.a-skill').click(function() {
+		$('.add-skill').slideToggle('slow');
+	});
 	$('.race-stats').click(function() {
 		$('.race-statistics').slideToggle('slow');
 	});
@@ -146,8 +282,17 @@ $(document).ready(function() {
 			}
 		});
 	});
+	$('.hide-items').css('width', 80);
 	$('.hide-items').click(function() {
 		$(this).parent().hide();
 	});
-});
+	
+	var i = 0;
+	$('.skills').hide();
+	$('.skills').eq(0).show();
+	$('#dodaj').click(function() {
+		i++;
+		$('.skills').eq(i).show();
+	});
+})
 </script>

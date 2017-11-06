@@ -670,6 +670,32 @@ class Admin_panel extends CI_Controller {
 		echo "</table>";
 	}
 
+	public function valid_race_age($race_id, $id = "") {
+		$arr = array(
+			'id' => $id,
+			'raceID' => $race_id,
+			'min_age' => $this -> input -> post('min_age'),
+			'max_age' => $this -> input -> post('max_age')
+		);
+		return $arr;
+	}
+	
+	public function valid_add_race_skill($race_id, $id ="") {
+		$min = $this -> input -> post('min');
+		$max = $this -> input -> post('max');
+		$add = $this -> input -> post('add_skill');
+		$action = $this -> input -> post('action');
+		$arr = array(
+			'id' => $id,
+			'raceID' => $race_id,
+			'min_age' => $min,
+			'max_age' => $max,
+			'add_skill' => $add,
+			'action' => $action
+		);
+		return $arr;
+	}
+
 	public function add_race() {
 		if (!isset($_SESSION['user'])) {
 			$data['title'] = "Logowanie";
@@ -695,6 +721,8 @@ class Admin_panel extends CI_Controller {
 			$data['subtitle'] = 'Dodaj/usuń rasy';
 			$data['skills'] = array_combine($skill_id, $skill_name);
 			$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('min_age', 'Minimalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczą'));
+			$this -> form_validation -> set_rules('max_age', 'Maksymalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczbą'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('admin/admin_menu', $data);
@@ -707,14 +735,24 @@ class Admin_panel extends CI_Controller {
 					$race_name = $this -> valid_race();
 					$this -> universal_model -> insert('rasa', $race_name);
 					$race_id = $this -> universal_model -> last_index('rasa', 'raceID');
+					$race_age = $this -> valid_race_age($race_id);
+					$this -> universal_model -> insert('race_age', $race_age);
 					$race_skill = $this -> valid_race_skill($race_id);
 					$this -> admin_model -> race_skill_insert($race_skill);
+					$race_add_skill = $this -> valid_add_race_skill($race_id);
+					
+					$this -> admin_model -> add_race_skill_insert($race_add_skill);
+					//$max_age = $this -> input -> post('max');
+					echo "<pre>";
+					var_dump($race_add_skill);
+					echo "</pre>";
 					$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
 					$add = "Wprowadzono <b>" . $last_race . "</b>";
 				} else {
 					$add = $race . " już istnieje!";
 				}
 				$data['added'] = $add;
+				
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('admin/admin_menu', $data);
 				$this -> load -> view('admin/add_races', $data);
