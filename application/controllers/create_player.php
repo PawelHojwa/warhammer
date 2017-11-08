@@ -20,7 +20,7 @@ class Create_player extends CI_Controller {
 	}
 
 	public function character_data($id = "") {
-		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('p_age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
+		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
 		return $data;
 	}
 
@@ -127,6 +127,10 @@ class Create_player extends CI_Controller {
 		return $arr;
 	}
 
+	public function get_race_add_skill($race_id) {
+		return $this -> universal_model -> get_user('race_add_skill', array('raceID' => $race_id));
+	}
+
 	public function get_race() {
 		if (isset($_POST['race']) === TRUE && empty($_POST['race']) === FALSE) {
 			$race = $this -> race_model -> stats('rasa', 'raceID', $_POST['race'], 'raceID');
@@ -185,9 +189,10 @@ class Create_player extends CI_Controller {
 				$_SESSION['p_id'] = $p_id[0]['id'];
 				if ($this -> valid_class()) {
 					$as = mt_rand(1,4);
-					//$age = $_POST['p_age'];
-					$race = $_POST['race'];
-					//$amount = $this -> char_skill -> check_age($race, $age, $as);
+					$age = $this -> input -> post('age');
+					$race = $this -> input -> post('race');
+					$race_age = $this -> get_race_add_skill($race);
+					$amount = $this -> char_skill -> check_age($race_age, $age, $as);
 					$data_char = $this -> character_data();
 					$data_char['amount'] = $amount;
 					if (!empty($p_id)) {
@@ -220,6 +225,7 @@ class Create_player extends CI_Controller {
 						}
 					}
 				} else {
+					var_dump($amount);
 					$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);
 					$this -> load -> view('templates/footer');
