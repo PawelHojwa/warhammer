@@ -28,6 +28,8 @@ class Delete extends CI_Controller {
 	public function del_race() {
 		$this -> universal_model -> delete('rasa', array('raceID' => $_GET['id']));
 		$this -> universal_model -> delete('race_skills', array('race_id' => $_GET['id']));
+		$this -> universal_model -> delete('race_age', array('raceID' => $_GET['id']));
+		$this -> universal_model -> delete('race_add_skill', array('raceID' => $_GET['id']));
 		$this -> success('add_race');
 	}
 	
