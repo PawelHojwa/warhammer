@@ -6,7 +6,7 @@ class Item_model extends CI_Model {
 	
 	public function get_inv($tab_name, $where = array())
 	{
-		$this -> db -> select('*');
+		$this -> db -> select('inventory_id, options, item, items_group_id');
 		$this -> db -> from($tab_name);
 		$this -> db -> join('items', $tab_name.'.inventory_id = items.id', 'left');
 		$this -> db -> where($where);

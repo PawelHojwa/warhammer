@@ -1,3 +1,4 @@
+<div class="container">
 <?php
 echo heading($sub_title, 3);
 echo form_open('inventory/form_inventory');
@@ -10,7 +11,7 @@ foreach ($b_inv as $item) {
 echo ul($full_inv, array('class' => 'inventory-list'));
 echo br();
 echo '<p>Wybierz ekwipunek:</p>';
-foreach ($b_inv as $item) {	
+foreach ($b_inv as $item) {
 	if ($item['options'] == 1 && $item['items_group_id'] == 1) {
 			echo form_radio(array('name' => 'inv[1]', 'value' =>$item['inventory_id']));
 			echo form_label($item['item'], '', array('style'=> 'margin-right: 15px;'));
@@ -49,3 +50,4 @@ echo form_submit('submit', 'Wyślij', ['class' => 'btn btn-primary']);
 echo form_close();
 echo form_error();
 ?>
+</div>

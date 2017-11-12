@@ -45,11 +45,14 @@ class Inventory extends CI_Controller
 			$prof_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $player_id), 'profId');
 			$b_inv = $this -> basic_inv($class_id); 
 			$p_inv = $this -> prof_inv($prof_id);
-			$inv = array();
-			if (!empty($p_inv) === TRUE && is_array($p_inv) === TRUE) {
-				$inv = array_merge($b_inv, $p_inv);
-			} else {
-				$inv = $b_inv;
+			$inv = $b_inv;
+			$z = count($inv);
+			for ($i = 0; $i < $z; $i++) {
+				if (!empty($p_inv) === TRUE && is_array($p_inv) === TRUE) {
+					if ($b_inv[$i]['invetnory_id'] != $p_inv[$i]['inventory']) {
+						array_push($inv, $p_inv[$i]);
+					}
+				}
 			}
 			$full_inv = array();
 			foreach ($inv as $item) {
