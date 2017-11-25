@@ -1,4 +1,4 @@
-<div class="container"></div>
+<div class="container">
 	<?php
 	echo heading($title, 3);
 	echo anchor('create_player/create', 'Powrót');
@@ -71,10 +71,11 @@
 		echo form_input('exp', '');
 		?>
 		</div>
+		</div>
+		<?php
+		echo form_submit('btn', 'Wyślij', array('class' => 'btn btn-primary'));
+		echo form_close();
+		echo validation_errors('<p class="alert alert-danger">', '</p>');
+		?>
 	</div>
-	<?php
-	echo form_submit('btn', 'Wyślij', array('class' => 'btn btn-primary'));
-	echo form_close();
-	echo validation_errors('<p class="alert alert-danger">', '</p>');
-	?>
 </div>
