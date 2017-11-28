@@ -7,11 +7,13 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> helper('url');
 		$this -> load -> library('session');
 		$this -> load -> library('formable');
+		$this -> load -> library('char_skill');
 		$this -> load -> library('form_validation');
 		$this -> load -> model('characters_model');
 		$this -> load -> model('universal_model');
 		$this -> load -> model('race_age_model');
 		$this -> load -> model('race_model');
+		$this -> load -> model('p_player_model');
 	}
 	
 	public function success($page) {
@@ -172,6 +174,107 @@ class Edit_panel extends CI_Controller {
 				$this -> universal_model -> update('characters', $character_info, array('id' => $_SESSION['p_id']));
 				$this -> universal_model -> update('current_schematic', $current, array('char_id' => $_SESSION['p_id']));
 				$this -> success('edit_skills');
+			}
+		}
+	}
+
+	public function verify_skills($char_id, $arr2, $id = "") {
+		$skill = $this -> input -> post('skills[]');
+		$arr2;
+		$char_skill = array_merge($skill, $arr2);
+		$arr = array(
+			'id' => $id,
+			'char_id' => $char_id,
+			'profId' => $this -> input -> post('profession'),
+			'skill_id' => $char_skill 
+		);
+		return $arr;
+	}
+	
+	public function get_skill($id) {
+		return $this -> p_player_model -> get_skill('professions_skills', 'profession_id', $id);
+	}
+	
+	public function get_race_skills($id) {
+		return $this -> p_player_model -> get_skill('char_skills', 'char_id', $id);
+	}
+	
+	public function get_prof() {
+		if (isset($_POST['prof'])) {
+			$arr = array();
+			$p_skills = array();
+			$prof_skills = $this -> get_skill($_POST['prof']);
+			$race_skills = $this -> get_race_skills($_POST['id']);
+			$skills = array();
+			if (!empty($race_skills) && is_array($race_skills)) {
+				foreach ($race_skills as $skill) {
+					$skills[] = $skill['skill_id'];
+				}
+			}
+			foreach ($prof_skills as $skill) {
+				if ($skill['chance'] == 0) {
+					$p_skills[] = $skill['skill_id'];
+				}
+				if ($skill['chance'] == 1) {
+					if (mt_rand(1,100) <= 5) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 2) {
+					if (mt_rand(1,100) <= 10) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 3) {
+					if (mt_rand(1,100) <= 20) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 4) {
+					if (mt_rand(1,100) <= 25) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 5) {
+					if (mt_rand(1,100) <= 50) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+				if ($skill['chance'] == 6) {
+					if (mt_rand(1,100) <= 75) {
+						$p_skills[] = $skill['skill_id'];
+					}
+				}
+			}
+			$arr = array_merge($p_skills, $skills);
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "Błąd";
+		}
+	}
+
+	public function edit_skills() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
+			$data['id'] = $this -> session -> p_id;
+			$data['title'] = "Edycja umiejętności";
+			$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+			$this -> form_validation -> set_rules('profession', 'Profesja', 'required', array('required' => '{field} jest wymagana'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/character_skills', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$prof_skills = $this -> get_skill($_POST['profession']);
+				$arr = array();
+				foreach ($prof_skills as $row) {
+					$arr[] = $row['skill_id'];
+				}
+				$skills = $this -> verify_skills($_SESSION['p_id'], $arr);
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+				redirect('admin_panel/show_list');
 			}
 		}
 	}
