@@ -14,6 +14,7 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> model('race_age_model');
 		$this -> load -> model('race_model');
 		$this -> load -> model('p_player_model');
+		$this -> load -> model('char_skills_model');
 	}
 	
 	public function success($page) {
@@ -173,7 +174,7 @@ class Edit_panel extends CI_Controller {
 				$current = $this -> verify_current_schematics();
 				$this -> universal_model -> update('characters', $character_info, array('id' => $_SESSION['p_id']));
 				$this -> universal_model -> update('current_schematic', $current, array('char_id' => $_SESSION['p_id']));
-				$this -> success('edit_skills');
+				$this -> success('edit_race_skills');
 			}
 		}
 	}
@@ -277,5 +278,56 @@ class Edit_panel extends CI_Controller {
 				redirect('admin_panel/show_list');
 			}
 		}
+	}
+
+	public function edit_race_skills() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			$id = $this -> session -> p_id;
+			$race = $this -> universal_model -> get_values('characters', array('id' => $id), 'raceID');
+			$this -> universal_model -> delete('char_skills', array('char_id' => $id));
+			$data['skills'] = $this -> char_skills_model -> race_skills($race);
+			$amount = $this -> universal_model -> get_values('characters', array('id' => $id), 'amount');
+			$data['amount'] = $amount;
+			$data['title'] = "Edycja rasowych umiejętności";
+			$data['subtitle'] = "Wybierz umiejętność:";
+			/*echo "<pre>";
+			var_dump($data);
+			echo "</pre>";*/
+			$race_skill = array();
+			foreach ($data['skills'] as $row) {
+						if ($row -> options == 0)
+						$race_skill[] = $row -> skillid;
+					}
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/race_skills', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				if ($amount == 1) {	
+					$this -> universal_model -> insert('char_skills', $race_skill);
+					$this -> universal_model -> change('characters', array('amount' => 0), array('id' => $id));
+				} else {
+					$skills = $this -> race_skills($id, $race_skill);
+					$this -> universal_model -> delete('char_skills', array('char_id' => $id));
+					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+					$this -> universal_model -> change('characters', array('amount' => ($amount -2)), array('id' => $id));
+					redirect('edit_panel/edit_skills');
+				}
+			}
+		}
+	}
+	
+	public function race_skills($char_id, $arr2, $id = '') {
+		$skills = $this -> input -> post('skills[]');
+		$data = array_merge($skills, arr2);
+		$arr = array(
+			'id' => $id,
+			'char_id' => $char_id,
+			'profId' => 1,
+			'skill_id' => $data
+		);
+		return $arr;
 	}
 }
