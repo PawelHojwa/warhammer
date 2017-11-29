@@ -292,36 +292,43 @@ class Edit_panel extends CI_Controller {
 			$data['amount'] = $amount;
 			$data['title'] = "Edycja rasowych umiejętności";
 			$data['subtitle'] = "Wybierz umiejętność:";
-			/*echo "<pre>";
-			var_dump($data);
-			echo "</pre>";*/
 			$race_skill = array();
 			foreach ($data['skills'] as $row) {
 						if ($row -> options == 0)
 						$race_skill[] = $row -> skillid;
 					}
+			if ($amount < 1) {
+					redirect('edit_panel/edit_skills');
+			}
+			else if ($amount == 1) {
+				$skills = $this -> race_skills($id, $race_skill);
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+				$this -> universal_model -> change('characters', array('amount' => 0), array('id' => $id));
+				redirect('edit_panel/edit_skills');
+			}
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('edit/race_skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				if ($amount == 1) {	
-					$this -> universal_model -> insert('char_skills', $race_skill);
-					$this -> universal_model -> change('characters', array('amount' => 0), array('id' => $id));
-				} else {
-					$skills = $this -> race_skills($id, $race_skill);
-					$this -> universal_model -> delete('char_skills', array('char_id' => $id));
-					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
-					$this -> universal_model -> change('characters', array('amount' => ($amount -2)), array('id' => $id));
-					redirect('edit_panel/edit_skills');
-				}
+				$skills = $this -> race_skills($id, $race_skill);
+				$this -> universal_model -> delete('char_skills', array('char_id' => $id));
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+				$this -> universal_model -> change('characters', array('amount' => ($amount -2)), array('id' => $id));
+				redirect('edit_panel/edit_skills');
 			}
 		}
 	}
 	
-	public function race_skills($char_id, $arr2, $id = '') {
-		$skills = $this -> input -> post('skills[]');
-		$data = array_merge($skills, arr2);
+	public function race_skills($char_id, $arr2, $arr3 = array(), $id = '') {
+		$arr3 = $this -> input -> post('skill[]');
+		$data = array();
+		if (!empty($arr3) && is_array($arr3)) {
+			$data = array_merge($skills, arr2);
+		} else {
+			$data = $arr2;
+		}
+		
 		$arr = array(
 			'id' => $id,
 			'char_id' => $char_id,
