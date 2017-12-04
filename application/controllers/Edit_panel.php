@@ -195,7 +195,6 @@ class Edit_panel extends CI_Controller {
 
 	public function verify_skills($char_id, $arr2, $id = "") {
 		$skill = $this -> input -> post('skills[]');
-		$arr2;
 		$char_skill = array_merge($skill, $arr2);
 		$arr = array(
 			'id' => $id,
@@ -276,6 +275,7 @@ class Edit_panel extends CI_Controller {
 			$data['id'] = $this -> session -> p_id;
 			$data['title'] = "Edycja umiejętności";
 			$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+			
 			$this -> form_validation -> set_rules('profession', 'Profesja', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
@@ -288,8 +288,9 @@ class Edit_panel extends CI_Controller {
 					$arr[] = $row['skill_id'];
 				}
 				$skills = $this -> verify_skills($_SESSION['p_id'], $arr);
+				$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
-				redirect('admin_panel/show_list');
+				$this -> success('edit_inventory');
 			}
 		}
 	}

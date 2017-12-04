@@ -3,6 +3,7 @@
 echo heading($title, 3);
 echo '<p>Imię:<span class="lead">' . $player_name . '</span></p>';
 echo '<p class="moveBar">Pozostało umiejętnośći: <span id="amount" class="lead">' . $amount .  '</span></p>';
+echo br(2);
 echo validation_errors("<p class='alert alert-danger'", '</p>');
 echo form_open('edit_panel/edit_skills');
 echo form_input('', $id, array('hidden' => 'hidden', 'id' => 'char_id'));
@@ -48,6 +49,7 @@ $('document').ready(function() {
 			});
 	}).change();
 	var am = $('#amount').text();
+	$('#amount').text('0/' + am);
 	$('.skills').click(function() {
 		var len = $('.skills:checked:not(:disabled)').length;
 		if (len > am) {
