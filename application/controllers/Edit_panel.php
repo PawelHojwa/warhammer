@@ -26,7 +26,7 @@ class Edit_panel extends CI_Controller {
 		return $arr;
 	}
 	
-	public function verify_basic_info($id) {
+	public function verify_basic_info($id, $am) {
 		$arr = array(
 			'userID' => $id,
 			'name' => $this -> input -> post('name'),
@@ -35,6 +35,7 @@ class Edit_panel extends CI_Controller {
 			'classID' => $this -> input -> post('class'),
 			'natureID' => $this -> input -> post('nature'),
 			'age' => $this -> input -> post('age'),
+			'amount' => $am,
 			'height' => $this -> input -> post('height'),
 			'weight' => $this -> input -> post('weight'),
 			'hair' => $this -> input -> post('hair'),
@@ -105,6 +106,10 @@ class Edit_panel extends CI_Controller {
 		}
 	}
 	
+	public function get_race_add_skill($race_id) {
+		return $this -> universal_model -> get_user('race_add_skill', array('raceID' => $race_id));
+	}
+	
 	public function edit_character() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			$this -> success('show_list');
@@ -115,6 +120,8 @@ class Edit_panel extends CI_Controller {
 			} else {
 				$id = $this -> session -> p_id;
 			}
+			
+			
 			$data = $this -> get_character_data($id);
 			$data['title'] = "Edycja postaci";
 			$char = $this -> formable -> datas();
@@ -152,6 +159,11 @@ class Edit_panel extends CI_Controller {
 			$data['sw'] = $sw;
 			$data['ogd'] = $ogd;
 			$user_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'userID');
+			$age = $this -> input -> post('age');
+			$race = $this -> input -> post('race');
+			$race_age = $this -> get_race_add_skill($race);
+			$as = mt_rand(1, 4);
+			$amount = $this -> char_skill -> check_age($race_age, $age, $as);
 			$this -> form_validation -> set_rules('name', 'Imie', 'required', array('required' => '{field} jest wymagane'));
 			$this -> form_validation -> set_rules('race', 'Rasa', 'required|trim', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('gender', 'Płeć', 'required|trim', array('required' => '{field} jest wymagana'));
@@ -170,7 +182,7 @@ class Edit_panel extends CI_Controller {
 				$this -> load -> view('edit/basic_info', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				$character_info = $this -> verify_basic_info($user_id);
+				$character_info = $this -> verify_basic_info($user_id, $amount);
 				$current = $this -> verify_current_schematics();
 				$this -> universal_model -> update('characters', $character_info, array('id' => $_SESSION['p_id']));
 				$this -> universal_model -> update('current_schematic', $current, array('char_id' => $_SESSION['p_id']));
@@ -178,6 +190,8 @@ class Edit_panel extends CI_Controller {
 			}
 		}
 	}
+
+	
 
 	public function verify_skills($char_id, $arr2, $id = "") {
 		$skill = $this -> input -> post('skills[]');
@@ -280,6 +294,25 @@ class Edit_panel extends CI_Controller {
 		}
 	}
 
+	public function verify_race_skills($arr2, $id = '') {
+		$arr3 = array();
+		$arr3[] = $this -> input -> post('skill');
+		$data = array();
+		if (!empty($arr3) && is_array($arr3)) {
+			$data = array_merge($arr3, $arr2);
+		} else {
+			$data = $arr2;
+		}
+		
+		$arr = array(
+			'id' => $id,
+			'char_id' => $this -> session -> p_id,
+			'profId' => 1,
+			'skill_id' => $data
+		);
+		return $arr;
+	}
+	
 	public function edit_race_skills() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
@@ -292,17 +325,10 @@ class Edit_panel extends CI_Controller {
 			$data['amount'] = $amount;
 			$data['title'] = "Edycja rasowych umiejętności";
 			$data['subtitle'] = "Wybierz umiejętność:";
-			$race_skill = array();
-			foreach ($data['skills'] as $row) {
-						if ($row -> options == 0)
-						$race_skill[] = $row -> skillid;
-					}
-			if ($amount < 1) {
-					redirect('edit_panel/edit_skills');
-			}
-			else if ($amount == 1) {
-				$skills = $this -> race_skills($id, $race_skill);
-				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+			$this -> form_validation -> set_rules('skill', 'Umiejętność', 'required', array('required' => 'Proszę wybrać {field}'));
+			if ($amount == 1) {
+				$skill = $data['skills'][0] -> skill_id;
+				$this -> universal_model -> insert('char_skills',array('id' => '', 'char_id' => $id, 'profId' => 1, 'skill_id' => $skill));
 				$this -> universal_model -> change('characters', array('amount' => 0), array('id' => $id));
 				redirect('edit_panel/edit_skills');
 			}
@@ -311,30 +337,21 @@ class Edit_panel extends CI_Controller {
 				$this -> load -> view('edit/race_skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				$skills = $this -> race_skills($id, $race_skill);
-				$this -> universal_model -> delete('char_skills', array('char_id' => $id));
-				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
-				$this -> universal_model -> change('characters', array('amount' => ($amount -2)), array('id' => $id));
-				redirect('edit_panel/edit_skills');
+				if ($amount > 1){
+					$race_skill = array();
+					foreach ($data['skills'] as $row) {
+						if ($row -> options == 0)
+						$race_skill[] = $row -> skillid;
+					}
+					$skills = $this -> verify_race_skills($race_skill);
+					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
+					$amount -= 2;
+					$this -> universal_model -> change('characters', array('amount' => $amount), array('id' => $id));
+					$this -> success('edit_skills');
+				}
 			}
 		}
 	}
 	
-	public function race_skills($char_id, $arr2, $arr3 = array(), $id = '') {
-		$arr3 = $this -> input -> post('skill[]');
-		$data = array();
-		if (!empty($arr3) && is_array($arr3)) {
-			$data = array_merge($skills, arr2);
-		} else {
-			$data = $arr2;
-		}
-		
-		$arr = array(
-			'id' => $id,
-			'char_id' => $char_id,
-			'profId' => 1,
-			'skill_id' => $data
-		);
-		return $arr;
-	}
+	
 }

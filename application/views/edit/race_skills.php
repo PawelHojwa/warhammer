@@ -8,11 +8,12 @@ foreach ($skills as $skill) {
 }
 echo br(2);
 echo "<p class='lead'>" . $subtitle . "</p>";
+echo validation_errors('<p class="alert alert-danger">', '</p>');
 echo form_open('edit_panel/edit_race_skills');
 foreach ($skills as $skill) {
 	if ($skill -> options == 1) {
-		echo form_radio('skill[]', $skill -> skillid, false);
-		echo form_label($skill -> skillName, 'skill[]');
+		echo form_radio('skill', $skill -> skillid, false);
+		echo form_label($skill -> skillName, 'skill');
 	}
 }
 echo br(2);
