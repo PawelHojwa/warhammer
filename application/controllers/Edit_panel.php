@@ -366,6 +366,18 @@ class Edit_panel extends CI_Controller {
 		return $this -> item_model -> get_inv('professions_inventory', array('profession_id' => $id));
 	}
 	
+	public function verify_inventory($inv, $id = "") {
+		$arr = array();
+		$arr = $this -> input -> post('inv[]');
+		$inventory = array_merge($inv, $arr);
+		$data = array(
+			'id' => $id,
+			'char_id' => $this -> session -> p_id,
+			'inv' => $inventory
+		);
+		return $data;
+	}
+	
 	public function edit_inventory() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
@@ -375,24 +387,27 @@ class Edit_panel extends CI_Controller {
 			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $id), 'profId');
 			$basic_inv = $this -> basic_inventory($class_id);
 			$prof_inv = $this -> profession_inventory($profession_id);
-			$inv = $basic_inv;
-			$z = count($inv);
-			for ($i = 0; $i < $z; $i++) {
-				if (!empty($prof_inv) === TRUE && is_array($prof_inv) === TRUE) {
-					if ($basic_inv[$i]['inventory_id'] != $prof_inv[$i]['inventory_id']) {
+			$inv = array();
+			$i = 0;
+			foreach ($prof_inv as $item) {
+				if (!empty($basic_inv) && is_array($basic_inv)) {
+					if ($item['inventory_id'] != $basic_inv[$i]['inventory_id']) {
 						array_push($inv, $prof_inv[$i]);
 					}
+					$i++;
 				}
 			}
+			$inventory = array_merge($basic_inv, $inv);
 			$full_inv = array();
-			foreach ($inv as $item) {
+			foreach ($inventory as $item) {
 				if ($item['options'] == 0) {
 					$full_inv[] = $item['inventory_id']; 
 				}
 			}
-			$data['inventory'] = $inv;
+			$data['inventory'] = $inventory;
 			$data['title'] = "Edycja ekwipunku";
 			$data['subtitle'] = "Wybierz ekwipunek";
+			
 			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('required' => '{field} jest wymagany'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
@@ -400,7 +415,7 @@ class Edit_panel extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$player_inventory = $this -> verify_inventory($full_inv);
-				$this -> universal_model -> delete('char_inv', array('char_id', $id));
+				$this -> universal_model -> delete('char_inv', array('char_id' => $id));
 				$this -> char_inventory_model -> multi('char_inv', 'inv', $player_inventory);
 				if ($profession_id == 69) {
 					redirect('edit/edit_spell');

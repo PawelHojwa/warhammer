@@ -3,14 +3,16 @@
 echo heading($title, 3);
 echo br(2);
 echo "<p class='lead'>Ekwipunek</p>";
+$full_inventory = array();
 foreach ($inventory as $item) {
 	if ($item['options'] == 0) {
-		echo $item['item'];
-		echo br();
+		$full_inventory[] = $item['item'];
 	}
 }
+echo ul($full_inventory, array('class' => 'inventory-list'));
+echo br();
 echo "<p class='lead'>" . $subtitle . "</p>";
-echo form_open('edit/edit_inventory');
+echo form_open('edit_panel/edit_inventory');
 foreach ($inventory as $item) {
 	if ($item['options'] == 1 && $item['items_group_id'] == 1) {
 			echo form_radio('inv[0]', $item['inventory_id'], FALSE);
@@ -24,7 +26,6 @@ foreach ($inventory as $item) {
 		echo form_label($item['item'], 'inv[1]');
 	}
 }
-//echo br();
 foreach ($inventory as $item) {
 	if ($item['options'] == 1 && $item['items_group_id'] == 3) {
 		echo form_radio('inv[2]', $item['inventory_id'], FALSE);
@@ -53,3 +54,8 @@ echo br(2);
 echo form_submit('btn', 'Zmień', array('class' => 'btn btn-primary'));
 ?>
 </div>
+<script>
+$('document').ready(function() {
+	$('label').css('margin-right', 10);
+});
+</script>
