@@ -284,9 +284,11 @@ class Edit_panel extends CI_Controller {
 				$this -> load -> view('edit/character_skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
+				$char_skills = $this -> get_race_skills($data['id']);
 				$prof_skills = $this -> get_skill($_POST['profession']);
+				$arr_skill = array_merge($char_skills, $prof_skills);
 				$arr = array();
-				foreach ($prof_skills as $row) {
+				foreach ($arr_skill as $row) {
 					$arr[] = $row['skill_id'];
 				}
 				$skills = $this -> verify_skills($_SESSION['p_id'], $arr);
@@ -391,9 +393,6 @@ class Edit_panel extends CI_Controller {
 			$data['inventory'] = $inv;
 			$data['title'] = "Edycja ekwipunku";
 			$data['subtitle'] = "Wybierz ekwipunek";
-			echo "<pre>";
-			var_dump($id);
-			echo "</pre>";
 			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('required' => '{field} jest wymagany'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
