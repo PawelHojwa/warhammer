@@ -17,6 +17,7 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> model('char_skills_model');
 		$this -> load -> model('item_model');
 		$this -> load -> model('char_inventory_model');
+		$this -> load -> model('spell_model');
 	}
 	
 	public function success($page) {
@@ -52,7 +53,7 @@ class Edit_panel extends CI_Controller {
 			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
 			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
 			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
-			'cp' => ($this -> input -> post('cp') + $this -> input -> post('cp')),
+			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
 			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
 			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
 			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
@@ -74,7 +75,7 @@ class Edit_panel extends CI_Controller {
 			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
 			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
 			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
-			'cp' => ($this -> input -> post('cp') + $this -> input -> post('cp')),
+			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
 			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
 			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
 			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
@@ -426,6 +427,38 @@ class Edit_panel extends CI_Controller {
 				} else {
 					redirect('admin_panel/show_list');
 				}
+			}
+		}
+	}
+
+	public function verify_spells($id = "") {
+		$spells = $this -> input -> post('spell[]');
+		$data = array(
+			'id' => $id,
+			'char_id' => $this -> session -> p_id,
+			'spell' => $spells
+		);
+		return $data;
+	}
+
+	public function edit_spell() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('form/view_form');
+		} else {
+			$id = $this -> session -> p_id;
+			$data['spells'] = $this -> spell_model -> spells();
+			$data['title'] = "Edycja czarów";
+			$data['subtitle'] = "Wybierz czary";
+			$this -> form_validation -> set_rules('spell[]', 'Czar', 'required', array('required' => '{field} jest wymagany'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_spells', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$spells = $this -> verify_spells();
+				$this -> universal_model -> delete('char_spells', array('char_id' => $id));
+				$this -> spell_model -> multi_insert('char_spells', $spells);
+				redirect('edut_panel/first_stat');
 			}
 		}
 	}
