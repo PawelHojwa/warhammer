@@ -425,7 +425,7 @@ class Edit_panel extends CI_Controller {
 				$this -> universal_model -> delete('char_inv', array('char_id' => $id));
 				$this -> char_inventory_model -> multi('char_inv', 'inv', $player_inventory);
 				if ($profession_id == 69) {
-					redirect('edit/edit_spell');
+					redirect('edit_panel/edit_spell');
 				} else {
 					redirect('admin_panel/show_list');
 				}
