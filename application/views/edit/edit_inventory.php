@@ -33,7 +33,7 @@ foreach ($inventory as $item) {
 	}
 }
 foreach ($inventory as $item) {
-	if ($item['options'] == 1 && $item['item_group_id'] == 4) {
+	if ($item['options'] == 1 && $item['items_group_id'] == 4) {
 		echo form_radio('inv[3]', $item['inventory_id']);
 		echo form_label($item['item'], 'inv[3]');
 	}
