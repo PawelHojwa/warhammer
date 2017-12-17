@@ -765,11 +765,12 @@ class Admin_panel extends CI_Controller {
 		$classes = $this -> admin_model -> get_classess();
 		echo "<table class='class-table'>";
 		echo "<tr>";
-		echo "<th>Nazwa klasy</th><th></th>";
+		echo "<th>Nazwa klasy</th>";
 		foreach ($classes as $row) {
 			echo "<tr>";
 			echo "<td>" . $row -> className . "</td>";
 			echo "<td>" . anchor('delete/del_class?id=' . $row -> classID, "Usuń") . "</td>";
+			echo "<td>" . anchor('edit_panel/edit_class?id=' .$row -> classID, 'Edytuj') . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
