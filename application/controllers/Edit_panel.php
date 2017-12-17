@@ -9,6 +9,7 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> library('formable');
 		$this -> load -> library('char_skill');
 		$this -> load -> library('form_validation');
+		$this -> load -> model('admin_model');
 		$this -> load -> model('characters_model');
 		$this -> load -> model('universal_model');
 		$this -> load -> model('race_age_model');
@@ -548,5 +549,70 @@ class Edit_panel extends CI_Controller {
 				redirect('admin_panel/show_list');
 			}
 		}
+	}
+
+	public function get_inventory_class() {
+		if (isset($_POST['class_id']) !== FALSE && $_POST['class_id'] !== TRUE) {
+			$inventory = $this -> universal_model -> get_user('basic_inv', array('classID' => $_POST['class_id']));
+			$arr = array();
+			foreach ($inventory as $row) {
+				$arr[] = $row['inventory_id'];
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "Błąd!!";
+		}
+	}
+	
+	public function verify_class_name() {
+		$arr = array(
+			//'classID' => $id,
+			'className' => $this -> input -> post('class_name')
+		);
+		return $arr;
+	}
+	
+	public function verify_class_inventory($class_id, $id = "") {
+		$inventory = $this -> input -> post('inv[]');
+		$arr = array(
+			'id' => $id,
+			'inventory_id' => $inventory,
+			'classID' => $class_id,
+			'amount' => 1,
+			'options' => 0
+		);
+		return $arr;
+	}
+
+	public function edit_class() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			//$this -> session -> unset_userdata('class');
+			if ($this -> session -> has_userdata('class') === FALSE) {
+				$this -> session -> set_userdata('class', $_GET['id']);
+				$id = $this -> session -> class; 
+			} else {
+				$id = $this -> session -> class;
+			}
+			$data['class_name'] = $this -> universal_model -> get_values('classes', array('classID' => $id), 'className');
+			$data['class_id'] = $id;
+			$data['inventory'] = $this -> admin_model -> get_items();
+			$data['title'] = "Edycja klasy";
+			$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('required' => '{field} jest wymagany'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_class', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$c_name = $this -> verify_class_name();
+				$this -> universal_model -> update('classes', $c_name, array('classID' => $id));
+				$this -> universal_model -> delete('basic_inv', array('classID' => $id));
+				$class_inventory = $this -> verify_class_inventory($data['class_id']);
+				$this -> admin_model -> class_items_multi_insert($class_inventory);
+				redirect('admin_panel/add_class');
+			}
+		} 
 	}
 }
