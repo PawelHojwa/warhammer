@@ -414,9 +414,6 @@ class Edit_panel extends CI_Controller {
 			$data['inventory'] = $inventory;
 			$data['title'] = "Edycja ekwipunku";
 			$data['subtitle'] = "Wybierz ekwipunek";
-			echo "<pre>";
-			var_dump($data['inventory']);
-			echo "</pre>";
 			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('required' => '{field} jest wymagany'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
