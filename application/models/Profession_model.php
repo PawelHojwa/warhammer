@@ -15,4 +15,22 @@ class Profession_model extends CI_Model {
 		}
 		return $target;
 	}
+	
+	public function get_profession_statistics($id) {
+		$arr = array();
+		$this -> db -> select('*');
+		$this -> db -> from('professions_statistics');
+		$this -> db -> where(array('id' => $id));
+		$query = $this -> db -> get();
+		if ($query -> num_rows() > 0 && $query !== FALSE) {
+			
+			/*foreach($query -> result() as $row) {
+				$arr[] = $row;
+			}
+			return $arr;*/
+			return $query -> result();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
 }

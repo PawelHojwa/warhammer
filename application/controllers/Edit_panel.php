@@ -14,10 +14,12 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> model('race_age_model');
 		$this -> load -> model('race_model');
 		$this -> load -> model('p_player_model');
+		$this -> load -> model('profession_model');
 		$this -> load -> model('char_skills_model');
 		$this -> load -> model('item_model');
 		$this -> load -> model('char_inventory_model');
 		$this -> load -> model('spell_model');
+		$this -> load -> model('current_schematic_model');
 	}
 	
 	public function success($page) {
@@ -427,7 +429,7 @@ class Edit_panel extends CI_Controller {
 				if ($profession_id == 69) {
 					redirect('edit_panel/edit_spell');
 				} else {
-					redirect('admin_panel/show_list');
+					redirect('edit_panel/first_stat');
 				}
 			}
 		}
@@ -445,7 +447,7 @@ class Edit_panel extends CI_Controller {
 
 	public function edit_spell() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
-			redirect('form/view_form');
+			redirect('login/view_form');
 		} else {
 			$id = $this -> session -> p_id;
 			$data['spells'] = $this -> spell_model -> spells();
@@ -461,6 +463,92 @@ class Edit_panel extends CI_Controller {
 				$this -> universal_model -> delete('char_spells', array('char_id' => $id));
 				$this -> spell_model -> multi_insert('char_spells', $spells);
 				redirect('edut_panel/first_stat');
+			}
+		}
+	}
+	
+	public function verify_stats($id = "") {
+		$data = array(
+			'id' => $id,
+			'char_id' => $this -> session -> p_id,
+			'sz' => $this -> input -> post('csz'),
+			'ww' => $this -> input -> post('cww'),
+			'us' => $this -> input -> post('cus'),
+			's' => $this -> input -> post('cs'),
+			'wt' => $this -> input -> post('cwt'),
+			'zw' => $this -> input -> post('czw'),
+			'i' => $this -> input -> post('ci'),
+			'a' => $this -> input -> post('ca'),
+			'zr' => $this -> input -> post('czr'),
+			'cp' => $this -> input -> post('ccp'),
+			'intel' => $this -> input -> post('cint'),
+			'op' => $this -> input -> post('cop'),
+			'sw' => $this -> input -> post('csw'),
+			'ogd' => $this -> input -> post('cogd'),
+		);
+		return $data;
+	}
+	
+	public function first_stat() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			$id = $this -> session -> p_id;
+			$data = $this -> current_schematic_model -> get_current_schematic($id);
+			$data['title'] = "Edycja pierwszego rozwinięcia";
+			$stats = $this -> characters_model -> get_basic_info($id);
+			$prof_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $id), 'profId');
+			$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
+			$data['psz'] = $prof_stats[0] -> sz;
+			$data['pww'] = $prof_stats[0] -> ww;
+			$data['pus'] = $prof_stats[0] -> us;
+			$data['ps'] = $prof_stats[0] -> s;
+			$data['pwt'] = $prof_stats[0] -> wt;
+			$data['pzw'] = $prof_stats[0] -> zw;
+			$data['pi'] = $prof_stats[0] -> i;
+			$data['pa'] = $prof_stats[0] -> a;
+			$data['pzr'] = $prof_stats[0] -> zr;
+			$data['pcp'] = $prof_stats[0] -> cp;
+			$data['pint'] = $prof_stats[0] -> intel;
+			$data['pop'] = $prof_stats[0] -> op;
+			$data['psw'] = $prof_stats[0] -> sw;
+			$data['pogd'] = $prof_stats[0] -> ogd;
+			$data['bsz'] = $stats['sz'];
+			$data['bww'] = $stats['ww'];
+			$data['bus'] = $stats['us'];
+			$data['bs'] = $stats['s'];
+			$data['bwt'] = $stats['wt'];
+			$data['bzw'] = $stats['zw'];
+			$data['bi'] = $stats['i'];
+			$data['ba'] = $stats['a'];
+			$data['bzr'] = $stats['zr'];
+			$data['bcp'] = $stats['cp'];
+			$data['bint'] = $stats['intel'];
+			$data['bop'] = $stats['op'];
+			$data['bsw'] = $stats['sw'];
+			$data['bogd'] = $stats['ogd'];
+			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cww', 'Walka wręcz', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cus', 'Umiejętnośći strzeleckie', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cs', 'Siła', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cwt', 'Wytrzymałość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('czw', 'Żywotność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ci', 'Inicjatywa', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ca', 'Atak', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('czr', 'Zręczność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ccp', 'Cechy przywdódcze', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cint', 'Inteligencja', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cop', 'Opanowanie', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('csw', 'Siła woli', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cogd', 'Ogłada', 'required', array('required' => '{field} jest wymagana'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/first_stat', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$stats = $this -> verify_stats();
+				$this -> universal_model -> update('current_schematic', $stats, array('char_id' => $id));
+				redirect('admin_panel/show_list');
 			}
 		}
 	}
