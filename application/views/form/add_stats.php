@@ -7,6 +7,8 @@ function dev_schema($x) {
 		return "+" . $x;
 	}
 }
+$current = array($csz, $cww, $cus, $cs, $cwt, $czw, $ci, $ca, $czr, $ccp, $cint, $cop, $csw, $cogd);
+$current_name = array('csz', 'cww'. 'cus', 'cwt', 'czw', 'ci', 'ca', 'czr', 'ccp', 'cint', 'cop', 'csw', 'cogd');
 echo heading($title, 3);
 echo anchor('add_choose/show_options', 'Powrót');
 echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>";
@@ -81,38 +83,18 @@ echo form_open('add_stats/add');
 	</tr>
 	<tr>
 		<th>Aktualny</th>
-		<td class="current"><?php echo $csz; ?></td>
-		<td class="current"><?php echo $cww; ?></td>
-		<td class="current"><?php echo $cus; ?></td>
-		<td class="current"><?php echo $cs; ?></td>
-		<td class="current"><?php echo $cwt; ?></td>
-		<td class="current"><?php echo $czw; ?></td>
-		<td class="current"><?php echo $ci; ?></td>
-		<td class="current"><?php echo $ca; ?></td>
-		<td class="current"><?php echo $czr; ?></td>
-		<td class="current"><?php echo $ccp; ?></td>
-		<td class="current"><?php echo $cint; ?></td>
-		<td class="current"><?php echo $cop; ?></td>
-		<td class="current"><?php echo $csw; ?></td>
-		<td class="current"><?php echo $cogd; ?></td>
+		<?php
+		  foreach ($current as $row) {
+		  	echo "<td class='current'>" . $row . "</td>";
+		  }
+		?>
 	</tr>
 </table>
 <p id="demo"></p>
 <?php
-echo form_hidden('csz', $csz);
-echo form_hidden('cww', $cww);
-echo form_hidden('cus', $cus);
-echo form_hidden('cs', $cs);
-echo form_hidden('cwt', $cwt);
-echo form_hidden('czw', $czw);
-echo form_hidden('ci', $ci);
-echo form_hidden('ca', $ca);
-echo form_hidden('czr', $czr);
-echo form_hidden('ccp', $ccp);
-echo form_hidden('cint', $cint);
-echo form_hidden('cop', $cop);
-echo form_hidden('csw', $csw);
-echo form_hidden('cogd', $cogd);
+foreach ($current_name as $row) {
+	echo form_hidden($row, '');
+}
 echo form_hidden('exp', 0);
 echo form_submit('btn', 'Wyślij', array('class' => 'btn btn-primary'));
 echo form_close();
@@ -132,7 +114,12 @@ $('document').ready(function() {
 	$('.basic').each(function(index) {
 		basic[index] = $(this).text();
 	});
-	
+	var input_h = [];
+	$('input[type=hidden]').each(function(index) {
+		input_h[index] = $('.current').eq(index).text();
+		$(this).val(input_h[index]);
+	}); 
+	console.log(input_h);
 	var dev = [];
 	$('.dev').each(function(index) {
 		dev[index] = $(this).text();
@@ -159,7 +146,9 @@ $('document').ready(function() {
 				$('#info').text('Zwiększono: ' + name_stats[index] + " o " + stats[index] + ".");
 				$('input[name=exp]').val(exp);
 				current[index] = parseInt(current[index]) + parseInt(stats[index]);
+				input_h[index] = current[index];
 				$('.current').eq(index).text(current[index]);
+				$('input[type=hidden]').eq(index).val(input_h[index]);
 				$('.moveBar span').text(s + "/" + am);
 				if (s == am) {
 					$('.moveBar').hide();
@@ -182,7 +171,9 @@ $('document').ready(function() {
 				exp = s * 100;
 				$('#info').text("");
 				current[index] = parseInt(current[index]) - parseInt(stats[index]);
+				input_h[index] = current[index];
 				$('.current').eq(index).text(current[index]);
+				$('input[type=hidden]').eq(index).val(input_h[index]);
 				$('.moveBar span').text(s + "/" + am);
 			} else {
 				return false;
