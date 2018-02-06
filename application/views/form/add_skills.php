@@ -5,7 +5,7 @@ echo anchor ('add_choose/show_options', 'Powrót');
 echo "<p>Profesja:  <span class='lead'>" . $profession_name . "</span></p>";
 echo "<p class='moveBar'>Punkty do wydania: <span class='lead'>" . $amount . "</span></p>";
 echo "<p id='player_id'>" . $player_id . "</p>";
-echo form_open('add_skill/add');
+echo form_open('add_skill/add', array('class' => 'dev_form'));
 foreach ($skills as $key => $value) {
 	echo "<span class='skill_show'>" . form_checkbox('skill[]', $key, FALSE, array('class' => 'skills'));
 	echo form_label($value) . "</span>";

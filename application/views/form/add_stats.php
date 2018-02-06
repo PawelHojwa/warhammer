@@ -13,7 +13,7 @@ echo heading($title, 3);
 echo anchor('add_choose/show_options', 'Powrót');
 echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>";
 echo "<p class='moveBar'>Punkty do wydania: <span class='lead'>" . $amount . "</span></p>";
-echo form_open('add_stats/add'); 
+echo form_open('add_stats/add', array('class' => 'dev_form')); 
 ?>
 <table>
 	<tr>

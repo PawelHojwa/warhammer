@@ -4,7 +4,7 @@ echo heading ($title, 3);
 echo anchor('add_choose/show_options', 'Powrót');
 echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>"; 
 echo "<p class='moveBar'>Punkty do wydania: <span class='lead'>" . $amount . "</span></p>";
-echo form_open('add_spells/add');
+echo form_open('add_spells/add', array('class' => 'dec_form'));
 foreach ($spells as $key => $spell) {
 	echo form_checkbox('spell[]', $key, FALSE, array('class' => 'spell'));
 	echo form_label($spell);

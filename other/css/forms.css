@@ -11,6 +11,10 @@ form {
 	box-shadow: 0 0 5px black;
 }
 
+.dev_form {
+ margin-top: 50px;
+}
+
 table#info {
 	padding: 10px;
 	border: none;
