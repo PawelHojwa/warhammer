@@ -13,6 +13,21 @@ class Admin_panel extends CI_Controller {
 		$this -> load -> model('trade_model');
 	}
 	
+	public function admin_menu() {
+		$arr = array(
+				'title' => 'Panel administratora',
+				'char_names' => 'Postacie',
+				'add_skill' => 'Dodaj umiejętność',
+				'add_spell' => 'Dodaj czar',
+				'add_profession' => 'Dodaj profesje',
+				'add_race' => 'Dodaj rase',
+				'add_class' => 'Dodaj klase',
+				'add_monster' => 'Dodaj potwora',
+				'add_item' => 'Dodaj przedmiot'
+			);
+		return $arr;
+	}
+	
 	public function get_character_names() {
 		$arr = array();
 		return $arr = $this -> admin_model -> get_names();
@@ -57,7 +72,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
+			$data = $this -> admin_menu();/*array(
 				'title' => 'Panel administratora',
 				'char_names' => 'Postacie',
 				'add_skill' => 'Dodaj umiejętność',
@@ -67,7 +82,7 @@ class Admin_panel extends CI_Controller {
 				'add_class' => 'Dodaj klase',
 				'add_monster' => 'Dodaj potwora',
 				'add_item' => 'Dodaj przedmiot'
-			);
+			);*/
 			$this -> session -> unset_userdata('p_id');
 			$data['chars'] = $this -> get_character_names();
 			$data['subtitle'] = 'Wszystkie postacie';
@@ -87,17 +102,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń umiejętność";
 			$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
@@ -302,17 +307,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń przedmiot";
 			$availability = $this -> universal_model -> get_data('availability');
 			$armour_placement = $this -> universal_model -> get_data('armour_placement');
@@ -378,17 +373,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń czar";
 			$spells = $this -> universal_model -> get_data('casts_type');
 			$spell_id = array();
@@ -555,17 +540,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$skill_id = $this -> char_skills_model -> get_skills('skillid');
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
 			$class_id = $this -> admin_model -> get_classes('classID');	
@@ -705,17 +680,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$skill_id = $this -> char_skills_model -> get_skills('skillid');
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
 			$data['subtitle'] = 'Dodaj/usuń rasy';
@@ -785,17 +750,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$items = $this -> admin_model -> get_items();
 			$data['items'] = $items;
 			$data['subtitle'] = 'Dodaj/usuń klase';
@@ -912,17 +867,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń potwora";
 			$category = $this -> universal_model -> get_data('kategoria_potwora');
 			$category_name = $category_id = array();
