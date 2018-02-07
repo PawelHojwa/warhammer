@@ -375,7 +375,7 @@ table td > span {
 	max-width: 150px;
 }
 
-#one-hand:hover, #two-hand:hover, #prof-armour:hover, #daily:hover, #pets:hover, .prof-type:hover, .prof-stats:hover, .prof-skills:hover, .prof-items:hover, .show-result:hover {
+#one-hand:hover, #two-hand:hover, #ranged:hover, #prof-armour:hover, #daily:hover, #pets:hover, .prof-type:hover, .prof-stats:hover, .prof-skills:hover, .prof-items:hover, .show-result:hover {
 	text-decoration: none;
 	color: #4169E1;
 }
