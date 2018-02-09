@@ -4,9 +4,9 @@
 <p class="moveBar">Wybrano umiejętności: <span id="amount" class="lead"><?php echo $amount; ?></span></p>
 <?php
 echo form_open('player_skills/skill',array('id' => 'skill_form', 'class' => 'dev_form'));
+echo '<p class="lead" id="profession">Twoja profesja: ' . $profession . '</p>';
 echo '<input name="p_id" value="' . $id .  '" id="p_id" hidden>';
-echo form_label('Profesje: ', 'prof');
-echo form_dropdown('prof', $profession, 1 , ['id' => 'profession']) . "<br>";
+echo '<input name="prof_id" value="' . $profession_id .  '" id="prof_id" hidden>';
 echo form_label('Umiejętności: ', 'skills') . "<br>";
 foreach ($skills as $skill_id => $skill) {
 	echo "<span style='display: inline-block; width: 320px; margin-bottom: 5px;'>" 
@@ -23,11 +23,8 @@ echo form_close();
 </div>
 <script>
 $('document').ready(function() {
-	$('#profession').change(function() {
-	$('.skill').prop('checked', false);
-	$('.skill').prop('disabled', false);
-	$("input[type='text']").remove();
-	var prof_id = $(this).val();
+	var prof_id = $('#prof_id').val();
+	console.log(prof_id);
 	var id = $('#p_id').val();
 	var skill_name = $('label').text();
 	$.ajax({
@@ -42,15 +39,12 @@ $('document').ready(function() {
 			$.each(data, function(key, value) {
 				$('.skill[value="' + value + '"]').prop('checked', true);
 		$('.skill[value="' + value + '"]').prop('disabled', true);
-		$('form').add("<input type='text' value='" + value + "' hidden name='s[]'>").appendTo('form');
+		//$('form').add("<input type='text' value='" + value + "' hidden name='s[]'>").appendTo('form');
 		});
 		//each
 			}
 		});
 	//ajax
-	}).change();
-	//change
-	
 	var am = $('#amount').text();
 	var boxCount = function() {
 		var len = $('.skill:checked:not(:disabled)').length;

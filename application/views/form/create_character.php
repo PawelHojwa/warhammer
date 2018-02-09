@@ -46,6 +46,10 @@ echo form_open('create_player/create', ['id' => 'basic']);
 	<td><?php echo form_dropdown('classes', $classes, 1, ['id' => 'classes']); ?></td>
 </tr>
 <tr>
+	<td><?php echo form_label('Profesja: ', 'profession'); ?></td>
+	<td id="profession"></td>
+</tr>
+<tr>
 	<td><?php echo form_label('Charakter: ', 'nature'); ?></td>
 	<td><?php echo form_dropdown('nature', $nature,1 ); ?></td>
 </tr>
@@ -168,20 +172,26 @@ $('document').ready(function() {
 					race: race
 				},
 				success: function(data) {
-					$('#age').html(
-						/*function() {
-							"<select>";
-								for (var i = 16; i <= data; i++) {
-									"<option value =" + i + ">" + i + "</option>";
-								}
-							"</select>";
-						}*/
-						data
-					);
+					$('#age').html(data);
 				} 
 			});
 		});
 		
+	}).change();
+	$('#classes').change(function() {
+		var classes = $('#classes').val();
+		$('#classes option:selected').each(function() {
+			$.ajax({
+				url: 'get_profession',
+				type: 'post',
+				data: {
+					classes: classes
+				},
+				success: function(data) {
+					$('#profession').html(data);
+				}
+			});
+		});
 	}).change();
 	$('.show-table').click(function() {
 		$('.character-table').slideToggle("slow");

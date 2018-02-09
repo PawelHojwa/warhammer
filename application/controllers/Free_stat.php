@@ -12,7 +12,7 @@ class Free_stat extends CI_Controller {
 		$this -> load -> library('form_validation');
 	}
 	
-	public function get_stats($id) {
+	public function get_stats($id, $p_id) {
 		$basic_stats = $this -> characters_model -> get_basic_info($id);
 		$dev_schemat = $this -> char_skills_model -> get_character_skills($id);
 		$curret_schemat = $this -> current_schematic_model -> get_current_schematic($id);
@@ -50,7 +50,9 @@ class Free_stat extends CI_Controller {
 			redirect('Login/form_login');
 		} else {
 			$id = $_SESSION['p_id'];
-			$data = $this -> get_stats($id);
+			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
+			$dev_schemat = $this -> char_skills_model -> get_character_skills(56);
+			$data = $this -> get_stats($id, $prof_id);
 			$data['title'] = "Pierwsze rozwinięcie";
 			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cww', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
@@ -66,9 +68,6 @@ class Free_stat extends CI_Controller {
 			$this -> form_validation -> set_rules('cop', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('csw', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cogd', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
-			/*echo "<pre>";
-			var_dump($_SESSION);
-			echo "</pre>";*/
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/free_rise', $data);

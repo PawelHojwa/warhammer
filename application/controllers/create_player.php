@@ -6,6 +6,7 @@ class Create_player extends CI_Controller {
 		$this -> load -> model('universal_model');
 		$this -> load -> model('race_model');
 		$this -> load -> model('race_age_model');
+		$this -> load -> model('profession_model');
 		$this -> load -> helper('form');
 		$this -> load -> helper('url_helper');
 		$this -> load -> library('form_validation');
@@ -20,7 +21,7 @@ class Create_player extends CI_Controller {
 	}
 
 	public function character_data($id = "") {
-		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
+		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'profession_id' => $this -> input -> post('profession'),'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => (($this -> input -> post('sz')) + ($this -> input -> post('rsz'))), 'ww' => (($this -> input -> post('ww')) + ($this -> input -> post('rww'))), 'us' => (($this -> input -> post('us')) + ($this -> input -> post('rus'))), 's' => (($this -> input -> post('s')) + ($this -> input -> post('rs'))), 'wt' => (($this -> input -> post('wt')) + ($this -> input -> post('rwt'))), 'zw' => (($this -> input -> post('zw')) + ($this -> input -> post('rzw'))), 'i' => (($this -> input -> post('i')) + ($this -> input -> post('ri'))), 'a' => (($this -> input -> post('a')) + ($this -> input -> post('ra'))), 'zr' => (($this -> input -> post('zr')) + ($this -> input -> post('rzr'))), 'cp' => (($this -> input -> post('cp')) + ($this -> input -> post('rcp'))), 'intel' => (($this -> input -> post('int')) + ($this -> input -> post('rint'))), 'op' => (($this -> input -> post('op')) + ($this -> input -> post('rop'))), 'sw' => (($this -> input -> post('sw')) + ($this -> input -> post('rsw'))), 'ogd' => (($this -> input -> post('ogd')) + ($this -> input -> post('rogd'))), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
 		return $data;
 	}
 
@@ -43,6 +44,23 @@ class Create_player extends CI_Controller {
 				echo $wor;
 			} else
 				echo "Błąd";
+		}
+	}
+	
+	public function get_profession() {
+		if (isset($_POST['classes']) === TRUE && empty($_POST['classes']) === FALSE) {
+			$prof_name = $this -> profession_model -> get_professions('professions', 'profession_name', $_POST['classes']);
+			$prof_id = $this -> profession_model -> get_professions('professions', 'id', $_POST['classes']);
+			$professions = array_combine($prof_id, $prof_name);
+			if (!empty($professions) && is_array($professions)) {
+				echo "<select name='profession'>";
+				foreach($professions as $key => $value) {
+					echo "<option value='" . $key . "'>" . $value . "</option>" ;
+				}
+				echo "</select>";
+			} else {
+				echo "Błąd";
+			}
 		}
 	}
 	

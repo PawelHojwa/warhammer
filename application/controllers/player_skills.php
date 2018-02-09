@@ -13,15 +13,15 @@ class Player_skills extends CI_Controller {
 		$this -> load -> library('char_skill');
 	}
 
-	public function verify_data($p_id, $id = "") {
-		$skill_1 = $this -> input -> post('skills');
-		$skill_2 = $this -> input -> post('s');
-		if (!empty($skill_1) && is_array($skill_1)) {
-			$skills = array_merge($skill_2, $skill_1);
+	public function verify_data($p_id, $prof_id, $arr, $id = "") {
+		$skills = $this -> input -> post('skills');
+		$character_skills = array();
+		if (!empty($skills) && is_array($skills)) {
+			$character_skills = array_merge($arr, $skills);
 		} else {
-			$skills = $skill_2;
+			$character_skills = $arr;
 		}
-		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $this -> input -> post('prof'), 'skill_id' => $skills);
+		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $prof_id, 'skill_id' => $character_skills);
 		return $data;
 	}
 	
@@ -42,6 +42,8 @@ class Player_skills extends CI_Controller {
 			$this -> load -> view('templates/footer');
 		} else {
 			$r_skills = $this -> universal_model -> get_user('char_skills', array('char_id' => $_SESSION['p_id']));
+			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
+			$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
 			$race_skills = array();
 			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 			if (!empty($r_skills) && is_array($r_skills)) {
@@ -58,27 +60,34 @@ class Player_skills extends CI_Controller {
 				$data['amount'] = $_SESSION['amount'];
 			}
 			$data['id'] = $_SESSION['p_id'];
+			$skills = $this -> get_skill($prof_id);
+			$prof_skills = array();
+			foreach ($skills as $skill) {
+				$prof_skills[] = $skill['skill_id'];
+			}
+			$data['profession'] = $prof_name;
+			$data['profession_id'] = $prof_id;
 			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
-			$this -> form_validation -> set_rules('prof', 'Profesja', 'required', array('required' => "'{field}' jest wymagane"));
+			$this -> form_validation -> set_rules('skills[]', 'Umiejętność', 'required', array('required' => "'{}' jest wymagana"));
 			if ($this -> form_validation -> run() === false) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('form/skills', $data);
 				$this -> load -> view('templates/footer');
 			} else {
 				if ($char_id == NULL) {
-					$arr = $this -> verify_data($_SESSION['p_id']);
+					$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
 					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
 					redirect('inventory/form_inventory');
 				} else {
 					$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
-					$arr = $this -> verify_data($_SESSION['p_id']);
+					$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
 					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
 					redirect('inventory/form_inventory');
 				}
 			}
 		}
 	}
-
+	
 	public function get_skill($id) {
 		return $this -> p_player_model -> get_skill('professions_skills', 'profession_id' ,$id);
 	}
