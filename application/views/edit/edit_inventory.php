@@ -3,6 +3,8 @@
 echo heading($title, 3);
 echo br(2);
 echo "<p class='lead'>Ekwipunek</p>";
+echo "<p class='lead'>Klasa: " . $class_name . "</p>";
+echo "<p class='lead'>Profesja: " . $profession_name . "</p>";
 $full_inventory = array();
 foreach ($inventory as $item) {
 	if ($item['options'] == 0) {

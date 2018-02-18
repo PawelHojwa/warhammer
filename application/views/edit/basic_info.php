@@ -21,6 +21,10 @@ echo form_label('Klasa:', 'class');
 echo form_input('class', $className, array('readonly' => 'readonly', 'id' => 'classes'));
 echo form_dropdown('class', $classes, $classID, array('id' => 'class-name'));
 echo br();
+echo form_label('Profesja:', 'profession');
+echo form_input('profession', $profession_name, array('readonly' => 'readonly', 'id' => 'profession_name'));
+echo "<span id='profession'><select name='profession' id='profession-name'></select></span>";
+echo br();
 echo form_label('Charakter:', 'nature');
 echo form_input('nature', $natureName, array('readonly' => 'readonly', 'id' => 'nature'));
 echo form_dropdown('nature', $nature, $natureID, array('id' => 'nature-name'));
@@ -176,11 +180,30 @@ $('document').ready(function() {
 		});
 	}).change();
 	$('#class-name').change(function() {
+		var class_id = $('#class-name option:selected').val();
 		var class_name = $('#class-name option:selected').text();
 		$('#class-name option').each(function() {
 			$('#classes').val(class_name);
 		});
+		$.ajax({
+			url : 'get_profession',
+			type : 'post',
+			data: {
+				classes : class_id
+			},
+			success : function(data) {
+				$('#profession-name').html(data);
+			}
+		});
+		
 	}).change();
+	$('#profession-name').change(function() {
+		var profession_name = $('#profession-name option:selected').text();
+		$('#profession-name option').each(function() {
+			$('#profession_name').val(profession_name);
+		});
+	}).change();
+	
 	$('#nature-name').change(function() {
 		var nature_name = $('#nature-name option:selected').text();
 		$('#nature-name option').each(function() {

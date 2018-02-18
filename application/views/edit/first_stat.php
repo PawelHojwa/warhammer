@@ -3,8 +3,10 @@
 $stats_name = array('Sz', 'Ww', 'Us', 'S', 'Wt', 'Żw', 'I', 'A', 'Zr', 'CP', 'Int', 'Op',' SW', 'Ogd');
 $current_stat = array($sz, $ww, $us, $s, $wt, $zw, $i, $a, $zr, $cp, $intel, $op, $sw, $ogd);
 $stat_value = array($bsz, $bww, $bus, $bs, $bwt, $bzw, $bi, $ba, $bzr, $bcp, $bint, $bop, $bsw, $bogd);
-$profession_stats = array($psz, $pww, $pus, $ps, $pwt, $pzw, $pi, $pa, $pzr, $pcp, $pintel, $pop, $psw, $pogd);
+$profession_stats = array($psz, $pww, $pus, $ps, $pwt, $pzw, $pi, $pa, $pzr, $pcp, $pint, $pop, $psw, $pogd);
 echo heading($title, 3);
+echo "<p>Imię: <span class='lead'>" . $name . "</span></p>";
+echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>";
 echo validation_errors("<p class='alert alert-danger'>", "</p>");
 echo form_open('edit_panel/first-stat');
 ?>

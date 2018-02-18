@@ -26,6 +26,13 @@ class Formable {
 			$class_name[] = $row['className']; 
 		}
 		$classes = array_combine($class_id, $class_name);
+		$professions = $CI -> universal_model -> get_data('professions');
+		$profession_id = $profession_name = array();
+		foreach ($professions as $profession) {
+			$profession_id[] = $profession['id'];
+			$profession_name[] = $profession['profession_name'];
+		}
+		$profession = array_combine($profession_id, $profession_name);
 		$natures = $CI -> universal_model -> get_data('charakter');
 		$nature_id = $nature_name = array();
 		foreach ($natures as $row) {
@@ -39,6 +46,7 @@ class Formable {
 		$data['race'] = $race;
 		$data['gender'] = $gender;
 		$data['classes'] = $classes;
+		$data['profession'] = $profession;
 		$data['nature'] = $nature;
 		return $data;
 	}

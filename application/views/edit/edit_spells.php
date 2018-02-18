@@ -2,7 +2,7 @@
 <?php
 echo heading($title, 3);
 echo "<p class='lead'>" . $subtitle . "</p>";
-echo "<p>Czarów do wyboru: <span id='amount'></span></p>";
+echo form_input("", $id, array('id' => 'char_id', 'hidden' => 'hidden'));
 echo br(2);
 echo form_open('edit_panel/edit_spell');
 foreach ($spells as $row) {
@@ -17,19 +17,19 @@ echo form_close();
 </div>
 <script>
 $(document).ready(function() {
-	var am = 2;
-	$('#amount').text('0/' + am);
-	$('.spells').click(function() {
-		var len = $('.spells:checked').length;
-		if (len > am) {
-			$('#amount').hide();
-			alert('Wybrano już wszystkie czary');
-			return false;
-			//am--;
-		} else {
-			$('#amount').show();
-			$('#amount').text(len + "/" + am);
+	var p_id = $('#char_id').val();
+	$.ajax({
+		url : 'get_spell',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			id : p_id
+		},
+		success : function(data) {
+			$.each(data, function(key, value) {
+				$('.spells[value="' + value + '"]').prop('checked', true);
+			});
 		}
-	});
+	});	
 });
 </script>

@@ -38,4 +38,16 @@ class Spell_model extends CI_Model {
 			return "";
 		}
 	}
+
+	public function get_character_spells($id = 1) {
+		$this -> db -> select('*');
+		$this -> db -> from('char_spells');
+		$this -> db -> where('char_id', $id);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "";
+		}
+	}
 }
