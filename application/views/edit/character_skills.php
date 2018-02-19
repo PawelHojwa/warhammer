@@ -1,6 +1,7 @@
 <div class="container">
 <?php
 echo heading($title, 3);
+echo anchor('edit_panel/edit', '<- Powrót do panelu edycji', array('title' => 'Powrót do panelu edycji'));
 echo '<p>Imię:<span class="lead">' . $player_name . '</span></p>';
 echo "<p id='skill_amount'></p>";
 echo br(2);

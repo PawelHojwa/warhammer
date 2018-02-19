@@ -1,6 +1,7 @@
 <div class="container">
 <?php
 echo heading($title, 3);
+echo anchor('edit_panel/edit', '<- Powrót do panelu edycji', array('title' => 'Powrót do panelu edycji'));
 echo "<p class='lead'>" . $subtitle . "</p>";
 echo form_input("", $id, array('id' => 'char_id', 'hidden' => 'hidden'));
 echo br(2);

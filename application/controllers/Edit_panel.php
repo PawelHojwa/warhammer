@@ -27,6 +27,36 @@ class Edit_panel extends CI_Controller {
 		redirect('edit_panel/' . $page );
 	}
 	
+	public function edit() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			if ($this -> session -> has_userdata('p_id') === FALSE) {
+				$this -> session -> set_userdata('p_id', $_GET['id']);
+				$id = $this -> session -> p_id;
+			} else {
+				$id = $this -> session -> p_id;
+			}
+			$char_name = $this -> universal_model -> get_values('characters', array('id' => $id), 'name');
+			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'profession_id');
+			$data = array(
+				'title' => 'Panel edycji',
+				'id' => $id,
+				'name' => $char_name,
+				'profession_id' => $prof_id,
+				'basic' => 'Informacje podstawowe',
+				'skills' => 'Umiejętności',
+				'stats' => 'Statystyki',
+				'inventory' => 'Ekwipunek',
+				'spells' => 'Zaklęcia',
+				'menu' => '<- Powrót do panelu'
+			);
+			$this -> load -> view('templates/header', $data);
+			$this -> load -> view('edit/edit_menu', $data);
+			$this -> load -> view('templates/footer');
+		}
+	}
+	
 	public function get_character_data($id) {
 		$arr = $this ->  characters_model -> get_basic_info($id);
 		return $arr;
@@ -48,42 +78,8 @@ class Edit_panel extends CI_Controller {
 			'hair' => $this -> input -> post('hair'),
 			'eyes' => $this -> input -> post('eyes'),
 			'description' => $this -> input -> post('description'),
-			'sz' => ($this -> input -> post('sz') + $this -> input -> post('rsz')),
-			'ww' => ($this -> input -> post('ww') + $this -> input -> post('rww')),
-			'us' => ($this -> input -> post('us') + $this -> input -> post('rus')),
-			's' => ($this -> input -> post('s') + $this -> input -> post('rs')),
-			'wt' => ($this -> input -> post('wt') + $this -> input -> post('rwt')),
-			'zw' => ($this -> input -> post('zw') + $this -> input -> post('rzw')),
-			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
-			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
-			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
-			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
-			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
-			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
-			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
-			'ogd' => ($this -> input -> post('ogd') + $this -> input -> post('rogd')),
 			'family' => $this -> input -> post('family'),
 			'origin' => $this -> input -> post('origin')
-		);
-		return $arr;
-	}
-
-	public function verify_current_schematics() {
-		$arr = array(
-			'sz' => ($this -> input -> post('sz') + $this -> input -> post('rsz')),
-			'ww' => ($this -> input -> post('ww') + $this -> input -> post('rww')),
-			'us' => ($this -> input -> post('us') + $this -> input -> post('rus')),
-			's' => ($this -> input -> post('s') + $this -> input -> post('rs')),
-			'wt' => ($this -> input -> post('wt') + $this -> input -> post('rwt')),
-			'zw' => ($this -> input -> post('zw') + $this -> input -> post('rzw')),
-			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
-			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
-			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
-			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
-			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
-			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
-			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
-			'ogd' => ($this -> input -> post('ogd') + $this -> input -> post('rogd'))
 		);
 		return $arr;
 	}
@@ -141,21 +137,69 @@ class Edit_panel extends CI_Controller {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			$this -> success('show_list');
 		} else {
-			if ($this -> session -> has_userdata('p_id') === FALSE) {
-				$this -> session -> set_userdata('p_id', $_GET['id']);
-				$id = $this -> session -> p_id;
-			} else {
-				$id = $this -> session -> p_id;
-			}
+			$id = $this -> session -> p_id;
 			$data = $this -> get_character_data($id);
 			$data['title'] = "Edycja postaci";
 			$char = $this -> formable -> datas();
-			$race_stats = $this -> universal_model -> get_user('rasa', array('raceID' => $data['raceID']));
 			$data['race'] = $char['race'];
 			$data['gender'] = $char['gender'];
 			$data['classes'] = $char['classes'];
 			$data['profession'] = $char['profession'];
 			$data['nature'] = $char['nature'];
+			$user_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'userID');
+			$this -> form_validation -> set_rules('name', 'Imie', 'required', array('required' => '{field} jest wymagane'));
+			$this -> form_validation -> set_rules('race', 'Rasa', 'required|trim', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('gender', 'Płeć', 'required|trim', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('class'. 'Klasa', 'required|trim', array('requierd' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('nature', 'Charakter', 'required|trim', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('age', 'Wiek', 'required|trim', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('height', 'Wzrost', 'required|trim', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('weight', 'Waga', 'required|trim', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('hair', 'Włosy', 'required|trim', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('eyes', 'Oczy', 'required|trim', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('description', 'Opis', 'required|trim', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('origin', 'Pochodzenie', 'required|trim', array('required' => '{field} jest wymagane'));
+			$this -> form_validation -> set_rules('family', 'Rodzina', 'required|trim', array('required' => '{field} jest wymagana'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/basic_info', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$character_info = $this -> verify_basic_info($user_id);
+				$this -> universal_model -> update('characters', $character_info, array('id' => $_SESSION['p_id']));
+				$this -> success('edit');
+			}
+		}
+	}
+
+	public function verify_basic_stats() {
+		$arr = array(
+			'sz' => ($this -> input -> post('sz') + $this -> input -> post('rsz')),
+			'ww' => ($this -> input -> post('ww') + $this -> input -> post('rww')),
+			'us' => ($this -> input -> post('us') + $this -> input -> post('rus')),
+			's' => ($this -> input -> post('s') + $this -> input -> post('rs')),
+			'wt' => ($this -> input -> post('wt') + $this -> input -> post('rwt')),
+			'zw' => ($this -> input -> post('zw') + $this -> input -> post('rzw')),
+			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
+			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
+			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
+			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
+			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
+			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
+			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
+			'ogd' => ($this -> input -> post('ogd') + $this -> input -> post('rogd'))
+		);
+		return $arr;	
+	}
+
+	public function edit_stats() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			$id = $this -> session -> p_id;
+			$data = $this -> get_character_data($id);
+			$data['title'] = "Edycja statystyk";
+			$race_stats = $this -> universal_model -> get_user('rasa', array('raceID' => $data['raceID']));
 			$sz = $data['sz'] - $race_stats[0]['sz'];
 			$ww = $data['ww'] - $race_stats[0]['ww'];
 			$us = $data['us'] - $race_stats[0]['us'];
@@ -184,35 +228,32 @@ class Edit_panel extends CI_Controller {
 			$data['op'] = $op;
 			$data['sw'] = $sw;
 			$data['ogd'] = $ogd;
-			$user_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'userID');
-			$this -> form_validation -> set_rules('name', 'Imie', 'required', array('required' => '{field} jest wymagane'));
-			$this -> form_validation -> set_rules('race', 'Rasa', 'required|trim', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('gender', 'Płeć', 'required|trim', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('class'. 'Klasa', 'required|trim', array('requierd' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('nature', 'Charakter', 'required|trim', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('age', 'Wiek', 'required|trim', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('height', 'Wzrost', 'required|trim', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('weight', 'Waga', 'required|trim', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('hair', 'Włosy', 'required|trim', array('required' => '{field} są wymagane'));
-			$this -> form_validation -> set_rules('eyes', 'Oczy', 'required|trim', array('required' => '{field} są wymagane'));
-			$this -> form_validation -> set_rules('description', 'Opis', 'required|trim', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('origin', 'Pochodzenie', 'required|trim', array('required' => '{field} jest wymagane'));
-			$this -> form_validation -> set_rules('family', 'Rodzina', 'required|trim', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rsz', 'Szybkość', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rww', 'Walka Wręcz', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rus', 'Umiejętności Strzeleckie', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rs', 'siła', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rwt', 'Wytrzymałość', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rzw', 'Żywotność', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ri', 'Inicjatywa', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ra', 'Atak', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rzr', 'Zręczność', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rcp', 'Cechy Przywódcze', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rint', 'Inteligencja', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rop', 'Opanowanie', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rsw', 'Siła Woli', 'required|trim', array('reqiured' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('rogd', 'Ogłada', 'required|trim', array('reqiured' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('edit/basic_info', $data);
+				$this -> load -> view('edit/edit_stats', $data);
 				$this -> load -> view('templates/footer');
 			} else {
-				$character_info = $this -> verify_basic_info($user_id);
-				$current = $this -> verify_current_schematics();
-				$this -> universal_model -> update('characters', $character_info, array('id' => $_SESSION['p_id']));
-				$this -> universal_model -> update('current_schematic', $current, array('char_id' => $_SESSION['p_id']));
-				$this -> success('edit_skills');
+				$stats = $this -> verify_basic_stats();
+				$this -> universal_model -> update('current_schematic', $stats, array('char_id' => $_SESSION['p_id']));
+				$this -> universal_model -> update('characters', $stats, array('id' => $_SESSION['p_id']));
+				$this -> success('edit');
 			}
 		}
 	}
-
-	
 
 	public function verify_skills($char_id, $p_id, $id = "") {
 		$skill = $this -> input -> post('skills[]');
@@ -313,7 +354,7 @@ class Edit_panel extends CI_Controller {
 				$skills = $this -> verify_skills($_SESSION['p_id'], $prof_id);
 				$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
 				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $skills);
-				$this -> success('edit_inventory');
+				$this -> success('edit');
 			}
 		}
 	}
@@ -377,11 +418,7 @@ class Edit_panel extends CI_Controller {
 				$player_inventory = $this -> verify_inventory($full_inv);
 				$this -> universal_model -> delete('char_inv', array('char_id' => $id));
 				$this -> char_inventory_model -> multi('char_inv', 'inv', $player_inventory);
-				if ($profession_id == 69) {
-					redirect('edit_panel/edit_spell');
-				} else {
-					redirect('edit_panel/first_stat');
-				}
+				$this -> success('edit');
 			}
 		}
 	}
@@ -429,7 +466,7 @@ class Edit_panel extends CI_Controller {
 				$spells = $this -> verify_spells();
 				$this -> universal_model -> delete('char_spells', array('char_id' => $id));
 				$this -> spell_model -> multi_insert('char_spells', $spells);
-				redirect('edit_panel/first_stat');
+				$this -> success('edit');
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 <div class="container">
 <?php
 echo heading($title, 3);
+echo anchor('edit_panel/edit', '<- Powrót do panelu edycji', array('title' => 'Powrót do panelu edycji'));
 echo br(2);
 echo "<p class='lead'>Ekwipunek</p>";
 echo "<p class='lead'>Klasa: " . $class_name . "</p>";
