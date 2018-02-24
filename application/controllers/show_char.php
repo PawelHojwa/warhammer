@@ -12,21 +12,24 @@ class Show_char extends CI_Controller {
 		$this -> load -> model('universal_model');
 		$this -> load -> model('current_schematic_model');
 		$this -> load -> model('exit_profession_model');
+		$this -> load -> model('profession_model');
 	}
 
-	public function get_char($id) {
+	public function get_char($id, $prof_id) {
 		$b_info = $this -> characters_model -> get_basic_info($id);
 		$c_skill = $this -> char_skills_model -> get_character_skills($id);
 		$char_meele_weapon = $this -> char_inventory_model -> get_weapon('mod_broni', 'meele', $id);
 		$char_ranged_weapon = $this -> char_inventory_model -> get_weapon('modifier_ranged', 'ranged', $id);
 		$char_armour = $this -> char_inventory_model -> get_armour($id);
+		$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
 		$arr = array();
-		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
-		$arr2 = array('profession' => $c_skill['profName'], 'sk' => $c_skill['skillid'], 'rsz' => $c_skill['sz'], 'rww' => $c_skill['ww'], 'rus' => $c_skill['us'], 'rs' => $c_skill['s'], 'rwt' => $c_skill['wt'], 'rzw' => $c_skill['zw'], 'ri' => $c_skill['i'], 'ra' => $c_skill['a'], 'rzr' => $c_skill['zr'], 'rcp' => $c_skill['cp'], 'rint' => $c_skill['int'], 'rop' => $c_skill['op'], 'rsw' => $c_skill['sw'], 'rogd' => $c_skill['ogd'], );
+		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], 'profession' => $b_info['profession_name'], 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
+		$arr2 = array('sk' => $c_skill['skillid']);
 		$arr3 = array('weapon' => $char_meele_weapon);
 		$arr4 = array('ranged' => $char_ranged_weapon);
 		$arr5 = array('armour' => $char_armour);
-		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5);
+		$arr6 = array('rsz' => $prof_stats['sz'], 'rww' => $prof_stats['ww'], 'rus' => $prof_stats['us'], 'rs' => $prof_stats['s'], 'rwt' => $prof_stats['wt'], 'rzw' => $prof_stats['zw'], 'ri' => $prof_stats['ini'], 'ra' => $prof_stats['a'], 'rzr' => $prof_stats['zr'], 'rcp' => $prof_stats['cp'] , 'rint' => $prof_stats['intel'], 'rop' => $prof_stats['op'], 'rsw' => $prof_stats['sw'], 'rogd' => $prof_stats['ogd']);
+		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6);
 	}
 	
 	public function page_1() {
@@ -39,8 +42,8 @@ class Show_char extends CI_Controller {
 			if (!isset($_SESSION['p_id'])) {
 				$_SESSION['p_id'] = $_GET['id'];
 			}
-			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'profId');
-			$data = $this -> get_char($_SESSION['p_id']);
+			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
+			$data = $this -> get_char($_SESSION['p_id'], $profession_id);
 			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
 			$data['current_schematic'] = $this -> current_schematic_model -> get_current_schematic($_SESSION['p_id']);
 			foreach ($data['exit_professions'] as $exit) {

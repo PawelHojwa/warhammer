@@ -21,13 +21,13 @@ class Player_skills extends CI_Controller {
 		} else {
 			$character_skills = $arr;
 		}
-		$data = array('id' => $id, 'char_id' => $p_id, 'profId' => $prof_id, 'skill_id' => $character_skills);
+		$data = array('id' => $id, 'char_id' => $p_id, 'skill_id' => $character_skills);
 		return $data;
 	}
 	
 	public function race_skills($r_skills, $p_id, $id = "") {
 		$arr = array(
-			'id' => $id, 'char_id' => $p_id, 'profId' => 1, 'skill_id' => $r_skills
+			'id' => $id, 'char_id' => $p_id, 'skill_id' => $r_skills
 		);
 		return $arr;
 	}

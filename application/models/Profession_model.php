@@ -23,7 +23,24 @@ class Profession_model extends CI_Model {
 		$this -> db -> where(array('id' => $id));
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0 && $query !== FALSE) {
-			return $query -> result();
+			$arr = array();
+			foreach ($query -> result_array() as $row) {
+				$arr['sz'] = $row['sz'];
+				$arr['ww'] = $row['ww'];
+				$arr['us'] = $row['us'];
+				$arr['s'] = $row['s'];
+				$arr['wt'] = $row['wt'];
+				$arr['zw'] = $row['zw'];
+				$arr['ini'] = $row['ini'];
+				$arr['a'] = $row['a'];
+				$arr['zr'] = $row['zr'];
+				$arr['cp'] = $row['cp'];
+				$arr['intel'] = $row['intel'];
+				$arr['op'] = $row['op'];
+				$arr['sw'] = $row['sw'];
+				$arr['ogd'] = $row['ogd'];
+			}
+			return $arr;
 		} else {
 			return "Błąd zapytania";
 		}

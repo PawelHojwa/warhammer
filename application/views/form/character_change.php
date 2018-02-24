@@ -27,12 +27,11 @@ echo form_close();
 </div>
 <script>
 $('document').ready(function() {
-	$('span').not('.lead, #profession').css({
+	$('span').not('.lead').css({
 		'width' : 150,
 		'display' : 'block'
 	});
-	$('#profession').css('width', 300);
-	//$('.lead').css('display', 'inline');
+	$('#profession').css({'width': 300, 'display' : 'block'});
 	var c_class = $('#c_class').val();
 	$('input:radio').change(function() {
 		var choose = $('input:radio:checked').val();
