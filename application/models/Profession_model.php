@@ -23,11 +23,6 @@ class Profession_model extends CI_Model {
 		$this -> db -> where(array('id' => $id));
 		$query = $this -> db -> get();
 		if ($query -> num_rows() > 0 && $query !== FALSE) {
-			
-			/*foreach($query -> result() as $row) {
-				$arr[] = $row;
-			}
-			return $arr;*/
 			return $query -> result();
 		} else {
 			return "Błąd zapytania";
