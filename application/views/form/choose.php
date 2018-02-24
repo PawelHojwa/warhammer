@@ -11,7 +11,7 @@ if ($profession_id == 69) {
 } else {
 	echo anchor('add_stats/add', $add_stats, array('class' => 'btn btn-primary anchor'));
 	echo anchor('add_skill/add', $add_skill, array('class' => 'btn btn-primary anchor'));
-	echo anchor('change_profession/change', $change_profession, array('class' => 'btn btn-promary anchor'));
+	echo anchor('change_profession/change', $change_profession, array('class' => 'btn btn-primary anchor'));
 }
 ?>
 </div>
