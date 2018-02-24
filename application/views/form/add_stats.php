@@ -8,7 +8,7 @@ function dev_schema($x) {
 	}
 }
 $current = array($csz, $cww, $cus, $cs, $cwt, $czw, $ci, $ca, $czr, $ccp, $cint, $cop, $csw, $cogd);
-$current_name = array('csz', 'cww'. 'cus', 'cwt', 'czw', 'ci', 'ca', 'czr', 'ccp', 'cint', 'cop', 'csw', 'cogd');
+$current_name = array('csz', 'cww', 'cus', 'cs', 'cwt', 'czw', 'ci', 'ca', 'czr', 'ccp', 'cint', 'cop', 'csw', 'cogd');
 echo heading($title, 3);
 echo anchor('add_choose/show_options', 'Powrót');
 echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>";

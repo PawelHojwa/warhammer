@@ -13,7 +13,7 @@ class Add_choose extends CI_Controller {
 			redirect('login/view_form');
 		} else {
 			$player_id = $_SESSION['p_id'];
-			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $player_id), 'profId');
+			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
 			$data['profession_id'] = $profession_id;
 			$data['title'] = "Wybierze opcje";
 			$data['add_stats'] = "Dodaj statystykę";

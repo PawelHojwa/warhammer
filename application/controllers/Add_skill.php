@@ -12,10 +12,10 @@ class Add_skill extends CI_Controller {
 		$this -> load -> library('session');
 	}
 	
-	public function get_player_profession($id) {
+	/*public function get_player_profession($id) {
 		$arr = $this -> char_skills_model -> get_character_skills($id);
 		return $arr;
-	}
+	}*/
 	
 	public function add() {
 		if (!isset($_SESSION['user'])) {
@@ -25,12 +25,12 @@ class Add_skill extends CI_Controller {
 			$skills_id = $this -> char_skills_model -> get_skills('skillid');
 			$skills_name = $this -> char_skills_model -> get_skills('skillName');
 			$skills = array_combine($skills_id, $skills_name);
-			$profession_name = $this -> get_player_profession($player_id);
+			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
+			$profession_name = $this -> universal_model -> get_values('professions', array("id" => $profession_id), 'profession_name');
 			$data['skills'] = $skills;
 			$data['title'] = "Dodaj umiejętność";
-			$data['profession_name'] = $profession_name['profName'];
-			$data['player_id'] = $player_id;
-			$profession_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $player_id), 'profId');
+			$data['profession_name'] = $profession_name;
+			$data['player_id'] = $player_id;	
 			$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
 			$data['amount'] = 0;
 			if (floor($exp / 100) == 0) {
@@ -58,7 +58,6 @@ class Add_skill extends CI_Controller {
 		$arr = array(
 			'id' => $id,
 			'char_id' => $p_id,
-			'profId' => $prof_id,
 			'skill_id' => $this -> input -> post('skill')
 		);
 		return $arr;
