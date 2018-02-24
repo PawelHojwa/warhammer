@@ -19,6 +19,7 @@ class Add_choose extends CI_Controller {
 			$data['add_stats'] = "Dodaj statystykę";
 			$data['add_skill'] = "Dodaj umiejętność";
 			$data['add_spell'] = "Dodaj czar";
+			$data['change_profession'] = "Zmień profesję";
 			$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
 			if (floor($exp / 100) == 0) {
 				redirect('login/view_form');
