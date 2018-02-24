@@ -1,11 +1,11 @@
 <div class="container">
 <?php
 echo heading($title, 1);
+echo anchor('add_choose/show_options', '<- Powrót', array('title' => 'Powrót do opcji rozwoju'));
 echo br();
 echo "<p>Imię postaci: <span class='lead'>" . $character_name . "</span></p>";
 echo "<p>Obecna klasa: <span class='lead'>" . $class_name . "</span></p>";
 echo "<p>Obecna profesja: <span class='lead'>" . $profession . "</span></p>";
-echo anchor('add_choose/show_options', '<- Powrót', array('title' => 'Powrót do opcji rozwoju'));
 echo br();
 echo form_open('change_profession/change');
 echo form_input('', $class_id, array('hidden' => 'hidden', 'id' => 'c_class'));
