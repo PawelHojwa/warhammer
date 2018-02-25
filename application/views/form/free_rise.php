@@ -72,38 +72,52 @@ echo form_open('free_stat/rise_stat');
 	</tr>
 	<tr>
 		<th>Akt.</th>
-		<td class="current"><?php echo $csz; ?></td>
-		<td class="current"><?php echo $cww; ?></td>
-		<td class="current"><?php echo $cus; ?></td>
-		<td class="current"><?php echo $cs; ?></td>
-		<td class="current"><?php echo $cwt; ?></td>
-		<td class="current"><?php echo $czw; ?></td>
-		<td class="current"><?php echo $ci; ?></td>
-		<td class="current"><?php echo $ca; ?></td>
-		<td class="current"><?php echo $czr; ?></td>
-		<td class="current"><?php echo $ccp; ?></td>
-		<td class="current"><?php echo $cint; ?></td>
-		<td class="current"><?php echo $cop; ?></td>
-		<td class="current"><?php echo $csw; ?></td>
-		<td class="current"><?php echo $cogd; ?></td>
+		<td class="current"><?php echo $sz; ?></td>
+		<td class="current"><?php echo $ww; ?></td>
+		<td class="current"><?php echo $us; ?></td>
+		<td class="current"><?php echo $s; ?></td>
+		<td class="current"><?php echo $wt; ?></td>
+		<td class="current"><?php echo $zw; ?></td>
+		<td class="current"><?php echo $i; ?></td>
+		<td class="current"><?php echo $a; ?></td>
+		<td class="current"><?php echo $zr; ?></td>
+		<td class="current"><?php echo $cp; ?></td>
+		<td class="current"><?php echo $int; ?></td>
+		<td class="current"><?php echo $op; ?></td>
+		<td class="current"><?php echo $sw; ?></td>
+		<td class="current"><?php echo $ogd; ?></td>
 	</tr>
 </table>
 <?php
 	echo br();
-	echo form_hidden('csz', $csz);
-	echo form_hidden('cww', $cww);
-	echo form_hidden('cus', $cus);
-	echo form_hidden('cs', $cs);
-	echo form_hidden('cwt', $cwt);
-	echo form_hidden('czw', $czw);
-	echo form_hidden('ci', $ci);
-	echo form_hidden('ca', $ca);
-	echo form_hidden('czr', $czr);
-	echo form_hidden('ccp', $ccp);
-	echo form_hidden('cint', $cint);
-	echo form_hidden('cop', $cop);
-	echo form_hidden('csw', $csw);
-	echo form_hidden('cogd', $cogd);
+	echo form_hidden('csz', $sz);
+	echo form_hidden('cww', $ww);
+	echo form_hidden('cus', $us);
+	echo form_hidden('cs', $s);
+	echo form_hidden('cwt', $wt);
+	echo form_hidden('czw', $zw);
+	echo form_hidden('ci', $i);
+	echo form_hidden('ca', $a);
+	echo form_hidden('czr', $zr);
+	echo form_hidden('ccp', $cp);
+	echo form_hidden('cint', $int);
+	echo form_hidden('cop', $op);
+	echo form_hidden('csw', $sw);
+	echo form_hidden('cogd', $ogd);
+	echo form_input('d_sz', 0, array('class' => 'points'));
+	echo form_input('d_ww', 0, array('class' => 'points'));
+	echo form_input('d_us', 0, array('class' => 'points'));
+	echo form_input('d_s', 0, array('class' => 'points'));
+	echo form_input('d_wt', 0, array('class' => 'points'));
+	echo form_input('d_zw', 0, array('class' => 'points'));
+	echo form_input('d_i', 0, array('class' => 'points'));
+	echo form_input('d_a', 0, array('class' => 'points'));
+	echo form_input('d_zr', 0, array('class' => 'points'));
+	echo form_input('d_cp', 0, array('class' => 'points'));
+	echo form_input('d_int', 0, array('class' => 'points'));
+	echo form_input('d_op', 0, array('class' => 'points'));
+	echo form_input('d_sw', 0, array('class' => 'points'));
+	echo form_input('d_ogd', 0, array('class' => 'points'));
 	echo form_submit('submit', 'Wyślij', array('class' => 'btn btn-primary'));
 	echo form_close();
 	echo validation_errors("<p class='alert alert-danger'>", "</p>");
@@ -112,7 +126,6 @@ echo form_open('free_stat/rise_stat');
 </div>
 <script>
 $('document').ready(function() {
-	//$('input[type=text]').hide();
 	var styles = {
 		height : "20px"
 	};
@@ -144,6 +157,10 @@ $('document').ready(function() {
 	$('.basic').each(function(i) {
 		basic_stats[i] = $(this).text();
 	});
+	var point = [];
+	$('.points').each(function(i) {
+		point[i] = $(this).val();
+	})
 	var stats = [1, 10, 10, 1, 1, 1, 10, 1, 10, 10, 10, 10, 10, 10];
 	var name_stats = ['Szykość', 'Walka wręcz', 'Umiejętności strzeleckie', 'Siła', 'Wytrzymałość', 'Żywotność', 'Inicjatywa', 'Atak', 'Zręczność',
 	'Cechy przywódcze', 'Inteligencja', 'Opanowanie', 'Siła woli', 'Ogłada'];
@@ -153,8 +170,10 @@ $('document').ready(function() {
 		var index = $('.rise').index(this);
 		if (att > 0 && dev[index] != "-") {
 			current[index] = parseInt(current[index]) + parseInt(stats[index]);
+			point[index] = parseInt(point[index]) + parseInt(stats[index])
 			$("#demo").text("Zwiększono: " + name_stats[index] + " o " + stats[index]);
 			$('.current').eq(index).text(current[index]);
+			$('.points').eq(index).val(point[index]);
 			att--;
 			$('.rise').removeClass("add");
 			$('.rise span').removeClass("glyphicon-plus");
@@ -165,8 +184,10 @@ $('document').ready(function() {
 				return false;
 			} else {
 				current[index] = parseInt(current[index]) - parseInt(stats[index]);
+				point[index] = point[index] - stats[index];
 			}
 			$('.current').eq(index).text(current[index]);
+			$('.points').eq(index).val(point[index]);
 			att++;
 			$('#demo').text("");
 			$('.rise').removeClass("diff");

@@ -10,16 +10,16 @@ class Free_stat extends CI_Controller {
 		$this -> load -> model('char_skills_model');
 		$this -> load -> model('current_schematic_model');
 		$this -> load -> library('form_validation');
+		$this -> load -> model('profession_model');
 	}
 	
 	public function get_stats($id, $p_id) {
 		$basic_stats = $this -> characters_model -> get_basic_info($id);
-		$dev_schemat = $this -> char_skills_model -> get_character_skills($id);
+		$dev_schemat = $this -> profession_model -> get_profession_statistics($p_id);
 		$curret_schemat = $this -> current_schematic_model -> get_current_schematic($id);
 		$arr1 = array('sz' => $basic_stats['sz'], 'ww' => $basic_stats['ww'], 'us' => $basic_stats['us'], 's' => $basic_stats['s'], 'wt' => $basic_stats['wt'], 'zw' => $basic_stats['zw'], 'i' => $basic_stats['i'], 'a' => $basic_stats['a'], 'zr' => $basic_stats['zr'], 'cp' => $basic_stats['cp'], 'int' => $basic_stats['intel'], 'op' => $basic_stats['op'], 'sw' => $basic_stats['sw'], 'ogd' => $basic_stats['ogd']);
-		$arr2 = array('rsz' => $dev_schemat['sz'], 'rww' => $dev_schemat['ww'], 'rus' => $dev_schemat['us'], 'rs' => $dev_schemat['s'], 'rwt' => $dev_schemat['wt'], 'rzw' => $dev_schemat['zw'], 'ri' => $dev_schemat['i'], 'ra' => $dev_schemat['a'], 'rzr' => $dev_schemat['zr'], 'rcp' => $dev_schemat['cp'], 'rint' => $dev_schemat['int'], 'rop' => $dev_schemat['op'], 'rsw' => $dev_schemat['sw'], 'rogd' => $dev_schemat['ogd']);
-		$arr3 = array('csz' => $curret_schemat['sz'], 'cww' => $curret_schemat['ww'], 'cus' => $curret_schemat['us'], 'cs' => $curret_schemat['s'], 'cwt' => $curret_schemat['wt'], 'czw' => $curret_schemat['zw'], 'ci' => $curret_schemat['i'], 'ca' => $curret_schemat['a'], 'czr' => $curret_schemat['zr'], 'ccp' => $curret_schemat['cp'], 'cint' => $curret_schemat['intel'], 'cop' => $curret_schemat['op'], 'csw' => $curret_schemat['sw'], 'cogd' => $curret_schemat['ogd']);
-		$arr = array_merge($arr1, $arr2, $arr3);
+		$arr2 = array('rsz' => $dev_schemat['sz'], 'rww' => $dev_schemat['ww'], 'rus' => $dev_schemat['us'], 'rs' => $dev_schemat['s'], 'rwt' => $dev_schemat['wt'], 'rzw' => $dev_schemat['zw'], 'ri' => $dev_schemat['ini'], 'ra' => $dev_schemat['a'], 'rzr' => $dev_schemat['zr'], 'rcp' => $dev_schemat['cp'], 'rint' => $dev_schemat['intel'], 'rop' => $dev_schemat['op'], 'rsw' => $dev_schemat['sw'], 'rogd' => $dev_schemat['ogd']);
+		$arr = array_merge($arr1, $arr2);
 		return $arr;
 	}
 
@@ -44,6 +44,27 @@ class Free_stat extends CI_Controller {
 		);
 		return $arr;
 	}
+
+	public function dev_points($id) {
+		$arr = array(
+			'char_id' => $id,
+			'sz' => $this -> input -> post('d_sz'),
+			'ww' => $this -> input -> post('d_ww') / 10,
+			'us' => $this -> input -> post('d_us') / 10,
+			's' => $this -> input -> post('d_s'),
+			'wt' => $this -> input -> post('d_wt'),
+			'zw' => $this -> input -> post('d_zw'),
+			'ini' => $this -> input -> post('d_i'),
+			'a' => $this -> input -> post('d_a'),
+			'zr' => $this -> input -> post('d_zr') / 10,
+			'cp' => $this -> input -> post('d_cp') / 10,
+			'intel' => $this -> input -> post('d_int') / 10,
+			'op' => $this -> input -> post('d_op') / 10,
+			'sw' => $this -> input -> post('d_sw') / 10,
+			'ogd' => $this -> input -> post('d_ogd') / 10
+		);
+		return $arr;
+	}
 	
 	public function rise_stat() {
 		if (!isset($_SESSION['user'])) {
@@ -51,7 +72,6 @@ class Free_stat extends CI_Controller {
 		} else {
 			$id = $_SESSION['p_id'];
 			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
-			$dev_schemat = $this -> char_skills_model -> get_character_skills(56);
 			$data = $this -> get_stats($id, $prof_id);
 			$data['title'] = "Pierwsze rozwinięcie";
 			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
@@ -74,6 +94,15 @@ class Free_stat extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$current_schematic = $this -> update_stats();
+				$dev_char_id = $this -> universal_model -> get_values('dev_statistics', array('char_id' => $id), 'char_id');
+				var_dump($dev_char_id);
+				$dev_stats = $this -> dev_points($id);
+				if ($dev_char_id == $id) {
+					$this -> universal_model -> delete('dev_statistics', array('char_id' => $dev_char_id));
+					$this -> universal_model -> insert('dev_statistics', $dev_stats);
+				} else {
+					$this -> universal_model -> insert('dev_statistics', $dev_stats);
+				}
 				$current_schematic['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
 				$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $_SESSION['p_id']));
 				redirect('show_char/page_1');

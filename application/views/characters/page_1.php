@@ -6,6 +6,20 @@ function showR($val) {
 		echo " ";
 	}
 }
+
+function draw_points($val) {
+	if ($val > 0) {
+		for ($i = 0; $i < $val; $i++) {
+			if ($i > 0 && $i % 4 == 0)  {
+				echo "\n";
+			}
+				echo "*";
+		}
+	} else {
+		echo " ";
+	}
+}
+$dev = array($dsz, $dww, $dus, $ds, $dwt, $dzw, $di, $da, $dzr, $dcp, $dint, $dop, $dsw, $dogd);
 ?>
 <div class="container">
 <?php
@@ -145,9 +159,10 @@ function showR($val) {
           </tr>
           <tr>
             <?php
-						for ($i = 0; $i < 14; $i++)
-							echo "<td></td>";
-            ?>
+							foreach ($dev as $row) {
+								echo "<td>" , draw_points($row) . "</td>";
+							}
+						?>
           </tr>
           
           <tr>

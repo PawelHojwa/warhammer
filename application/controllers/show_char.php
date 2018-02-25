@@ -27,6 +27,11 @@ class Show_char extends CI_Controller {
 		foreach ($career as $row) {
 			$prof_name[] = $row -> profession_name;
  		}
+		$dev = $this -> universal_model -> get_data('dev_statistics');
+		$dev_statistics = array();
+		foreach ($dev as $row) {
+			$dev_statistics = $row;
+		}
 		$arr = array();
 		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], /*'profession' => $b_info['profession_name'],*/ 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
 		$arr2 = array('sk' => $c_skill['skillid']);
@@ -35,7 +40,8 @@ class Show_char extends CI_Controller {
 		$arr5 = array('armour' => $char_armour);
 		$arr6 = array('rsz' => $prof_stats['sz'], 'rww' => $prof_stats['ww'], 'rus' => $prof_stats['us'], 'rs' => $prof_stats['s'], 'rwt' => $prof_stats['wt'], 'rzw' => $prof_stats['zw'], 'ri' => $prof_stats['ini'], 'ra' => $prof_stats['a'], 'rzr' => $prof_stats['zr'], 'rcp' => $prof_stats['cp'] , 'rint' => $prof_stats['intel'], 'rop' => $prof_stats['op'], 'rsw' => $prof_stats['sw'], 'rogd' => $prof_stats['ogd']);
 		$arr7 = array('professions' => $prof_name);
-		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6, $arr7);
+		$arr8 = array('dsz' => $dev_statistics['sz'], 'dww' => $dev_statistics['ww'], 'dus' => $dev_statistics['us'], 'ds' => $dev_statistics['s'], 'dwt' => $dev_statistics['wt'], 'dzw' => $dev_statistics['zw'], 'di' => $dev_statistics['ini'], 'da' => $dev_statistics['a'], 'dzr' => $dev_statistics['zr'], 'dcp' => $dev_statistics['cp'], 'dint' => $dev_statistics['intel'], 'dop' => $dev_statistics['op'], 'dsw' => $dev_statistics['sw'], 'dogd' => $dev_statistics['ogd']);
+		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6, $arr7, $arr8);
 	}
 	
 	public function page_1() {
