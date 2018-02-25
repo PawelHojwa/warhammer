@@ -32,11 +32,6 @@ echo form_close();
 </div>
 <script>
 $('document').ready(function() {
-	/*$('span').not('.lead').css({
-		'width' : 150,
-		'display' : 'block'
-	});
-	$('#profession').css({'width': 300, 'display' : 'block'});*/
 	$('label').css('margin-right', 10);
 	var exp = 0;
 	$('input:radio').change(function() {

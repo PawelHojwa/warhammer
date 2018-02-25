@@ -10,9 +10,9 @@ class Characters_model extends CI_Model {
 		$this -> db -> from('charakter');
 		$this -> db -> from('classes');
 		$this -> db -> from('gender');
-		$this -> db -> from('professions');
+		//$this -> db -> from('professions');
 		$this -> db -> join('characters', 'characters.raceID = rasa.raceID AND characters.natureID = charakter.natureID AND 
-			characters.classID = classes.classID AND characters.profession_id = professions.id AND characters.genderID = gender.genderID');
+			characters.classID = classes.classID'. /*AND characters.profession_id = professions.id */' AND characters.genderID = gender.genderID');
 		$this -> db -> where(array('characters.id' => $id));
 		$query = $this -> db -> get();
 		$err = "";

@@ -65,6 +65,14 @@ class Change_profession extends CI_Controller {
 		return $prof = array('profession_id' => $this -> input -> post('profession'));
 	}
 	
+	public function verify_career($id) {
+		$arr = array(
+			'char_id' => $id,
+			'profession_id' => $this -> input -> post('profession')
+		);
+		return $arr;
+	}
+	
 	public function change() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
@@ -99,6 +107,8 @@ class Change_profession extends CI_Controller {
 			} else {
 				$prof = $this -> verify_prof();
 				$diff = $this -> input -> post('exp');
+				$career = $this -> verify_career($id);
+				$this -> universal_model -> insert('career', $career);
 				$this -> universal_model -> update('characters',$prof, array('id' => $id));
 				$this -> universal_model -> update('characters', array('exp' => $exp - $diff), array('id' => $id));
 				redirect('show_char/page_1');

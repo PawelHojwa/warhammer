@@ -70,7 +70,17 @@ function showR($val) {
             <td colspan="3"><label>Pochodzenie: </label><?php echo " " . $origin; ?></td>
           </tr>
           <tr>
-            <td colspan="3"><label>Kariera: </label><?php echo " " . $profession; ?></td>
+            <td colspan="3"><label>Kariera: </label>
+            <?php 
+          		foreach ($professions as $row) {
+          			if (count($professions) > 1) {
+									echo " " . $row . " -> ";
+          			} else {
+          				echo " " . $row;
+          			}
+            	} 
+            ?>
+            </td>
           </tr>
           <tr>
             <td colspan="3"><label>Profesje wyjściowe: </label>

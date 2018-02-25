@@ -155,6 +155,14 @@ class Create_player extends CI_Controller {
 			echo $race;
 		}
 	}
+	
+	public function verify_career($id) {
+		$career = array(
+			'char_id' => $id,
+			'profession_id'	=> $this -> input -> post('profession_id')
+		);
+		return $career;
+	}
 
 	public function create() {
 		if (!isset($_SESSION['user'])) {
@@ -217,8 +225,10 @@ class Create_player extends CI_Controller {
 						$data_char['id'] = $_SESSION['p_id'];
 						$curr_schema = $this -> curr_schema($char_id);
 						$curr_schema['id'] = $this -> universal_model -> get_values('current_schematic', array('char_id' => $_SESSION['p_id']), 'id');
+						$career = $this -> verify_career($char_id);
 						$this -> universal_model -> update('characters', $data_char, array('name' => $_POST['name']));
 						$this -> universal_model -> update('current_schematic', $curr_schema, array('char_id' => $char_id));
+						$this -> universal_model -> update('career', $career);
 						$this -> session -> set_userdata(array('amount' => $amount));
 						if ($_POST['race'] == 1) {
 							redirect('player_skills/skill');
@@ -235,6 +245,8 @@ class Create_player extends CI_Controller {
 						}
 						$this -> session -> set_userdata(['p_id' => $player_id]);
 						$curr_schema = $this -> curr_schema($player_id);
+						$career = $this -> verify_career($player_id);
+						$this -> universal_model -> insert('career', $career);
 						$this -> universal_model -> insert('current_schematic', $curr_schema);
 						if ($_POST['race'] == 1) {
 							redirect('player_skills/skill');

@@ -45,4 +45,17 @@ class Profession_model extends CI_Model {
 			return "Błąd zapytania";
 		}
 	}
+	
+	public function get_career($id) {
+		$this -> db -> select('*');
+		$this -> db -> from('career');
+		$this -> db -> join('professions', 'professions.id = career.profession_id');
+		$this -> db -> where('career.char_id', $id);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			return $query -> result();
+		} else {
+			return "Błąd zapytania";
+		}
+	}
 }

@@ -18,18 +18,24 @@ class Show_char extends CI_Controller {
 	public function get_char($id, $prof_id) {
 		$b_info = $this -> characters_model -> get_basic_info($id);
 		$c_skill = $this -> char_skills_model -> get_character_skills($id);
+		$career = $this -> profession_model -> get_career($id);
 		$char_meele_weapon = $this -> char_inventory_model -> get_weapon('mod_broni', 'meele', $id);
 		$char_ranged_weapon = $this -> char_inventory_model -> get_weapon('modifier_ranged', 'ranged', $id);
 		$char_armour = $this -> char_inventory_model -> get_armour($id);
 		$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
+		$prof_name;
+		foreach ($career as $row) {
+			$prof_name[] = $row -> profession_name;
+ 		}
 		$arr = array();
-		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], 'profession' => $b_info['profession_name'], 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
+		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], /*'profession' => $b_info['profession_name'],*/ 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
 		$arr2 = array('sk' => $c_skill['skillid']);
 		$arr3 = array('weapon' => $char_meele_weapon);
 		$arr4 = array('ranged' => $char_ranged_weapon);
 		$arr5 = array('armour' => $char_armour);
 		$arr6 = array('rsz' => $prof_stats['sz'], 'rww' => $prof_stats['ww'], 'rus' => $prof_stats['us'], 'rs' => $prof_stats['s'], 'rwt' => $prof_stats['wt'], 'rzw' => $prof_stats['zw'], 'ri' => $prof_stats['ini'], 'ra' => $prof_stats['a'], 'rzr' => $prof_stats['zr'], 'rcp' => $prof_stats['cp'] , 'rint' => $prof_stats['intel'], 'rop' => $prof_stats['op'], 'rsw' => $prof_stats['sw'], 'rogd' => $prof_stats['ogd']);
-		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6);
+		$arr7 = array('professions' => $prof_name);
+		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6, $arr7);
 	}
 	
 	public function page_1() {
