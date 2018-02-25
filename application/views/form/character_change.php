@@ -19,7 +19,12 @@ foreach ($classes as $key => $value) {
 	echo form_label($value, 'choose');
 	echo "</span>";
 }
+echo br();
 echo "<span id='profession'></span>";
+echo br(2);
+echo "<p>Twoje punkty doświadczenia:</p>";
+echo form_input('', $exp, array('id' => 'char_exp', 'readonly' => 'readonly'));
+echo form_input('exp','', array('id' => 'exp', 'hidden' => 'hidden'));
 echo br(2);
 echo form_submit('submit_btn', 'Wyślij', array('class' => 'btn btn-primary'));
 echo form_close();
@@ -27,13 +32,15 @@ echo form_close();
 </div>
 <script>
 $('document').ready(function() {
-	$('span').not('.lead').css({
+	/*$('span').not('.lead').css({
 		'width' : 150,
 		'display' : 'block'
 	});
-	$('#profession').css({'width': 300, 'display' : 'block'});
-	var c_class = $('#c_class').val();
+	$('#profession').css({'width': 300, 'display' : 'block'});*/
+	$('label').css('margin-right', 10);
+	var exp = 0;
 	$('input:radio').change(function() {
+		var c_class = $('#c_class').val();
 		var choose = $('input:radio:checked').val();
 		var c_prof = $('#c_prof').val();
 		$.ajax({
@@ -47,6 +54,22 @@ $('document').ready(function() {
 				$('#profession').html(data)
 			} 
 		});
+		if (choose == 'c' || choose == c_class) {
+			exp = 100;
+		} else {
+			exp = 200;
+		}
+		$('#exp').val(exp);
 	}).change();
+	$('form').submit(function() {
+		var exp = $('#exp').val();
+		var char_exp = $('#char_exp').val();
+		if (char_exp < exp) {
+			alert("Za mała ilość punktów doświadczenia by przejść na tę profesję.");
+			return false;
+		} else {
+			return true;
+		}
+	});
 });
 </script>

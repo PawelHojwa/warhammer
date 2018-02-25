@@ -82,12 +82,14 @@ class Change_profession extends CI_Controller {
 			$character_name = $this -> universal_model -> get_values('characters', array('id' => $id), 'name');
 			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'profession_id');
 			$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
+			$exp = $this -> universal_model -> get_values('characters', array('id' => $id), 'exp');
 			$data['character_name'] = $character_name;
 			$data['class_id'] = $class_id;
 			$data['class_name'] = $class_name;
 			$data['classes'] = $classes;
 			$data['profession_id'] = $prof_id;
 			$data['profession'] = $prof_name;
+			$data['exp'] = $exp;
 			$data['title'] = "Zmiana profesji";
 			$this -> form_validation -> set_rules('profession', 'Profesja', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
@@ -96,7 +98,9 @@ class Change_profession extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$prof = $this -> verify_prof();
+				$diff = $this -> input -> post('exp');
 				$this -> universal_model -> update('characters',$prof, array('id' => $id));
+				$this -> universal_model -> update('characters', array('exp' => $exp - $diff), array('id' => $id));
 				redirect('show_char/page_1');
 			}
 		}
