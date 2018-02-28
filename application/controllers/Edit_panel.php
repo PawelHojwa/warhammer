@@ -174,20 +174,20 @@ class Edit_panel extends CI_Controller {
 
 	public function verify_basic_stats() {
 		$arr = array(
-			'sz' => ($this -> input -> post('sz') + $this -> input -> post('rsz')),
-			'ww' => ($this -> input -> post('ww') + $this -> input -> post('rww')),
-			'us' => ($this -> input -> post('us') + $this -> input -> post('rus')),
-			's' => ($this -> input -> post('s') + $this -> input -> post('rs')),
-			'wt' => ($this -> input -> post('wt') + $this -> input -> post('rwt')),
-			'zw' => ($this -> input -> post('zw') + $this -> input -> post('rzw')),
-			'i' => ($this -> input -> post('i') + $this -> input -> post('ri')),
-			'a' => ($this -> input -> post('a') + $this -> input -> post('ra')),
-			'zr' => ($this -> input -> post('zr') + $this -> input -> post('rzr')),
-			'cp' => ($this -> input -> post('cp') + $this -> input -> post('rcp')),
-			'intel' => ($this -> input -> post('int') + $this -> input -> post('rint')),
-			'op' => ($this -> input -> post('op') + $this -> input -> post('rop')),
-			'sw' => ($this -> input -> post('sw') + $this -> input -> post('rsw')),
-			'ogd' => ($this -> input -> post('ogd') + $this -> input -> post('rogd'))
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'i' => $this -> input -> post('i'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('int'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd')
 		);
 		return $arr;	
 	}
@@ -199,35 +199,6 @@ class Edit_panel extends CI_Controller {
 			$id = $this -> session -> p_id;
 			$data = $this -> get_character_data($id);
 			$data['title'] = "Edycja statystyk";
-			$race_stats = $this -> universal_model -> get_user('rasa', array('raceID' => $data['raceID']));
-			$sz = $data['sz'] - $race_stats[0]['sz'];
-			$ww = $data['ww'] - $race_stats[0]['ww'];
-			$us = $data['us'] - $race_stats[0]['us'];
-			$s = $data['s'] - $race_stats[0]['s'];
-			$wt = $data['wt'] - $race_stats[0]['wt'];
-			$zw = $data['zw'] - $race_stats[0]['zw'];
-			$i = $data['i'] - $race_stats[0]['i'];
-			$a = $data['a'] - $race_stats[0]['a'];
-			$zr = $data['zr'] - $race_stats[0]['zr'];
-			$cp = $data['cp'] - $race_stats[0]['cp'];
-			$int = $data['intel'] - $race_stats[0]['intel'];
-			$op = $data['op'] - $race_stats[0]['op'];
-			$sw = $data['sw'] - $race_stats[0]['sw'];
-			$ogd = $data['ogd'] - $race_stats[0]['ogd'];
-			$data['sz'] = $sz;
-			$data['ww'] = $ww;
-			$data['us'] = $us;
-			$data['s'] = $s;
-			$data['wt'] = $wt;
-			$data['zw'] = $zw;
-			$data['i'] = $i;
-			$data['a'] = $a;
-			$data['zr'] = $zr;
-			$data['cp'] = $cp;
-			$data['intel'] = $int;
-			$data['op'] = $op;
-			$data['sw'] = $sw;
-			$data['ogd'] = $ogd;
 			$this -> form_validation -> set_rules('rsz', 'Szybkość', 'required|trim', array('reqiured' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('rww', 'Walka Wręcz', 'required|trim', array('reqiured' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('rus', 'Umiejętności Strzeleckie', 'required|trim', array('reqiured' => '{field} jest wymagana'));
@@ -248,7 +219,6 @@ class Edit_panel extends CI_Controller {
 				$this -> load -> view('templates/footer');
 			} else {
 				$stats = $this -> verify_basic_stats();
-				$this -> universal_model -> update('current_schematic', $stats, array('char_id' => $_SESSION['p_id']));
 				$this -> universal_model -> update('characters', $stats, array('id' => $_SESSION['p_id']));
 				$this -> success('edit');
 			}

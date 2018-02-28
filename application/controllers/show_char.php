@@ -13,6 +13,7 @@ class Show_char extends CI_Controller {
 		$this -> load -> model('current_schematic_model');
 		$this -> load -> model('exit_profession_model');
 		$this -> load -> model('profession_model');
+		$this -> load -> model('race_model');
 	}
 
 	public function get_char($id, $prof_id) {
@@ -23,6 +24,7 @@ class Show_char extends CI_Controller {
 		$char_ranged_weapon = $this -> char_inventory_model -> get_weapon('modifier_ranged', 'ranged', $id);
 		$char_armour = $this -> char_inventory_model -> get_armour($id);
 		$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
+		$race_stats = $this -> race_model -> stats('rasa', 'raceID', $b_info['raceID'],['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);
 		$prof_name;
 		foreach ($career as $row) {
 			$prof_name[] = $row -> profession_name;
@@ -33,7 +35,7 @@ class Show_char extends CI_Controller {
 			$dev_statistics = $row;
 		}
 		$arr = array();
-		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], /*'profession' => $b_info['profession_name'],*/ 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => $b_info['sz'], 'ww' => $b_info['ww'], 'us' => $b_info['us'], 's' => $b_info['s'], 'wt' => $b_info['wt'], 'zw' => $b_info['zw'], 'ini' => $b_info['i'], 'a' => $b_info['a'], 'zr' => $b_info['zr'], 'cp' => $b_info['cp'], 'int' => $b_info['intel'], 'op' => $b_info['op'], 'sw' => $b_info['sw'], 'ogd' => $b_info['ogd'], 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
+		$arr1 = array('id' => $b_info['id'], 'name' => $b_info['name'], 'race' => $b_info['raceName'], 'gender' => $b_info['genderName'], 'classes' => $b_info['className'], 'nature' => $b_info['natureName'], 'age' => $b_info['age'], 'height' => $b_info['height'], 'weight' => $b_info['weight'], 'hair' => $b_info['hair'], 'eyes' => $b_info['eyes'], 'description' => $b_info['description'], 'sz' => ($b_info['sz'] + $race_stats['sz']), 'ww' => ($b_info['ww'] + $race_stats['ww']), 'us' => ($b_info['us'] + $race_stats['us']), 's' => ($b_info['s'] + $race_stats['s']), 'wt' => ($b_info['wt'] + $race_stats['wt']), 'zw' => ($b_info['zw'] + $race_stats['zw']), 'ini' => ($b_info['i'] + $race_stats['i']), 'a' => ($b_info['a'] + $race_stats['a']), 'zr' => ($b_info['zr'] + $race_stats['zr']), 'cp' => ($b_info['cp'] + $race_stats['cp']), 'int' => ($b_info['intel'] + $race_stats['intel']), 'op' => ($b_info['op'] + $race_stats['op']), 'sw' => ($b_info['sw'] + $race_stats['sw']), 'ogd' => ($b_info['ogd'] + $race_stats['ogd']), 'add_zw' => $b_info['add_zw'], 'origin' => $b_info['origin']);
 		$arr2 = array('sk' => $c_skill['skillid']);
 		$arr3 = array('weapon' => $char_meele_weapon);
 		$arr4 = array('ranged' => $char_ranged_weapon);
@@ -90,7 +92,7 @@ class Show_char extends CI_Controller {
 					$data['s']++;
 					$data['zw'] += $data['add_zw'];
 					$data['current_schematic']['s']++;
-					$data['current_schematic']['wt'] += $data['add_zw'];
+					$data['current_schematic']['zw'] += $data['add_zw'];
 					
 				}
 			}
