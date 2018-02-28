@@ -9,6 +9,22 @@ function dev_schema($x) {
 }
 $current = array($csz, $cww, $cus, $cs, $cwt, $czw, $ci, $ca, $czr, $ccp, $cint, $cop, $csw, $cogd);
 $current_name = array('csz', 'cww', 'cus', 'cs', 'cwt', 'czw', 'ci', 'ca', 'czr', 'ccp', 'cint', 'cop', 'csw', 'cogd');
+$dev_name = array(
+	'dsz' => $dsz, 
+	'dww' => $dww, 
+	'dus' => $dus, 
+	'ds' => $ds, 
+	'dwt' => $dwt, 
+	'dzw' => $dzw, 
+	'di' => $di, 
+	'da' => $da, 
+	'dzr' => $dzr, 
+	'dcp' => $dcp, 
+	'dint' => $dint, 
+	'dop' => $dop, 
+	'dsw' => $dsw, 
+	'dogd' => $dogd
+);
 echo heading($title, 3);
 echo anchor('add_choose/show_options', 'Powrót');
 echo "<p>Profesja: <span class='lead'>" . $profession_name . "</span></p>";
@@ -95,6 +111,9 @@ echo form_open('add_stats/add', array('class' => 'dev_form'));
 foreach ($current_name as $row) {
 	echo form_hidden($row, '');
 }
+foreach ($dev_name as $key => $val) {
+	echo form_input($key, $val, array('class' => 'points', 'hidden' => 'hidden'));
+}
 echo form_hidden('exp', 0);
 echo form_submit('btn', 'Wyślij', array('class' => 'btn btn-primary'));
 echo form_close();
@@ -105,7 +124,6 @@ echo form_close();
 <script>
 $('document').ready(function() {
 	var am = $('.moveBar span').text();
-	console.log(am);
 	$('.moveBar span').text(0 + "/" + am);
 	$('th:not(:first-child)').css('width', 50);
 	$('th:first-child').css({'width': 150});
@@ -118,8 +136,7 @@ $('document').ready(function() {
 	$('input[type=hidden]').each(function(index) {
 		input_h[index] = $('.current').eq(index).text();
 		$(this).val(input_h[index]);
-	}); 
-	console.log(input_h);
+	});
 	var dev = [];
 	$('.dev').each(function(index) {
 		dev[index] = $(this).text();
@@ -132,6 +149,11 @@ $('document').ready(function() {
 	$('.current').each(function(i) {
 		basic_stats[i] = $(this).text();
 	});
+	var points = [];
+	$('.points').each(function(i) {
+		points[i] = $(this).val();
+	});
+	console.log(points);
 	var s = 0;
 	var exp;
 	var stats = [1, 10, 10, 1, 1, 1, 10, 1, 10, 10, 10, 10, 10, 10];
@@ -146,9 +168,11 @@ $('document').ready(function() {
 				$('#info').text('Zwiększono: ' + name_stats[index] + " o " + stats[index] + ".");
 				$('input[name=exp]').val(exp);
 				current[index] = parseInt(current[index]) + parseInt(stats[index]);
+				points[index] = parseInt(points[index]) + parseInt(stats[index]);
 				input_h[index] = current[index];
 				$('.current').eq(index).text(current[index]);
 				$('input[type=hidden]').eq(index).val(input_h[index]);
+				$('.points').eq(index).val(points[index]);
 				$('.moveBar span').text(s + "/" + am);
 				if (s == am) {
 					$('.moveBar').hide();
@@ -172,8 +196,10 @@ $('document').ready(function() {
 				$('#info').text("");
 				current[index] = parseInt(current[index]) - parseInt(stats[index]);
 				input_h[index] = current[index];
+				points[index] = points[index] - stats[index];
 				$('.current').eq(index).text(current[index]);
 				$('input[type=hidden]').eq(index).val(input_h[index]);
+				$('.points').eq(index).val(points[index]);
 				$('.moveBar span').text(s + "/" + am);
 			} else {
 				return false;
