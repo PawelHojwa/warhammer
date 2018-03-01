@@ -49,19 +49,19 @@ class Free_stat extends CI_Controller {
 		$arr = array(
 			'char_id' => $id,
 			'sz' => $this -> input -> post('d_sz'),
-			'ww' => $this -> input -> post('d_ww') / 10,
-			'us' => $this -> input -> post('d_us') / 10,
+			'ww' => $this -> input -> post('d_ww'),
+			'us' => $this -> input -> post('d_us'),
 			's' => $this -> input -> post('d_s'),
 			'wt' => $this -> input -> post('d_wt'),
 			'zw' => $this -> input -> post('d_zw'),
 			'ini' => $this -> input -> post('d_i'),
 			'a' => $this -> input -> post('d_a'),
-			'zr' => $this -> input -> post('d_zr') / 10,
-			'cp' => $this -> input -> post('d_cp') / 10,
-			'intel' => $this -> input -> post('d_int') / 10,
-			'op' => $this -> input -> post('d_op') / 10,
-			'sw' => $this -> input -> post('d_sw') / 10,
-			'ogd' => $this -> input -> post('d_ogd') / 10
+			'zr' => $this -> input -> post('d_zr'),
+			'cp' => $this -> input -> post('d_cp'),
+			'intel' => $this -> input -> post('d_int'),
+			'op' => $this -> input -> post('d_op'),
+			'sw' => $this -> input -> post('d_sw'),
+			'ogd' => $this -> input -> post('d_ogd')
 		);
 		return $arr;
 	}
