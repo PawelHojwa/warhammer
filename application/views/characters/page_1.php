@@ -20,6 +20,7 @@ function draw_points($val) {
 	}
 }
 $dev = array($dsz, $dww, $dus, $ds, $dwt, $dzw, $di, $da, $dzr, $dcp, $dint, $dop, $dsw, $dogd);
+$currnet = array($csz, $cww, $cus, $cs, $cwt, $czw, $ci, $ca, $czr, $ccp, $cint, $cop, $csw, $cogd);
 ?>
 <div class="container">
 <?php
@@ -167,20 +168,11 @@ $dev = array($dsz, $dww, $dus, $ds, $dwt, $dzw, $di, $da, $dzr, $dcp, $dint, $do
           
           <tr>
             <th rowspan="2">Akt:</th>
-	          <td><?php echo $current_schematic['sz']; ?></td>
-	          <td><?php echo $current_schematic['ww']; ?></td>
-	          <td><?php echo $current_schematic['us']; ?></td>
-	          <td><?php echo $current_schematic['s']; ?></td>
-	          <td><?php echo $current_schematic['wt']; ?></td>
-	          <td><?php echo $current_schematic['zw']; ?></td>
-	          <td><?php echo $current_schematic['i']; ?></td>
-	          <td><?php echo $current_schematic['a']; ?></td>
-	          <td><?php echo $current_schematic['zr']; ?></td>
-	          <td><?php echo $current_schematic['cp']; ?></td>
-	          <td><?php echo $current_schematic['intel']; ?></td>
-	          <td><?php echo $current_schematic['op']; ?></td>
-	          <td><?php echo $current_schematic['sw']; ?></td>
-	          <td><?php echo $current_schematic['ogd']; ?></td>
+	          <?php
+	          	foreach ($currnet as $row) {
+	          		echo "<td>" . $row . "</td>";
+	          	}
+	          ?>
           </tr>
           <tr>
           	<?php
