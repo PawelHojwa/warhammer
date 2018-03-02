@@ -11,13 +11,15 @@ class Free_stat extends CI_Controller {
 		$this -> load -> model('current_schematic_model');
 		$this -> load -> library('form_validation');
 		$this -> load -> model('profession_model');
+		$this -> load -> model('race_model');
 	}
 	
-	public function get_stats($id, $p_id) {
+	public function get_stats($id, $p_id, $r_id) {
 		$basic_stats = $this -> characters_model -> get_basic_info($id);
 		$dev_schemat = $this -> profession_model -> get_profession_statistics($p_id);
 		$curret_schemat = $this -> current_schematic_model -> get_current_schematic($id);
-		$arr1 = array('sz' => $basic_stats['sz'], 'ww' => $basic_stats['ww'], 'us' => $basic_stats['us'], 's' => $basic_stats['s'], 'wt' => $basic_stats['wt'], 'zw' => $basic_stats['zw'], 'i' => $basic_stats['i'], 'a' => $basic_stats['a'], 'zr' => $basic_stats['zr'], 'cp' => $basic_stats['cp'], 'int' => $basic_stats['intel'], 'op' => $basic_stats['op'], 'sw' => $basic_stats['sw'], 'ogd' => $basic_stats['ogd']);
+		$race_stats = $this -> race_model -> stats('rasa', 'raceID', $r_id,['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);;
+		$arr1 = array('sz' => $basic_stats['sz'] + $race_stats['sz'], 'ww' => $basic_stats['ww'] + $race_stats['ww'], 'us' => $basic_stats['us'] + $race_stats['us'], 's' => $basic_stats['s'] + $race_stats['s'], 'wt' => $basic_stats['wt'] + $race_stats['wt'], 'zw' => $basic_stats['zw'] + $race_stats['zw'], 'i' => $basic_stats['i'] + $race_stats['i'], 'a' => $basic_stats['a']+ $race_stats['a'], 'zr' => $basic_stats['zr'] + $race_stats['zr'], 'cp' => $basic_stats['cp'] + $race_stats['cp'], 'int' => $basic_stats['intel'] + $race_stats['intel'], 'op' => $basic_stats['op'] + $race_stats['op'], 'sw' => $basic_stats['sw'] + $race_stats['sw'], 'ogd' => $basic_stats['ogd'] + $race_stats['ogd']);
 		$arr2 = array('rsz' => $dev_schemat['sz'], 'rww' => $dev_schemat['ww'], 'rus' => $dev_schemat['us'], 'rs' => $dev_schemat['s'], 'rwt' => $dev_schemat['wt'], 'rzw' => $dev_schemat['zw'], 'ri' => $dev_schemat['ini'], 'ra' => $dev_schemat['a'], 'rzr' => $dev_schemat['zr'], 'rcp' => $dev_schemat['cp'], 'rint' => $dev_schemat['intel'], 'rop' => $dev_schemat['op'], 'rsw' => $dev_schemat['sw'], 'rogd' => $dev_schemat['ogd']);
 		$arr = array_merge($arr1, $arr2);
 		return $arr;
@@ -72,7 +74,8 @@ class Free_stat extends CI_Controller {
 		} else {
 			$id = $_SESSION['p_id'];
 			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
-			$data = $this -> get_stats($id, $prof_id);
+			$race_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'raceID');
+			$data = $this -> get_stats($id, $prof_id, $race_id);
 			$data['title'] = "Pierwsze rozwinięcie";
 			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cww', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));

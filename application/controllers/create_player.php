@@ -21,7 +21,7 @@ class Create_player extends CI_Controller {
 	}
 
 	public function character_data($id = "") {
-		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'profession_id' => $this -> input -> post('profession'),'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => $this -> input -> post('sz'), 'ww' => $this -> input -> post('ww'), 'us' => $this -> input -> post('us'), 's' => $this -> input -> post('s'), 'wt' => $this -> input -> post('wt'), 'zw' => $this -> input -> post('zw'), 'i' => $this -> input -> post('i'), 'a' => $this -> input -> post('a'), 'zr' => $this -> input -> post('zr'), 'cp' => $this -> input -> post('cp'), 'intel' => $this -> input -> post('int'), 'op' => $this -> input -> post('op'), 'sw' => $this -> input -> post('sw'), 'ogd' => $this -> input -> post('ogd'), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
+		$data = array('id' => $id, 'userID' => $_SESSION['userID'], 'name' => $this -> input -> post('name'), 'raceID' => $this -> input -> post('race'), 'genderID' => $this -> input -> post('gender'), 'classID' => $this -> input -> post('classes'), 'profession_id' => $this -> input -> post('profession'),'natureID' => $this -> input -> post('nature'), 'age' => $this -> input -> post('age'), 'amount' => 0, 'height' => $this -> input -> post('height'), 'weight' => $this -> input -> post('weight'), 'hair' => $this -> input -> post('hair'), 'eyes' => $this -> input -> post('eyes'), 'description' => $this -> input -> post('description'), 'sz' => $this -> input -> post('rsz'), 'ww' => $this -> input -> post('rww'), 'us' => $this -> input -> post('rus'), 's' => $this -> input -> post('rs'), 'wt' => $this -> input -> post('rwt'), 'zw' => $this -> input -> post('rzw'), 'i' => $this -> input -> post('ri'), 'a' => $this -> input -> post('ra'), 'zr' => $this -> input -> post('rzr'), 'cp' => $this -> input -> post('rcp'), 'intel' => $this -> input -> post('rint'), 'op' => $this -> input -> post('rop'), 'sw' => $this -> input -> post('rsw'), 'ogd' => $this -> input -> post('rogd'), 'add_zw' => mt_rand(1,4), 'dp' => $this -> input -> post('pp'), 'exp' => 0, 'family' => $this -> input -> post('family'), 'origin' => $this -> input -> post('origin'));
 		return $data;
 	}
 
@@ -127,20 +127,20 @@ class Create_player extends CI_Controller {
 		$arr = array(
 			'id' => $id,
 			'char_id' => $char_id,
-			'sz' => $this -> input -> post('sz'),
-			'ww' => $this -> input -> post('ww'),
-			'us' => $this -> input -> post('us'),
-			's' => $this -> input -> post('s'),
-			'wt' => $this -> input -> post('wt'),
-			'zw' => $this -> input -> post('zw'),
-			'i' => $this -> input -> post('i'),
-			'a' => $this -> input -> post('a'),
-			'zr' => $this -> input -> post('zr'),
-			'cp' => $this -> input -> post('cp'),
-			'intel' => $this -> input -> post('int'),
-			'op' => $this -> input -> post('op'),
-			'sw' => $this -> input -> post('sw'),
-			'ogd' => $this -> input -> post('ogd')
+			'sz' => $this -> input -> post('rsz'),
+			'ww' => $this -> input -> post('rww'),
+			'us' => $this -> input -> post('rus'),
+			's' => $this -> input -> post('rs'),
+			'wt' => $this -> input -> post('rwt'),
+			'zw' => $this -> input -> post('rzw'),
+			'i' => $this -> input -> post('ri'),
+			'a' => $this -> input -> post('ra'),
+			'zr' => $this -> input -> post('rzr'),
+			'cp' => $this -> input -> post('rcp'),
+			'intel' => $this -> input -> post('rint'),
+			'op' => $this -> input -> post('rop'),
+			'sw' => $this -> input -> post('rsw'),
+			'ogd' => $this -> input -> post('rogd')
 		);
 		return $arr;
 	}
@@ -156,10 +156,11 @@ class Create_player extends CI_Controller {
 		}
 	}
 	
-	public function verify_career($id) {
+	public function verify_career($id, $p_id = "") {
 		$career = array(
+			'id' => $p_id,
 			'char_id' => $id,
-			'profession_id'	=> $this -> input -> post('profession_id')
+			'profession_id'	=> $this -> input -> post('profession')
 		);
 		return $career;
 	}
@@ -244,6 +245,7 @@ class Create_player extends CI_Controller {
 							$player_id = $item['id'];
 						}
 						$this -> session -> set_userdata(['p_id' => $player_id]);
+						var_dump($player_id);
 						$curr_schema = $this -> curr_schema($player_id);
 						$career = $this -> verify_career($player_id);
 						$this -> universal_model -> insert('career', $career);
@@ -255,7 +257,6 @@ class Create_player extends CI_Controller {
 						}
 					}
 				} else {
-					var_dump($amount);
 					$this -> load -> view('templates/header', $data);
 					$this -> load -> view('form/create_character', $data);
 					$this -> load -> view('templates/footer');

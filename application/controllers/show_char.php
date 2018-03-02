@@ -26,6 +26,9 @@ class Show_char extends CI_Controller {
 		$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
 		$race_stats = $this -> race_model -> stats('rasa', 'raceID', $b_info['raceID'],['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);
 		$current_stats = $this -> current_schematic_model -> get_current_schematic($id);
+		echo "<pre>";
+		var_dump($current_stats);
+		echo "</pre>";
 		$prof_name;
 		foreach ($career as $row) {
 			$prof_name[] = $row -> profession_name;
