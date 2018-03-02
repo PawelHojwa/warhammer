@@ -7,6 +7,7 @@ function dev_schema($x) {
 		return "+" . $x;
 	}
 }
+$current = array($csz, $cww, $cus, $cs, $cwt, $czw, $ci, $ca, $zr, $ccp, $cint, $cop, $csw, $cogd);
 echo heading($title, 3); 
 echo form_open('free_stat/rise_stat');
 ?>
@@ -72,20 +73,11 @@ echo form_open('free_stat/rise_stat');
 	</tr>
 	<tr>
 		<th>Akt.</th>
-		<td class="current"><?php echo $sz; ?></td>
-		<td class="current"><?php echo $ww; ?></td>
-		<td class="current"><?php echo $us; ?></td>
-		<td class="current"><?php echo $s; ?></td>
-		<td class="current"><?php echo $wt; ?></td>
-		<td class="current"><?php echo $zw; ?></td>
-		<td class="current"><?php echo $i; ?></td>
-		<td class="current"><?php echo $a; ?></td>
-		<td class="current"><?php echo $zr; ?></td>
-		<td class="current"><?php echo $cp; ?></td>
-		<td class="current"><?php echo $int; ?></td>
-		<td class="current"><?php echo $op; ?></td>
-		<td class="current"><?php echo $sw; ?></td>
-		<td class="current"><?php echo $ogd; ?></td>
+		<?php
+			foreach ($current as $row) {
+				echo "<td>" . $row . "</td>";
+			}
+		?>
 	</tr>
 </table>
 <?php
