@@ -37,7 +37,7 @@ echo form_open('free_stat/rise_stat');
 		<td class="basic"><?php echo $s; ?></td>
 		<td class="basic"><?php echo $wt; ?></td>
 		<td class="basic"><?php echo $zw; ?></td>
-		<td class="basic"><?php echo $i; ?></td>
+		<td class="basic"><?php echo $ini; ?></td>
 		<td class="basic"><?php echo $a; ?></td>
 		<td class="basic"><?php echo $zr; ?></td>
 		<td class="basic"><?php echo $cp; ?></td>
@@ -67,7 +67,7 @@ echo form_open('free_stat/rise_stat');
 	<tr>
 		<?php
 		for ($i = 0; $i < 14; $i++) {
-			echo "<td class='rise'><span class='glyphicon glyphicon-plus'></span></td>";
+			echo "<td class='rise'><span>+</span></td>";
 		}
 		?>
 	</tr>
@@ -75,27 +75,27 @@ echo form_open('free_stat/rise_stat');
 		<th>Akt.</th>
 		<?php
 			foreach ($current as $row) {
-				echo "<td>" . $row . "</td>";
+				echo "<td class='current'>" . $row . "</td>";
 			}
 		?>
 	</tr>
 </table>
 <?php
 	echo br();
-	echo form_hidden('csz', $sz);
-	echo form_hidden('cww', $ww);
-	echo form_hidden('cus', $us);
-	echo form_hidden('cs', $s);
-	echo form_hidden('cwt', $wt);
-	echo form_hidden('czw', $zw);
-	echo form_hidden('ci', $i);
-	echo form_hidden('ca', $a);
-	echo form_hidden('czr', $zr);
-	echo form_hidden('ccp', $cp);
-	echo form_hidden('cint', $int);
-	echo form_hidden('cop', $op);
-	echo form_hidden('csw', $sw);
-	echo form_hidden('cogd', $ogd);
+	echo form_hidden('csz', $csz);
+	echo form_hidden('cww', $cww);
+	echo form_hidden('cus', $cus);
+	echo form_hidden('cs', $cs);
+	echo form_hidden('cwt', $cwt);
+	echo form_hidden('czw', $czw);
+	echo form_hidden('ci', $ini);
+	echo form_hidden('ca', $ca);
+	echo form_hidden('czr', $czr);
+	echo form_hidden('ccp', $ccp);
+	echo form_hidden('cint', $cint);
+	echo form_hidden('cop', $cop);
+	echo form_hidden('csw', $csw);
+	echo form_hidden('cogd', $cogd);
 	echo form_input('d_sz', 0, array('class' => 'points', 'hidden' => 'hidden'));
 	echo form_input('d_ww', 0, array('class' => 'points', 'hidden' => 'hidden'));
 	echo form_input('d_us', 0, array('class' => 'points', 'hidden' => 'hidden'));
@@ -118,25 +118,13 @@ echo form_open('free_stat/rise_stat');
 </div>
 <script>
 $('document').ready(function() {
-	var styles = {
-		height : "20px"
-	};
-	$('.add, .diff').css(styles);
-	var width = [];
-	var th_width = $('table th')
-	th_width.each(function(i) {
-		width[i] = $(this).css('width');
-	})
-	var max = width[0];
-	for (var a in width) {
-		if (max < width[a]) {
-			max = width[a];
-		}
-	}
+	var th_width = $('table th');
 	th_width.each(function() {
-		$(this).css('width', max);
-	})
+		$(this).css({'width': 40, 'height' : 40});
+	});
+	$('.dev, .rise').css('height', 20);
 	$('table td').addClass('text-center');
+	$('.rise').css('vertical-align', 'middle');
 	var dev = [];
 	$('.dev').each(function(index) {
 		dev[index] = $(this).text();
@@ -168,9 +156,9 @@ $('document').ready(function() {
 			$('.points').eq(index).val(point[index]);
 			att--;
 			$('.rise').removeClass("add");
-			$('.rise span').removeClass("glyphicon-plus");
+			//$('.rise span').removeClass("glyphicon-plus");
 			$('.rise').addClass("diff");
-			$('.rise span').addClass("glyphicon-minus");
+			$('.rise span').text("-");
 		} else {
 			if (current[index] == basic_stats[index]) {
 				return false;
@@ -183,9 +171,9 @@ $('document').ready(function() {
 			att++;
 			$('#demo').text("");
 			$('.rise').removeClass("diff");
-			$('.rise span').removeClass("glyphicon-minus");
+			//$('.rise span').removeClass("glyphicon-minus");
 			$('.rise').addClass("add");
-			$('.rise span').addClass("glyphicon-plus");
+			$('.rise span').text("+");
 		}
 		$('input').eq(index).val(current[index]);
 	}

@@ -26,14 +26,11 @@ class Show_char extends CI_Controller {
 		$prof_stats = $this -> profession_model -> get_profession_statistics($prof_id);
 		$race_stats = $this -> race_model -> stats('rasa', 'raceID', $b_info['raceID'],['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);
 		$current_stats = $this -> current_schematic_model -> get_current_schematic($id);
-		echo "<pre>";
-		var_dump($current_stats);
-		echo "</pre>";
 		$prof_name;
 		foreach ($career as $row) {
 			$prof_name[] = $row -> profession_name;
  		}
-		$dev = $this -> universal_model -> get_data('dev_statistics');
+		$dev = $this -> universal_model -> get_user('dev_statistics', array('char_id' => $id));
 		$dev_statistics = array();
 		foreach ($dev as $row) {
 			$dev_statistics = $row;
@@ -46,7 +43,7 @@ class Show_char extends CI_Controller {
 		$arr5 = array('armour' => $char_armour);
 		$arr6 = array('rsz' => $prof_stats['sz'], 'rww' => $prof_stats['ww'], 'rus' => $prof_stats['us'], 'rs' => $prof_stats['s'], 'rwt' => $prof_stats['wt'], 'rzw' => $prof_stats['zw'], 'ri' => $prof_stats['ini'], 'ra' => $prof_stats['a'], 'rzr' => $prof_stats['zr'], 'rcp' => $prof_stats['cp'] , 'rint' => $prof_stats['intel'], 'rop' => $prof_stats['op'], 'rsw' => $prof_stats['sw'], 'rogd' => $prof_stats['ogd']);
 		$arr7 = array('professions' => $prof_name);
-		$arr8 = array('dsz' => $dev_statistics['sz'], 'dww' => $dev_statistics['ww'], 'dus' => $dev_statistics['us'], 'ds' => $dev_statistics['s'], 'dwt' => $dev_statistics['wt'], 'dzw' => $dev_statistics['zw'], 'di' => $dev_statistics['ini'], 'da' => $dev_statistics['a'], 'dzr' => $dev_statistics['zr'], 'dcp' => $dev_statistics['cp'], 'dint' => $dev_statistics['intel'], 'dop' => $dev_statistics['op'], 'dsw' => $dev_statistics['sw'], 'dogd' => $dev_statistics['ogd']);
+		$arr8 = array('dsz' => $dev_statistics['sz'], 'dww' => $dev_statistics['ww'] / 10, 'dus' => $dev_statistics['us'] / 10, 'ds' => $dev_statistics['s'], 'dwt' => $dev_statistics['wt'], 'dzw' => $dev_statistics['zw'], 'di' => $dev_statistics['ini'] / 10, 'da' => $dev_statistics['a'], 'dzr' => $dev_statistics['zr'] / 10, 'dcp' => $dev_statistics['cp'] / 10, 'dint' => $dev_statistics['intel'] / 10, 'dop' => $dev_statistics['op'] / 10, 'dsw' => $dev_statistics['sw'] / 10, 'dogd' => $dev_statistics['ogd'] / 10);
 		$arr9 = array('csz' => ($current_stats['sz'] + $race_stats['sz']), 'cww' => ($current_stats['ww'] + $race_stats['ww']), 'cus' => ($current_stats['us'] + $race_stats['us']), 'cs' => ($current_stats['s'] + $race_stats['s']), 'cwt' => ($current_stats['wt'] + $race_stats['wt']), 'czw' => ($current_stats['zw'] + $race_stats['zw']), 'ci' => ($current_stats['i'] + $race_stats['i']), 'ca' => ($current_stats['a'] + $race_stats['a']), 'czr' => ($current_stats['zr'] + $race_stats['zr']), 'ccp' => ($current_stats['cp'] + $race_stats['cp']), 'cint' => ($current_stats['intel'] + $race_stats['intel']), 'cop' => ($current_stats['op'] + $race_stats['op']), 'csw' => ($current_stats['sw'] + $race_stats['sw']), 'cogd' => ($current_stats['ogd'] + $race_stats['ogd']), );
 		return $arr = array_merge($arr1, $arr2, $arr3, $arr4, $arr5, $arr6, $arr7, $arr8, $arr9);
 	}
@@ -63,6 +60,10 @@ class Show_char extends CI_Controller {
 			}
 			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
 			$data = $this -> get_char($_SESSION['p_id'], $profession_id);
+			/*echo "<pre>";
+			var_dump($data);
+			var_dump($_SESSION['p_id']);
+			echo "</pre>";*/
 			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
 			foreach ($data['exit_professions'] as $exit) {
 				if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {
