@@ -13,7 +13,11 @@ class Home extends CI_Controller
 	
 	public function index()
 	{
-		$user_type = $this -> universal_model -> get_values('users', array('userId' => $_SESSION['userID']), 'type');
+		if ($this -> session -> has_userdata('userID'))
+			$user_type = $this -> universal_model -> get_values('users', array('userId' => $_SESSION['userID']), 'type');
+		else {
+			$user_type = 'gracz';
+		}
 		$data = array('title' => "True Fantasy Group",
 									'price_list' => 'Cennik',
 									'create' => 'Tworzenie postaci',
