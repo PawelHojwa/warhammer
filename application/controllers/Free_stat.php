@@ -101,7 +101,6 @@ class Free_stat extends CI_Controller {
 				$race_stats = $this -> race_model -> stats('rasa', 'raceID', $race_id,['sz', 'ww', 'us', 's', 'wt', 'zw', 'i', 'a', 'zr', 'cp', 'intel', 'op', 'sw', 'ogd']);
 				$current_schematic = $this -> update_stats($race_stats);
 				$dev_char_id = $this -> universal_model -> get_values('dev_statistics', array('char_id' => $id), 'char_id');
-				var_dump($dev_char_id);
 				$dev_stats = $this -> dev_points($id);
 				if ($dev_char_id == $id) {
 					$this -> universal_model -> delete('dev_statistics', array('char_id' => $dev_char_id));

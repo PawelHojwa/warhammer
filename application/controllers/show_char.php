@@ -60,10 +60,6 @@ class Show_char extends CI_Controller {
 			}
 			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
 			$data = $this -> get_char($_SESSION['p_id'], $profession_id);
-			/*echo "<pre>";
-			var_dump($data);
-			var_dump($_SESSION['p_id']);
-			echo "</pre>";*/
 			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
 			foreach ($data['exit_professions'] as $exit) {
 				if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {

@@ -17,6 +17,8 @@ class Delete extends CI_Controller {
 		$this -> universal_model -> delete('char_inv', array('char_id' => $_GET['id']));
 		$this -> universal_model -> delete('char_skills', array('char_id' => $_GET['id']));
 		$this -> universal_model -> delete('char_spells', array('char_id' => $_GET['id']));
+		$this -> universal_model -> delete('current_schematic', array('char_id' => $_GET['id']));
+		$this -> universal_model -> delete('dev_statistics', array('char_id' => $_GET['id']));
 		$this -> success('show_list');
 	}
 	
