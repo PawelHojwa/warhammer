@@ -72,17 +72,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$data = $this -> admin_menu();/*array(
-				'title' => 'Panel administratora',
-				'char_names' => 'Postacie',
-				'add_skill' => 'Dodaj umiejętność',
-				'add_spell' => 'Dodaj czar',
-				'add_profession' => 'Dodaj profesje',
-				'add_race' => 'Dodaj rase',
-				'add_class' => 'Dodaj klase',
-				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);*/
+			$data = $this -> admin_menu();
 			$this -> session -> unset_userdata('p_id');
 			$data['chars'] = $this -> get_character_names();
 			$data['subtitle'] = 'Wszystkie postacie';
