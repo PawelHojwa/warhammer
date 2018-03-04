@@ -94,6 +94,7 @@ class Admin_panel extends CI_Controller {
 		} else {
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń umiejętność";
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
@@ -317,6 +318,7 @@ class Admin_panel extends CI_Controller {
 				$availability_name[] = $row['avail'];
 			}
 			$data['availability'] = array_combine($availability_id, $availability_name);
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('item_name', 'Nazwa przedmiotu', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('type', 'Kategoria przedmiotu', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('weight', 'Waga', 'required', array('required' => '{field} jest wymagana'));
@@ -375,6 +377,7 @@ class Admin_panel extends CI_Controller {
 			$data['spell_type'] = array_combine($spell_id, $spell_type);
 			$lvl = array(0, 1, 2, 3, 4);
 			$data['spell_lvl'] = $lvl;
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('spell_name', 'Nazwa czaru', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('spell_lvl', 'Poziom czaru', 'required', array('required' => '{field} jest wymagany'));
 			$this -> form_validation -> set_rules('spell_cost', 'Koszt czaru', 'required', array('required' => '{field} jest wymagany'));
@@ -539,6 +542,7 @@ class Admin_panel extends CI_Controller {
 			$data['items'] = $this -> admin_model -> get_items();
 			$data['subtitle'] = 'Dodaj/usun profesję';
 			$data['skills'] = array_combine($skill_id, $skill_name);
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
 			if ($this -> form_validation -> run() === FALSE) {
@@ -675,6 +679,7 @@ class Admin_panel extends CI_Controller {
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
 			$data['subtitle'] = 'Dodaj/usuń rasy';
 			$data['skills'] = array_combine($skill_id, $skill_name);
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('min_age', 'Minimalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczą'));
 			$this -> form_validation -> set_rules('max_age', 'Maksymalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczbą'));
@@ -695,19 +700,13 @@ class Admin_panel extends CI_Controller {
 					$race_skill = $this -> valid_race_skill($race_id);
 					$this -> admin_model -> race_skill_insert($race_skill);
 					$race_add_skill = $this -> valid_add_race_skill($race_id);
-					
 					$this -> admin_model -> add_race_skill_insert($race_add_skill);
-					//$max_age = $this -> input -> post('max');
-					echo "<pre>";
-					var_dump($race_add_skill);
-					echo "</pre>";
 					$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
 					$add = "Wprowadzono <b>" . $last_race . "</b>";
 				} else {
 					$add = $race . " już istnieje!";
 				}
 				$data['added'] = $add;
-				
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('admin/admin_menu', $data);
 				$this -> load -> view('admin/add_races', $data);
@@ -744,6 +743,7 @@ class Admin_panel extends CI_Controller {
 			$items = $this -> admin_model -> get_items();
 			$data['items'] = $items;
 			$data['subtitle'] = 'Dodaj/usuń klase';
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
@@ -866,6 +866,7 @@ class Admin_panel extends CI_Controller {
 				$category_name[] = $row['monsterCategory'];
 			}
 			$data['category'] = array_combine($category_id, $category_name);
+			$data['added'] = "";
 			$this -> form_validation -> set_rules('monster_name', 'Nazwa potwora', 'required', array('required' => '{field} jest wymagana'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
