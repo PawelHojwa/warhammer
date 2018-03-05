@@ -593,4 +593,47 @@ class Edit_panel extends CI_Controller {
 			}
 		} 
 	}
+
+	public function get_skill_info($id) {
+		$arr = $this -> universal_model -> get_user('umiejetnosci', array('skillid' => $id));
+		$skill = array();
+		foreach ($arr as $ar) {
+			$skill = $ar;
+		} 
+		return $skill;
+	}
+
+	public function edit_skill_info() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			if ($this -> session -> has_userdata('skill') === FALSE) {
+				$this -> session -> set_userdata('skill', $_GET['id']);
+				$id = $this -> session -> skill;
+			} else {
+				$id = $this -> session -> skill;
+			}
+			$data = $this -> get_skill_info($id);
+			$data['title'] = "Edycja umiejętności";
+			$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('description', 'Opis umiejętności', 'required', array('required' => '{field} jest wymagany'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_skill', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$skills = $this -> verify_skill();
+				$this -> universal_model -> update('umiejetnosci', $skills, array('skillid' => $id));
+				redirect('admin_panel/add_skill');
+			}
+		}
+	}
+
+	public function verify_skill() {
+		$arr = array(
+			'skillName' => $this -> input -> post('skill_name'),
+			'skill_description' => $this -> input -> post('description')
+		);
+		return $arr;
+	}
 }
