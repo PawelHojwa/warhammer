@@ -636,4 +636,171 @@ class Edit_panel extends CI_Controller {
 		);
 		return $arr;
 	}
+	
+	public function get_race_info($id) {
+		$arr = $this -> universal_model -> get_user('rasa', array('raceID' => $id));
+		$race = array();
+		foreach ($arr as $ar) {
+			$race = $ar;
+		}
+		return $race;
+	}
+	
+	public function get_race_skill() {
+		if (isset($_POST['race_id']) === TRUE && $_POST['race_id'] !== FALSE) {
+			$race = $this -> char_skills_model -> race_skills($_POST['race_id']);
+			$arr = array();
+			foreach ($race as $row) {
+				$arr[] = $row -> skill_id;
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "błąd";
+		}
+	}
+	
+	public function get_race_age_info($id) {
+		$arr = $this -> race_age_model -> race_age($id);
+		return $arr;
+	}
+	
+	public function get_skills() {
+		$skill_id = $this -> char_skills_model -> get_skills('skillid');
+		$skill_name = $this -> char_skills_model -> get_skills('skillName');
+		$skills = array_combine($skill_id, $skill_name);
+		return $skills;
+	}
+	
+	public function get_race_add_skills_info($id) {
+		$arr = $this -> race_model -> get_race_add_skills($id);
+		return $arr;
+	}
+	
+	public function verify_race_info() {
+		$arr = array(
+			'raceName' => $this -> input -> post('race_name'),
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'i' => $this -> input -> post('i'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd'),
+		);
+		return $arr;
+	}
+	
+	public function verify_race_age() {
+		$arr = array(
+			'min_age' => $this -> input -> post('min_age'),
+			'max_age' => $this -> input -> post('max_age')
+		);
+		return $arr;
+	}
+	
+	public function verify_race_add_skills($r_id, $id = "") {
+		$min_age = $this -> input -> post('min');
+		$max_age = $this -> input -> post('max');
+		$add_skill = $this -> input -> post('amount');
+		$type = $this -> input -> post('type');
+		$arr = array(
+			'id' => $id,
+			'raceID' => $r_id,
+			'min_age' => $min_age,
+			'max_age' => $max_age,
+			'add_skill' => $add_skill,
+			'action' => $type
+		);
+		return $arr;
+	}
+	
+	public function verify_race_skills($r_id, $id = "") {
+		$skills = $this -> input -> post('skills');
+		$arr = array(
+			'id' => $id,
+			'race_id' => $r_id,
+			'skill_id' => $skills,
+			'options' => 0
+		);
+		return $arr;
+	}
+	
+	public function edit_race_info() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			//$this -> session -> unset_userdata('race');
+			if ($this -> session -> has_userdata('race') === FALSE) {
+				$this -> session -> set_userdata('race', $_GET['id']);
+				$id = $this -> session -> race;
+			} else {
+				$id = $this -> session -> race;
+			}
+			$race_stats = $this -> get_race_info($id);
+			$race_age = $this -> get_race_age_info($id);
+			$race_add_skills = $this -> get_race_add_skills_info($id);
+			$data = $race_stats;
+			$skills = $this -> get_skills();
+			$data['add_skills'] = $race_add_skills;
+			$data['r_min_age'] = $race_age -> min_age;
+			$data['r_max_age'] = $race_age -> max_age;
+			$data['skills'] = $skills;
+			$data['title'] = "Edycja rasy";
+			$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('sz', 'Szybkość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ww', 'Walka Wręcz', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('us', 'Umiejętności Sztrzeleckie', 'required', array('require' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('s', 'Siła', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('wt', 'Wytrzymałość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('zw', 'Żywotność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('i', 'Inicjatywa', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('a', 'Atak', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('zr', 'Zręczność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cp', 'Cechy Przywódcze', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('intel', 'Inteligencja', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('op', 'Opanowanie', 'required', array('required' => '{field} jest wymagane'));
+			$this -> form_validation -> set_rules('sw', 'Siła Woli', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ogd', 'Ogłada', 'required', array('required' => '{field} jest wymgana'));
+			$this -> form_validation -> set_rules('min_age', 'Wiek minimalny', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('max_age', 'Wiek maksymalny', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('min[]', 'Minimalny próg', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('max[]', 'Maksymalny próg', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('amount[]', 'Ilość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('type[]', 'Typ', 'required', array('required' => '{field} jest wymagany'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_race_info', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$r_info = $this -> verify_race_info();
+				$r_age = $this -> verify_race_age();
+				$r_add_skill = $this -> verify_race_add_skills($id);
+				$r_skill = $this -> verify_race_skills($id);
+				$this -> universal_model -> update('rasa', $r_info, array('raceID' => $id));
+				$this -> universal_model -> update('race_age', $r_age, array('raceID' => $id));
+				$this -> universal_model -> delete('race_add_skill', array('raceID' => $id));
+				$this -> admin_model -> add_race_skill_insert($r_add_skill);
+				if (!empty($race_add_skill) && is_array($race_add_skilld)) {
+					$this -> universal_model -> delete('race_skills',array('race_id' => $id));
+					$this -> admin_model -> race_skill_insert($r_skill);
+				} else {
+					$this -> universal_model -> delete('race_skills', array('race_id' => $id));
+				}
+				redirect('admin_panel/add_race');
+				/*echo "<pre>";
+				var_dump($r_info);
+				var_dump($r_age);
+				var_dump($r_add_skill);
+				var_dump($r_skill);
+				echo "</pre>";*/
+			}
+		}
+	}
 }

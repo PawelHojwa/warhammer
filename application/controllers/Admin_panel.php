@@ -636,6 +636,7 @@ class Admin_panel extends CI_Controller {
 			echo "<td>" . $row -> op . "</td>";
 			echo "<td>" . $row -> sw . "</td>";
 			echo "<td>" . $row -> ogd . "</td>";
+			echo "<td>" . anchor('edit_panel/edit_race_info?id=' . $row -> raceID, 'Edytuj') . "</td>";
 			echo "<td>" . anchor('delete/del_race?id=' . $row -> raceID,  'Usuń') . "</td>";
 			echo "</tr>";
 		}

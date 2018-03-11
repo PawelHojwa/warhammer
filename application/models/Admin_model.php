@@ -222,6 +222,22 @@ class Admin_model extends CI_Model {
 				'add_skill' => $arr['add_skill'][2],
 				'action' => $arr['action'][2]
 			),
+			array(
+				'id' => $arr['id'],
+				'raceID' => $arr['raceID'],
+				'min_age' => $arr['min_age'][3],
+				'max_age' => $arr['max_age'][3],
+				'add_skill' => $arr['add_skill'][3],
+				'action' => $arr['action'][3]
+			),
+			array(
+				'id' => $arr['id'],
+				'raceID' => $arr['raceID'],
+				'min_age' => $arr['min_age'][4],
+				'max_age' => $arr['max_age'][4],
+				'add_skill' => $arr['add_skill'][4],
+				'action' => $arr['action'][4]
+			),
 		);
 		$this -> db -> insert_batch('race_add_skill', $record);
 	}

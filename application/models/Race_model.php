@@ -22,4 +22,21 @@ class Race_model extends CI_Model {
 				}
 		}
 	}
+	
+	public function get_race_add_skills($r_id) {
+		$this -> db -> select('*');
+		$this -> db -> from('race_add_skill');
+		$this -> db -> where('raceID', $r_id);
+		$this -> db -> order_by('id');
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			$arr = array();
+			foreach ($query -> result_array() as $row) {
+				$arr[] = $row;
+			}
+			return $arr;
+		} else {
+			return "Błąd";
+		}
+	}
 }
