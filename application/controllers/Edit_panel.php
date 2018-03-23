@@ -736,7 +736,6 @@ class Edit_panel extends CI_Controller {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
 		} else {
-			//$this -> session -> unset_userdata('race');
 			if ($this -> session -> has_userdata('race') === FALSE) {
 				$this -> session -> set_userdata('race', $_GET['id']);
 				$id = $this -> session -> race;
@@ -794,12 +793,178 @@ class Edit_panel extends CI_Controller {
 					$this -> universal_model -> delete('race_skills', array('race_id' => $id));
 				}
 				redirect('admin_panel/add_race');
-				/*echo "<pre>";
-				var_dump($r_info);
-				var_dump($r_age);
-				var_dump($r_add_skill);
-				var_dump($r_skill);
-				echo "</pre>";*/
+			}
+		}
+	}
+	
+	public function get_profession_info($id) {
+		$arr = $this -> universal_model -> get_user('professions', array('id' => $id));
+		$p_inf = array();
+		foreach ($arr as $ar) {
+			$p_inf = $ar;
+		}
+		return $p_inf;
+	}
+	
+	
+	public function get_class_names() {
+		$arr = $this -> universal_model -> get_data('classes');
+		return $arr;
+	}
+	
+	public function get_profession_skills() {
+		if (isset($_POST['prof_id']) === TRUE && $_POST['prof_id'] !== FALSE) {
+			$prof_skills = $this -> char_skills_model -> get_profession_skills($_POST['prof_id']);
+			$arr = array();
+			foreach ($prof_skills as $row) {
+				$arr[] = $row -> skillid;
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "Błąd gdzieś jest";
+		}
+	}
+	
+	public function get_profession_stats($id) {
+		$arr = $this -> profession_model -> get_profession_statistics($id);
+		return $arr;
+	}
+	
+	public function get_profession_inventory() {
+		if (isset($_POST['prof_id']) === TRUE && $_POST['prof_id'] !== FALSE) {
+			$prof_inv = $this -> item_model -> get_inv('professions_inventory', array('profession_id' => $_POST['prof_id']));
+			$arr = array();
+			foreach ($prof_inv as $row) {
+				$arr[] = $row['inventory_id'];
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "Błąd ekwipunku";
+		}
+	}
+	
+	public function verify_profession_info() {
+		$advance = $this -> input -> post('type');
+		if ($advance == 1) {
+			$class_id = $this -> input -> post('class_id');
+		} else {
+			$class_id = 0;
+		}
+		$arr = array(
+			'profession_name' => $this -> input -> post('profession_name'),
+			'class_id' => $class_id,
+			'advancement' => $advance
+		); 
+		return $arr;
+	}
+	
+	public function verify_profession_stats() {
+		$arr = array(
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zr'),
+			'ini' => $this -> input -> post('ini'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd'),
+		);
+		return $arr;
+	}
+	
+	public function verify_profession_skills($p_id, $id = "") {
+		$skills = $this -> input -> post('skills');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $p_id,
+			'skill_id' => $skills,
+			'chance' => 0
+		);
+		return $arr;
+	}
+	
+	public function verify_profession_inv($p_id, $id = "") {
+		$inv = $this -> input -> post('inv');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $p_id,
+			'inventory_id' => $inv,
+			'quality' => 1,
+			'options' => 0
+		);
+		return $arr;
+	}
+	
+	public function edit_profession_info() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			if ($this -> session -> has_userdata('prof') === FALSE) {
+				$this -> session -> set_userdata('prof', $_GET['id']);
+				$id = $this -> session -> prof;
+			} else {
+				$id = $this -> session -> prof; 
+			}
+			$class = $this -> get_class_names();
+			$class_id = array();
+			$class_names = array();
+			foreach ($class as $k) {
+					$class_id[] = $k['classID'];
+					$class_names[] = $k['className'];
+			}
+			$classes = array_combine($class_id, $class_names);
+			$type = $this -> universal_model -> get_values('professions', array('id' => $id), 'advancement');
+			$items = $this -> admin_model -> get_items();
+			$prof_stats = $this -> get_profession_stats($id);
+			$prof_info = $this -> get_profession_info($id);
+			$data = $prof_info;
+			$data['type'] = $type; 
+			$data['class_id'] = $this -> universal_model -> get_values('professions', array('id' => $id), 'class_id');
+			$data['classes'] = $classes;
+			$data['stats'] = $prof_stats;
+			$data['skills'] = $this -> get_skills();
+			$data['inventory'] = $items;
+			$data['title'] = "Edycja profesji";
+			$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));		
+			$this -> form_validation -> set_rules('type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('sz', 'Szybkość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ww', 'Walka Wręcz', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('us', 'Umiejętności Strzeleckie', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('s', 'Siła', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('wt', 'Wytrzymałość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('zw', 'Żywotność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ini', 'Inicjatywa', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('a', 'Atak', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('zr', 'Zręczność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('cp', 'Cechy Przywódcze', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('intel', 'Inteligencja', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('op', 'Opanowanie', 'required', array('required' => '{field} jest wymagane'));
+			$this -> form_validation -> set_rules('sw', 'Siła Woli', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ogd', 'Ogłada', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('skills[]', 'Umiejętności', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('requried' => '{field} jest wymagany'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_profession', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$p_info = $this -> verify_profession_info();
+				$p_stats = $this -> verify_profession_stats();
+				$p_skills = $this -> verify_profession_skills($id);
+				$p_inv = $this -> verify_profession_inv($id);
+				$this -> universal_model -> update('professions', $p_info, array('id' => $id));
+				$this -> universal_model -> update('professions_statistics', $p_stats, array('id' => $id));
+				$this -> universal_model -> delete('professions_skills', array('id' => $id));
+				$this -> admin_model -> profession_skill_insert($p_skills);
+				$this -> universal_model -> delete('professions_inventory', array('id' => $id));
+				$this -> admin_model -> profession_items_insert($p_inv);
+				redirect('admin_panel/add_profession'); 
 			}
 		}
 	}

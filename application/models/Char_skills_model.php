@@ -31,9 +31,7 @@ class Char_skills_model extends CI_Model {
 	public function get_character_skills($id = 1) {
 		$this -> db -> select('*');
 		$this -> db -> from('umiejetnosci');
-		//$this -> db -> from('professions');
-		//$this -> db -> from('professions_statistics');
-		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skill_id' /*AND professions.id = professions_statistics.id'*/, 'right');
+		$this -> db -> join('char_skills', 'umiejetnosci.skillid = char_skills.skill_id', 'right');
 		$this -> db -> order_by('skillName', 'ASC');
 		$this -> db -> where(['char_id' => $id]);
 		
@@ -41,20 +39,6 @@ class Char_skills_model extends CI_Model {
 		$arr = array();
 		foreach ($query->result_array() as $key => $value) {
 			$arr['skillid'][$key] = $value['skillName'];
-			/*$arr['sz'] = $value['sz'];
-			$arr['ww'] = $value['ww'];
-			$arr['us'] = $value['us'];
-			$arr['s'] = $value['s'];
-			$arr['wt'] = $value['wt'];
-			$arr['zw'] = $value['zw'];
-			$arr['i'] = $value['ini'];
-			$arr['a'] = $value['a'];
-			$arr['zr'] = $value['zr'];
-			$arr['cp'] = $value['cp'];
-			$arr['int'] = $value['intel'];
-			$arr['op'] = $value['op'];
-			$arr['sw'] = $value['sw'];
-			$arr['ogd'] = $value['ogd'];*/
 		}
 		return $arr;
 	}
@@ -73,6 +57,23 @@ class Char_skills_model extends CI_Model {
 			return $target;
 		} else {
 			return "Błąd zapytania!!";
+		}
+	}
+	
+	public function get_profession_skills($p_id) {
+		$this -> db -> select('*');
+		$this -> db -> from('professions_skills');
+		$this -> db -> join('umiejetnosci', 'umiejetnosci.skillid = professions_skills.skill_id');
+		$this -> db -> where('profession_id', $p_id);
+		$query = $this -> db -> get();
+		if ($query !== FALSE && $query -> num_rows() > 0) {
+			$target = array();
+			foreach ($query -> result() as $row) {
+				$target[] = $row;
+			}
+			return $target;
+		} else {
+			return "Błąd zapytania";
 		}
 	}
 }
