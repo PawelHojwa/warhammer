@@ -1,6 +1,8 @@
 <div class="container">
 <?php
 echo heading($title, 3);
+echo anchor('admin_panel/add_class', '<- Powrót');
+echo br(2);
 echo validation_errors("<p class='alert alert-danger'>", "</p>");
 echo form_input('class_id', $class_id, array('hidden' => 'hidden', 'id' => 'class_id'));
 echo form_open('edit_panel/edit_class');
