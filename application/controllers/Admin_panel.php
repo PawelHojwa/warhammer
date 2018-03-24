@@ -75,7 +75,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('templates/footer');
 		} else {
 			$data = $this -> admin_menu();
-			$this -> session -> unset_userdata('p_id');
+			if ($this -> session -> has_userdata('p_id') ) {
+				$this -> session -> unset_userdata('p_id');
+			}
 			$data['chars'] = $this -> get_character_names();
 			$data['subtitle'] = 'Wszystkie postacie';
 			$this -> load -> view('templates/header', $data);
@@ -94,6 +96,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('skill') === TRUE) {
+				$this -> session -> unset_userdata('skill');
+			}
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń umiejętność";
 			$data['added'] = "";
@@ -301,6 +306,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('item') === TRUE) {
+				$this -> session -> unset_userdata('item');
+			}
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń przedmiot";
 			$availability = $this -> universal_model -> get_data('availability');
@@ -368,6 +376,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('spell') === TRUE) {
+				$this -> session -> unest_userdata('spell');
+			}
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń czar";
 			$spells = $this -> universal_model -> get_data('casts_type');
@@ -537,6 +548,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('prof') === TRUE) {
+				$this -> session ->unset_userdata('prof');
+			}
 			$data = $this -> admin_menu();
 			$skill_id = $this -> char_skills_model -> get_skills('skillid');
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -679,6 +693,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('race') === TRUE) {
+				$this -> session -> unset_userdata('race');
+			}
 			$data = $this -> admin_menu();
 			$skill_id = $this -> char_skills_model -> get_skills('skillid');
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
@@ -744,6 +761,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('class') === TRUE) {
+				$this -> session -> unset_userdata('class');
+			}
 			$data = $this -> admin_menu();
 			$items = $this -> admin_model -> get_items();
 			$data['items'] = $items;
@@ -862,6 +882,9 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('form/login', $data);
 			$this -> load -> view('templates/footer');
 		} else {
+			if ($this -> session -> has_userdata('monster') === TRUE) {
+				$this -> session -> unset_userdata('monster');
+			}
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń potwora";
 			$category = $this -> universal_model -> get_data('kategoria_potwora');
