@@ -544,7 +544,6 @@ class Edit_panel extends CI_Controller {
 	
 	public function verify_class_name() {
 		$arr = array(
-			//'classID' => $id,
 			'className' => $this -> input -> post('class_name')
 		);
 		return $arr;
@@ -566,7 +565,6 @@ class Edit_panel extends CI_Controller {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
 		} else {
-			//$this -> session -> unset_userdata('class');
 			if ($this -> session -> has_userdata('class') === FALSE) {
 				$this -> session -> set_userdata('class', $_GET['id']);
 				$id = $this -> session -> class; 
