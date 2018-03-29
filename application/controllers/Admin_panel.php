@@ -175,6 +175,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $spell -> spell_range . "</td>";
 					echo "<td>" . $spell -> spell_components  . "</td>";
 					echo "<td>" . $spell -> spell_effect . "</td>";
+					echo "<td>" . anchor('edit_panel/edit_spell_info?id=' . $spell -> id, 'Edytuj') . "</td>";
 					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń') . "</td>";
 					echo "<tr>";
 				 }
@@ -377,7 +378,7 @@ class Admin_panel extends CI_Controller {
 			$this -> load -> view('templates/footer');
 		} else {
 			if ($this -> session -> has_userdata('spell') === TRUE) {
-				$this -> session -> unest_userdata('spell');
+				$this -> session -> unset_userdata('spell');
 			}
 			$data = $this -> admin_menu();
 			$data['subtitle'] = "Dodaj/usuń czar";

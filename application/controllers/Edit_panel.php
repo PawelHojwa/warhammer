@@ -966,4 +966,96 @@ class Edit_panel extends CI_Controller {
 			}
 		}
 	}
+
+	public function get_spell_names($id) {
+		return $this -> universal_model -> get_values('casts_names', array('id' => $id), 'cast_name'); 
+	}
+	
+	public function get_spell_type() {
+		$type = $this -> universal_model -> get_data('casts_type');
+		$arr_id = array();
+		$arr_type = array();
+		foreach ($type as $row) {
+			$arr_id[] = $row['id'];
+			$arr_type[] = $row['type'];
+		}
+		$arr = array_combine($arr_id, $arr_type);
+		return $arr;
+	}
+	
+	public function get_spell_info($id) {
+		$spells = $this -> universal_model -> get_user('spells', array('id' => $id));
+		$arr = array();
+		foreach ($spells as $spell) {
+				$arr['spell_id'] = $spell['spell_name_id'];
+				$arr['spell_type'] = $spell['spell_type'];
+				$arr['spell_lvl'] = $spell['spell_lvl'];
+				$arr['spell_cost'] = $spell['spell_cost_pm'];
+				$arr['spell_duration'] = $spell['spell_duration'];
+				$arr['spell_range'] = $spell['spell_range'];
+				$arr['spell_components'] = $spell['spell_components'];
+				$arr['spell_effect'] = $spell['spell_effect'];
+		}
+		return $arr;
+	}
+	
+	public function verify_spell_name() {
+		$arr = array(
+			'cast_name' => $this -> input -> post('spell_name')
+		);
+		return $arr;
+	}
+	
+	public function verify_spell_info() {
+		$arr = array(
+			'spell_type' => $this -> input -> post('spell_type'),
+			'spell_lvl' => $this -> input -> post('spell_lvl'),
+			'spell_cost_pm' => $this -> input -> post('spell_cost'),
+			'spell_duration' => $this -> input -> post('spell_duration'),
+			'spell_range' => $this -> input -> post('spell_range'),
+			'spell_components' => $this -> input -> post('spell_components'),
+			'spell_effect' => $this -> input -> post('spell_effect')
+		);
+		return $arr;
+	}
+
+	public function edit_spell_info() {
+		 if ($this -> session -> has_userdata('user') === FALSE) {
+		 	 redirect('login/view_form');
+		 } else {
+		   	if ($this -> session -> has_userdata('spell') === FALSE) {
+		   		$this -> session -> set_userdata('spell', $_GET['id']);
+					$id = $this -> session -> spell;
+		   	} else {
+		   		$id = $this -> session -> spell;
+				}
+				$spell_name = $this -> get_spell_names($id);
+				$spell_info = $this -> get_spell_info($id);
+				$spell_types = $this -> get_spell_type();
+				$lvl = array(0, 1, 2, 3, 4);
+				$data['spell_name'] = $spell_name;
+				$data['spell'] = $spell_info;
+				$data['type'] = $spell_types;
+				$data['lvl'] = $lvl;
+				$data['title'] = "Edycja zaklęć";
+				$this -> form_validation -> set_rules('spell_name', 'Nazwa czaru', 'required', array('required' => '{field} jest wymagana'));
+				$this -> form_validation -> set_rules('spell_type', 'Typ czaru', 'required', array('required' => '{field} jest wymagany'));
+				$this -> form_validation -> set_rules('spell_lvl', 'Poziom czaru', 'required', array('required' => '{field} jest wymagany'));
+				if ($this -> form_validation -> run() === FALSE) {
+					$this -> load -> view('templates/header', $data);
+					$this -> load -> view('edit/edit_spell', $data);
+					$this -> load -> view('templates/footer');
+				} else {
+					$s_name = $this -> verify_spell_name();
+					$s_info = $this -> verify_spell_info($id);
+					$this -> universal_model -> change('casts_names', $s_name, array('id' => $id));
+					$this -> universal_model -> change('spells', $s_info, array('id' => $id));
+					redirect('admin_panel/add_spell');
+					/*echo "<pre>";
+					var_dump($s_name);
+					var_dump($s_info);
+					echo "</pre>";*/
+				}
+	   }
+	}
 }
