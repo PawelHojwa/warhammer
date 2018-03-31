@@ -21,6 +21,7 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> model('char_inventory_model');
 		$this -> load -> model('spell_model');
 		$this -> load -> model('current_schematic_model');
+		$this -> load -> model('monster_model');
 	}
 	
 	public function success($page) {
@@ -1051,11 +1052,107 @@ class Edit_panel extends CI_Controller {
 					$this -> universal_model -> change('casts_names', $s_name, array('id' => $id));
 					$this -> universal_model -> change('spells', $s_info, array('id' => $id));
 					redirect('admin_panel/add_spell');
-					/*echo "<pre>";
-					var_dump($s_name);
-					var_dump($s_info);
-					echo "</pre>";*/
 				}
 	   }
+	}
+
+	public function monster_info($id) {
+		$arr1 = $this -> universal_model -> get_user('monsters', array('monsterID' => $id));
+		$monster = array();
+		foreach ($arr1 as $arr) {
+			$monster['monsterName'] = $arr['monsterName'];
+			$monster['categoryID'] = $arr['categoryID'];
+			$monster['sz'] = $arr['sz'];
+			$monster['ww'] = $arr['ww'];
+			$monster['us'] = $arr['us'];
+			$monster['s'] = $arr['s'];
+			$monster['wt'] = $arr['wt'];
+			$monster['zw'] = $arr['zw'];
+			$monster['i'] = $arr['i'];
+			$monster['a'] = $arr['a'];
+			$monster['zr'] = $arr['zr'];
+			$monster['cp'] = $arr['cp'];
+			$monster['int'] = $arr['intel'];
+			$monster['op'] = $arr['op'];
+			$monster['sw'] = $arr['sw'];
+			$monster['ogd'] = $arr['ogd'];
+		}
+		return $monster;
+	}
+
+	public function monster_category() {
+		$arr = $this -> universal_model -> get_data('kategoria_potwora');
+		$arr_id = array();
+		$arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['categoryID'];
+			$arr_name[] = $row['monsterCategory'];
+		}
+		return $arr = array_combine($arr_id, $arr_name);
+	}
+
+	public function verify_monster_info() {
+		$arr = array(
+			'monsterName' => $this -> input -> post('name'),
+			'categoryID' => $this -> input -> post('category'),
+			'sz' => $this -> input -> post('sz'),
+			'ww' => $this -> input -> post('ww'),
+			'us' => $this -> input -> post('us'),
+			's' => $this -> input -> post('s'),
+			'wt' => $this -> input -> post('wt'),
+			'zw' => $this -> input -> post('zw'),
+			'i' => $this -> input -> post('ini'),
+			'a' => $this -> input -> post('a'),
+			'zr' => $this -> input -> post('zr'),
+			'cp' => $this -> input -> post('cp'),
+			'intel' => $this -> input -> post('intel'),
+			'op' => $this -> input -> post('op'),
+			'sw' => $this -> input -> post('sw'),
+			'ogd' => $this -> input -> post('ogd')
+		);
+		return $arr;
+	}
+	
+	public function edit_monster_info() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			if ($this -> session -> has_userdata('monster') === FALSE) {
+				$this -> session -> set_userdata('monster', $_GET['id']);
+				$id = $this -> session -> monster;
+			} else {
+				$id = $this -> session -> monster;
+			}
+			$m_info = $this -> monster_info($id);
+			$m_category = $this -> monster_category();
+			$data = $m_info;
+			$data['category'] = $m_category;
+			$data['title'] = 'Edycja potowra';
+			$this -> form_validation -> set_rules('name', 'Nazwa potwora', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('category', 'Kategoria potwora', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('sz', 'Szybkość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ww', 'Walka wręcz', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('us', 'Umiejętności strzeleckie', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('s', 'Siła', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('wt', 'Wytrzymałość', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('zw', 'Żywotność', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ini', 'Inicjatywa', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('a', 'Atak', 'required', array('required' => '{field} jest wymagany'));
+			$this -> form_validation -> set_rules('zr', 'Zręczność', 'required', array('required' => '{filed} jest wymagana'));
+			$this -> form_validation -> set_rules('cp', 'Cechu przywódcze', 'required', array('required' => '{field} są wymagane'));
+			$this -> form_validation -> set_rules('intel', 'Inteligencja', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('op', 'Opanowanie', 'required', array('required' => '{field} jest wymagane'));
+			$this -> form_validation -> set_rules('sw', 'Siła woli', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('ogd', 'Ogłada', 'required', array('required' => '{field} jest wymagana'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/monster_edit', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$mon_inf = $this -> verify_monster_info();
+				$this -> universal_model -> change('monsters', $mon_inf, array('monsterID' => $id));
+				redirect('admin_panel/add_monster');
+			}
+		}
 	}
 }

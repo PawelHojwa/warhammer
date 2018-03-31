@@ -842,6 +842,7 @@ class Admin_panel extends CI_Controller {
 				echo "<td>" . $monster -> op . "</td>";
 				echo "<td>" . $monster -> sw . "</td>";
 				echo "<td>" . $monster -> ogd . "</td>";
+				echo "<td>" . anchor('edit_panel/edit_monster_info?id=' . $monster -> monsterID, 'Edytuj') . "</td>";
 				echo "<td>" . anchor('delete/del_monster?id=' . $monster -> monsterID, 'Usuń') . "</td>";
 				echo "</tr>";
 			}
