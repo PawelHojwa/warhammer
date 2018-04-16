@@ -271,6 +271,8 @@ class Admin_panel extends CI_Controller {
 			$price = $p . "p";
 		} else if ($zk == 0) {
 			$price = $sz . "/" . $p;
+		} else {
+			$price = $zk . " zk " . $sz . "/" . $p; 
 		}
 		return $price;
 	}
