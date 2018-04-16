@@ -198,6 +198,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $row['price'] . "</td>";
 					echo "<td>" . $row['weight'] . "</td>";
 					echo "<td>" . $row['availability'] . "</td>";
+					echo "<td>" . anchor('edit_panel/edit_item_info?id=' . $row['name'], 'Edytuj') . "</td>";
 					echo "<td>" . anchor('delete/del_item?id=' . $row['name'], 'Usuń') . "</td>";
 					echo "</tr>";
 				}

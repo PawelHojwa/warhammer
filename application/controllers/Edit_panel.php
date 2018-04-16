@@ -1155,4 +1155,251 @@ class Edit_panel extends CI_Controller {
 			}
 		}
 	}
+
+	public function get_item_info($id) {
+		$arr = $this -> universal_model -> get_user('trades', array('name' => $id));
+		$item = array();
+		foreach ($arr as $row) {
+			$item['name'] = $row['name'];
+			$item['type'] = $row['type'];
+			$item['weight'] = $row['weight'];
+			$item['availability'] = $row['availability'];
+		}
+		return $item;
+	}
+	
+	public function get_item_name($id) {
+		$val = $this -> universal_model -> get_user('items', array('id' => $id));
+		$arr = array();
+		foreach ($val as $row) {
+			$arr['name'] = $row['item'];
+			$arr['group'] = $row['items_group_id'];
+			$arr['meele'] = $row['meele'];
+			$arr['ranged'] = $row['ranged'];
+		}
+		return $arr;
+	}
+	
+	public function weapon_type() {
+		return $arr = $this -> universal_model -> get_data('weapon_type_name');
+	}
+
+	public function get_item_availability() {
+		$arr = $this -> universal_model -> get_data('availability');
+		$arr_id = array();
+		$arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['lp'];
+			$arr_name[] = $row['avail'];
+		}
+		return array_combine($arr_id, $arr_name);
+	}
+	
+	public function get_items_type() {
+		$arr = $this -> universal_model -> get_data('things_types');
+		$arr_id = array();
+		$arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['id'];
+			$arr_name[] = $row['name'];
+		}
+		return array_combine($arr_id, $arr_name);
+	}
+	
+	public function get_armour_placement() {
+		if (isset($_POST['armour']) !== FALSE && $_REQUEST['armour'] !== FALSE) {
+			$arr = $this -> universal_model -> get_user('armour', array('armour_id' => $_POST['armour']));
+			$arr_id = array();
+			foreach ($arr as $row) {
+				$arr_id[] = $row['placement'];
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr_id));
+		} else {
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode(array('err' => 'Błąd')));
+		}
+	}
+	
+	public function get_arm_placement() {
+		$arr = $this -> universal_model -> get_data('armour_placement');
+		$arr_id = $arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['id'];
+			$arr_name[] = $row['placement_name'];
+		}
+		return array_combine($arr_id, $arr_name);
+	}
+	
+	public function price_conv($price) {
+		$sz_pattern = "/\//";
+		$p_pattern = "/p/";
+		$arr = array();
+		$arr1 = explode(' ', $price);
+		foreach ($arr1 as $row) {
+			if (is_numeric($row)) {
+				$arr['zk'] = $row;
+			} else if (preg_match($sz_pattern, $row) == TRUE) {
+				$arr2 = explode('/', $row);
+				$arr['sz'] = $arr2[0];
+				if (is_numeric($arr2[1]) && !empty($arr2[1])) {
+					$arr['p'] = $arr2[1]; 
+				}
+			} else if (preg_match($p_pattern, $row) == TRUE) {
+				$arr['p'] = stristr($row, 'p', TRUE);
+			}
+		}
+		return $arr;
+	}
+	
+	public function verify_item_price() {
+		$zk = $this -> input -> post('zk');
+		$sz = $this -> input -> post('sz');
+		$p = $this -> input -> post('p');
+		$price = "";
+		if ($sz == "" && $p == "") {
+			$price = $zk . " zk ";
+		} else if ($zk == "" && $p == "") {
+			$price = $sz . "/-";
+		} else if ($zk == "" && $sz == "") {
+			$price = $p . "p";
+		} else if ($sz == "" && $p != "") {
+			$price = $zk . " zk " . $p . "p";
+		} else if ($zk == "") {
+			$price = $sz . "/" . $p;
+		} else if ($p ==	 "") {
+			$price = $zk . " zk " . $sz . "/-";
+		} else {
+			$price = $zk . " zk " . $sz . "/" . $p;
+		}
+		return $price;
+	}
+	
+	public function verify_weapon_type() {
+		return $this -> input -> post('w_type');
+	}
+	
+	public function verify_weapon_hand() {
+		return $this -> input -> post('w_hand');
+	}
+	
+	public function verify_item_info() {
+		$type = $this -> input -> post('category');
+		$meele = 0;
+		$ranged = 0;
+		$group = '';
+		if ($type == 1 || $type == 2 || $type == 7 || $type == 8 || $type == 9 || $type == 10 || $type == 11 || $type == 12) {
+			$group = 4;
+		} else if ($type == 3) {
+			$group = 5;
+		} else if ($type == 4) {
+			$group = $this -> verify_weapon_hand();
+			$meele = $this -> verify_weapon_type();
+		} else if ($type == 5 || $type == 6) {
+			$group = 3;
+			$ranged = $this -> verify_weapon_type();
+		} else if ($type == 14 || $type == 15) {
+			$group = 6;
+		} else {
+			$group = NULL;
+		}
+		$arr = array(
+			'item' => $this -> input -> post('name'),
+			'items_group_id' => $group,
+			'meele' => $meele,
+			'ranged' => $ranged
+		);
+		return $arr;
+	}
+	
+	public function verify_placement($item_id, $id = '') {
+		$placement = $this -> input -> post('placement');
+		$arr = array(
+			'id' => $id,
+			'armour_id' => $item_id,
+			'pp' => $this -> input -> post('pp'),
+			'placement' => $placement
+		);
+		return $arr;
+	}
+	
+	public function verify_items($price) {
+		$arr = array(
+			'type' => $this -> input -> post('category'),
+			'price' => $price,
+			'weight' => $this -> input -> post('weight'),
+			'availability' => $this -> input -> post('availability')
+		);
+		return $arr;
+	}
+
+	public function edit_item_info() {
+		if ($this -> session -> has_userdata('user') === FALSE) {
+			redirect('login/view_form');
+		} else {
+			if ($this -> session -> has_userdata('item') === FALSE) {
+				$this -> session -> set_userdata('item', $_GET['id']);
+				$id = $this -> session -> item;
+			} else {
+				$id = $this -> session -> item;
+			}
+			$hand = 0;
+			$price = $this -> universal_model -> get_values('trades', array('name' => $id), 'price');
+			$pp = $this -> universal_model -> get_values('armour', array('armour_id' => $id), 'pp');
+			$w_meele_type = $this -> universal_model -> get_values('items', array('id' => $id), 'meele');
+			$w_ranged_type = $this -> universal_model -> get_values('items', array('id' => $id), 'ranged');
+			
+			$c_price = $this -> price_conv($price);
+			$item_info = $this -> get_item_info($id);
+			$item_name = $this -> get_item_name($id);
+			$item_availability = $this -> get_item_availability();
+			$armour_placement = $this -> get_arm_placement();
+			$item_type = $this -> get_items_type();
+			$weapon = $this -> weapon_type();
+			if ($w_meele_type > 0) {
+				foreach ($weapon as $row) {
+					if ($w_meele_type == $row['id']) {
+						$hand = $row['type'];
+					}
+				}
+			}
+			$data['info'] = $item_info;
+			$data['name'] = $item_name;
+			$data['price'] = $c_price;
+			$data['hand'] = $hand;
+			$data['weapon_type'] = $weapon;
+			$data['meele'] = $w_meele_type;
+			$data['ranged'] = $w_ranged_type;
+			$data['placement'] = $armour_placement;
+			$data['pp'] = $pp;
+			$data['availability'] = $item_availability;
+			$data['types'] = $item_type;
+			$data['title'] = 'Edycja przedmiotu';
+			$this -> form_validation -> set_rules('name', 'Nazwa przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('category', 'Kategoria przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('weight', 'Waga', 'required', array('required' => '{field} jest wymagana'));
+			$this -> form_validation -> set_rules('availability', 'Dostępność', 'required', array('required' => '{field} jest wymagana'));
+			if ($this -> form_validation -> run() === FALSE) {
+				$this -> load -> view('templates/header', $data);
+				$this -> load -> view('edit/edit_item', $data);
+				$this -> load -> view('templates/footer');
+			} else {
+				$i_price = $this -> verify_item_price();
+				$i_info = $this -> verify_item_info();
+				$i_item = $this -> verify_items($i_price);
+				$i_armour = $this -> verify_placement($id);
+				/*echo "<pre>";
+				var_dump($i_price);
+				var_dump($i_info);
+				var_dump($i_item);
+				var_dump($i_armour);
+				echo "</pre>";*/
+				$this -> universal_model -> change('trades', $i_item, array('name' => $id));
+				$this -> universal_model -> change('items', $i_info, array('id' => $id));
+				if ($i_armour['placement'] != NULL) {
+					$this -> universal_model -> delete('armour', array('armour_id' => $id));
+					$this -> admin_model -> armour_multi_insert($i_armour);
+				}
+				redirect('admin_panel/add_items');
+			}
+		}
+	}
 }
