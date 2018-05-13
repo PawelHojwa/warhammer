@@ -193,7 +193,9 @@ echo br();
 	echo form_label('Profesje zaawansowane');
 	?>
 	</div>
+	<div class="show-skills"></div>
 	<div class="result"></div>
+	
 </div>
 <script>
 $('document').ready(function() {
@@ -255,7 +257,14 @@ $('document').ready(function() {
 		$('.pets').slideToggle('slow');
 	});
 	$('input:radio:last-of-type').css('margin-left', 15);
+	var iWidth = window.innerWidth;
+	var iHeight = window.innerHeight;
+	function calculate(x, y) {
+		return (x / 2) - (y / 2);  
+	}
+	$('.show-skills').hide();
 	$('.show-profession input:radio').change(function() {
+	
 		var prof = $('input:radio:checked').val();
 		$.ajax({
 			url : 'get_profession',
@@ -268,6 +277,28 @@ $('document').ready(function() {
 				$('td:not(td:first-child)').addClass('text-center');
 				$('td').css('padding', 3);
 				$('caption').addClass('text-center').css('font-weight', 'bold');
+				$('.skill-list').css('position', 'relative');
+				$('.skill-list').click(function() {
+					var i = $('.skill-list').index(this);
+					var profId = $('.hide').eq(i).text();
+					$('.show-skills').show();
+					var divHeight = $('.show-skills').css('height');
+					$('.show-skills').css({
+						'padding' : 10,
+						'box-shadow' : '0 0 5px 2px black',
+						'width' : 300,
+						'position' : 'fixed',
+						'top' : calculate(iHeight, iHeight / 2),
+						'left' : calculate(iWidth, 300),
+						'z-index' : 1000,
+						'background-color' : 'white'
+					});
+					$('.show-skills').load('/warhammer/index.php/show/prof_skills?id=' + profId);
+					$('body').click(function() {
+						$('.show-skills').hide();
+					});
+					return false;
+				});
 			}
 		});
 	}).change();
