@@ -946,8 +946,6 @@ class Edit_panel extends CI_Controller {
 			$this -> form_validation -> set_rules('op', 'Opanowanie', 'required', array('required' => '{field} jest wymagane'));
 			$this -> form_validation -> set_rules('sw', 'Siła Woli', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('ogd', 'Ogłada', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('skills[]', 'Umiejętności', 'required', array('required' => '{field} są wymagane'));
-			$this -> form_validation -> set_rules('inv[]', 'Ekwipunek', 'required', array('requried' => '{field} jest wymagany'));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
 				$this -> load -> view('edit/edit_profession', $data);
@@ -959,11 +957,11 @@ class Edit_panel extends CI_Controller {
 				$p_inv = $this -> verify_profession_inv($id);
 				$this -> universal_model -> update('professions', $p_info, array('id' => $id));
 				$this -> universal_model -> update('professions_statistics', $p_stats, array('id' => $id));
-				$this -> universal_model -> delete('professions_skills', array('id' => $id));
+				$this -> universal_model -> delete('professions_skills', array('profession_id' => $id));
 				$this -> admin_model -> profession_skill_insert($p_skills);
-				$this -> universal_model -> delete('professions_inventory', array('id' => $id));
+				$this -> universal_model -> delete('professions_inventory', array('profession_id' => $id));
 				$this -> admin_model -> profession_items_insert($p_inv);
-				redirect('admin_panel/add_profession'); 
+				redirect('admin_panel/add_profession');
 			}
 		}
 	}
