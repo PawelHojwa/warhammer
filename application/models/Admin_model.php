@@ -59,7 +59,7 @@ class Admin_model extends CI_Model {
 	public function get_items() {
 		$this -> db -> select('*');
 		$this -> db -> from('items');
-		$this -> db -> order_by('items_group_id');
+		$this -> db -> order_by('items_group_id ASC, item ASC');
 		$query = $this -> db -> get();
 		if ($query !== false && $query -> num_rows() > 0) {
 			return $query -> result();
