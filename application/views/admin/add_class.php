@@ -119,6 +119,12 @@ $('document').ready(function() {
 	});
 	$.get('get_classes', function(data) {
 		$('.result').html(data);
+		$('.delete').click(function(event) {
+			var x = confirm('Chcesz usunąć klase?');
+			if (x == false) {
+				event.preventDefault();
+			}
+		});
 	});
 	$('.hide-items').click(function() {
 		$(this).parent().hide();

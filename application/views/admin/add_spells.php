@@ -84,6 +84,12 @@ $('document').ready(function() {
 			},
 			success : function(data) {
 				$('.result').html(data);
+				$('.delete').click(function(event) {
+					var x = confirm('Chcesz usunąć zaklęcie?');
+					if (x == false) {
+						event.preventDefault();
+					}
+				});
 			}
 		});
 	});

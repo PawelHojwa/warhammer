@@ -44,7 +44,7 @@ class Admin_panel extends CI_Controller {
 			echo "<td>" . ++$lp . "</td>";
 			echo "<td>" . $row -> skillName . "</td>";
 			echo "<td>" . anchor('edit_panel/edit_skill_info?id=' . $row -> skillid, 'Edytuj') . "</td>";
-			echo "<td>" . anchor('delete/del_skill?id=' . $row -> skillid, 'Usuń') . "</td>";
+			echo "<td>" . anchor('delete/del_skill?id=' . $row -> skillid, 'Usuń', array('class' => 'delete')) . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
@@ -176,7 +176,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $spell -> spell_components  . "</td>";
 					echo "<td>" . $spell -> spell_effect . "</td>";
 					echo "<td>" . anchor('edit_panel/edit_spell_info?id=' . $spell -> id, 'Edytuj') . "</td>";
-					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń') . "</td>";
+					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń', array('class' => 'delete')) . "</td>";
 					echo "<tr>";
 				 }
 				echo "</table>";
@@ -199,7 +199,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $row['weight'] . "</td>";
 					echo "<td>" . $row['availability'] . "</td>";
 					echo "<td>" . anchor('edit_panel/edit_item_info?id=' . $row['name'], 'Edytuj') . "</td>";
-					echo "<td>" . anchor('delete/del_item?id=' . $row['name'], 'Usuń') . "</td>";
+					echo "<td>" . anchor('delete/del_item?id=' . $row['name'], 'Usuń', array('class' => 'delete')) . "</td>";
 					echo "</tr>";
 				}
 				echo "</table>";
@@ -474,7 +474,7 @@ class Admin_panel extends CI_Controller {
 				echo "<td>" . $this -> check_val($profession -> ogd) . "</td>";
 				echo "<td>" . anchor('show/prof_skills?id=' . $profession -> id, 'Pokaż', array('class'=>'skill-list')) . "</td>";
 				echo "<td>" . anchor('edit_panel/edit_profession_info?id=' . $profession -> id, 'Edytuj') . "</td>";
-				echo "<td>" . anchor('delete/del_prof?id=' .  $profession -> id, 'Usuń') . "</td>";
+				echo "<td>" . anchor('delete/del_prof?id=' .  $profession -> id, 'Usuń', array('class' => 'delete')) . "</td>";
 				echo "</tr>";
  			}
 			echo "</table>";
@@ -658,7 +658,7 @@ class Admin_panel extends CI_Controller {
 			echo "<td>" . $row -> sw . "</td>";
 			echo "<td>" . $row -> ogd . "</td>";
 			echo "<td>" . anchor('edit_panel/edit_race_info?id=' . $row -> raceID, 'Edytuj') . "</td>";
-			echo "<td>" . anchor('delete/del_race?id=' . $row -> raceID,  'Usuń') . "</td>";
+			echo "<td>" . anchor('delete/del_race?id=' . $row -> raceID,  'Usuń', array('class' => 'delete')) . "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
@@ -751,8 +751,8 @@ class Admin_panel extends CI_Controller {
 		foreach ($classes as $row) {
 			echo "<tr>";
 			echo "<td>" . $row -> className . "</td>";
-			echo "<td>" . anchor('delete/del_class?id=' . $row -> classID, "Usuń") . "</td>";
 			echo "<td>" . anchor('edit_panel/edit_class?id=' .$row -> classID, 'Edytuj') . "</td>";
+			echo "<td>" . anchor('delete/del_class?id=' . $row -> classID, "Usuń", array('class' => 'delete')) . "</td>";			
 			echo "</tr>";
 		}
 		echo "</table>";
@@ -848,7 +848,7 @@ class Admin_panel extends CI_Controller {
 				echo "<td>" . $monster -> sw . "</td>";
 				echo "<td>" . $monster -> ogd . "</td>";
 				echo "<td>" . anchor('edit_panel/edit_monster_info?id=' . $monster -> monsterID, 'Edytuj') . "</td>";
-				echo "<td>" . anchor('delete/del_monster?id=' . $monster -> monsterID, 'Usuń') . "</td>";
+				echo "<td>" . anchor('delete/del_monster?id=' . $monster -> monsterID, 'Usuń', array('class' => 'delete')) . "</td>";
 				echo "</tr>";
 			}
 			echo "</table>";

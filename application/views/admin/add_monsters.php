@@ -114,6 +114,12 @@ $('document').ready(function() {
 				$('th:not(th:first-child)').css('width', 35);
 				$('td:not(td:first-child)').addClass('text-center');
 				$('td').css('padding', 3);
+				$('.delete').click(function(event) {
+					var x = confirm('Chcesz usunąć potwora?');
+					if (x == false) {
+						event.preventDefault();
+					}
+				});
 			}
 		});
 	});

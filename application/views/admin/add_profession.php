@@ -299,6 +299,12 @@ $('document').ready(function() {
 					});
 					return false;
 				});
+				$('.delete').click(function(event) {
+					var x = confirm('Chcesz usunąć profesję?');
+					if (x == false) {
+						event.preventDefault();
+					}
+	});
 			}
 		});
 	}).change();
@@ -331,7 +337,7 @@ $('document').ready(function() {
 		} else {
 			$('select').hide();
 		}
-		console.log(prof_type);
 	});
+	
 });
 </script>

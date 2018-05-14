@@ -205,6 +205,12 @@ $(document).ready(function() {
 		$('.race_table th:not(th:first-child)').css('width', 30);
 		$('.race_table td:not(td:first-child)').addClass('text-center');
 		$('.race_table td').css('padding', 5);
+		$('.delete').click(function(event) {
+			var x = confirm('Chcesz usunąć rase?');
+			if (x == false) {
+				event.preventDefault();
+			}
+		});
 	});
 	var width = $('.stats').css('width');
 	$('button').not('#dodaj').css('width', width);
@@ -294,5 +300,6 @@ $(document).ready(function() {
 		i++;
 		$('.skills').eq(i).show();
 	});
+	
 })
 </script>

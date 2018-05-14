@@ -162,8 +162,15 @@ $('document').ready(function() {
 				$('th:first-child').css('min-width', 200);
 				$('td:not(td:first-child)').addClass('text-center');
 				$('td').css('padding', 3);
+				('.delete').click(function(event) {
+					var x = confirm('Chcesz usunąć przedmiot?');
+					if (x == false) {
+						event.preventDefault();
+					}
+				});
 			}
 		});
 	}).change();
+	$
 });
 </script>

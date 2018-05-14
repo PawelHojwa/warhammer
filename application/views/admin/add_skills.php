@@ -30,6 +30,12 @@ $('document').ready(function() {
 	});
 	$.get('get_skills', function(data) {
 		$('.result').html(data);
+		$('.delete').click(function(event) {
+			var x = confirm('Chcesz usunąć umiejętność?');
+			if (x == false) {
+				event.preventDefault();
+			}
+		});
 	});
 });
 </script>
