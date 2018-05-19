@@ -785,7 +785,7 @@ class Edit_panel extends CI_Controller {
 				$this -> universal_model -> update('race_age', $r_age, array('raceID' => $id));
 				$this -> universal_model -> delete('race_add_skill', array('raceID' => $id));
 				$this -> admin_model -> add_race_skill_insert($r_add_skill);
-				if (!empty($race_add_skill) && is_array($race_add_skilld)) {
+				if (!empty($r_add_skill) && is_array($r_add_skill)) {
 					$this -> universal_model -> delete('race_skills',array('race_id' => $id));
 					$this -> admin_model -> race_skill_insert($r_skill);
 				} else {
