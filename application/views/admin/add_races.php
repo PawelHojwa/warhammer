@@ -189,10 +189,10 @@ echo br();
 echo form_submit('btn', 'Dodaj', array('class' => 'btn btn-primary'));
 echo form_close();
 echo br(2);
-?>
+?><div class='show-race' style='width: 300px; background-color: yellow; height: 200px;'></div>
 <p class="show-result" title="Kliknij aby rozwinąć">Pokaż rasy</p>
+
 <div class='result'></div>
-</div>
 <script>
 $(document).ready(function() {
 	$('span').css({
@@ -200,11 +200,38 @@ $(document).ready(function() {
 		'width' : 305
 	});
 	$('label').css('margin-right', 15);
+	$('.show-race').hide();
+	
 	$.get('get_race', function(data) {
 		$('.result').html(data);
 		$('.race_table th:not(th:first-child)').css('width', 30);
 		$('.race_table td:not(td:first-child)').addClass('text-center');
 		$('.race_table td').css('padding', 5);
+		$('.lp').hide();
+		
+		$('.races').click(function(event) {
+			$('.show-race').show();
+			$('.show-race').css({
+				'width' : 300,
+				'min-height' : 50,
+				'box-shadow' : '0 0 5px 5px black',
+				'background-color' : 'white',
+				'position' : 'fixed',
+				'left' : (window.innerWidth  - (300 / 2)) / 2,
+				'top' : (window.innerHeight - (100 / 2)) / 2,
+				'z-index' : 1000,
+				'padding' : 10
+			});
+			var i = $('.races').index(this);
+			var raceLp = $('.lp').eq(i).text();
+			$('.show-race').load('/warhammer/index.php/show/race-skills?id=' + raceLp);
+			
+			event.preventDefault();
+			$('.show-race').click(function() {
+				$(this).hide();
+			});
+		});
+		
 		$('.delete').click(function(event) {
 			var x = confirm('Chcesz usunąć rase?');
 			if (x == false) {
@@ -212,6 +239,7 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
 	var width = $('.stats').css('width');
 	$('button').not('#dodaj').css('width', width);
 	

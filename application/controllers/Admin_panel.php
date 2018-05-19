@@ -638,10 +638,11 @@ class Admin_panel extends CI_Controller {
 		$races = $this -> admin_model -> get_race();
 		echo "<table class='race_table'>";
 		echo "<tr>";
-		echo "<th>Rasa</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int<th>Op</th><th>SW</th><th>Ogd</th>";
+		echo "<th>Rasa</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int<th>Op</th><th>SW</th><th>Ogd</th><th>Umiejętności</th>";
 		echo "</tr>";
 		foreach ($races as $row) {
 			echo "<tr>";	
+			echo "<td class='lp'>" . $row -> raceID . "</td>";
 			echo "<td>" . $row -> raceName . "</td>";
 			echo "<td>" . $row -> sz . "</td>";
 			echo "<td>" . $row -> ww . "</td>";
@@ -657,6 +658,7 @@ class Admin_panel extends CI_Controller {
 			echo "<td>" . $row -> op . "</td>";
 			echo "<td>" . $row -> sw . "</td>";
 			echo "<td>" . $row -> ogd . "</td>";
+			echo "<td>" . anchor('show/race_skills?id=' . $row -> raceID, 'Pokaż', array('class' => 'races')) . "</td>";
 			echo "<td>" . anchor('edit_panel/edit_race_info?id=' . $row -> raceID, 'Edytuj') . "</td>";
 			echo "<td>" . anchor('delete/del_race?id=' . $row -> raceID,  'Usuń', array('class' => 'delete')) . "</td>";
 			echo "</tr>";

@@ -8,8 +8,8 @@ class Show extends CI_Controller {
 		$this -> load -> helper('html');
 	}
 	
-	public function get_prof_skills($id) {
-		$arr = $this -> universal_model -> get_user('professions_skills', array('profession_id' => $id));
+	public function get_skills($id, $tab_name, $id_name) {
+		$arr = $this -> universal_model -> get_user($tab_name, array($id_name => $id));
 		$arr_skill = $arr_skill_name = array();
 		foreach ($arr as $row) {
 			$arr_skill[] = $row['skill_id'];
@@ -20,16 +20,25 @@ class Show extends CI_Controller {
 		return $arr_skill_name;
 	}
 	
-	public function get_profession_name($id) {
-		return $this -> universal_model -> get_values('professions', array('id' => $id), 'profession_name');
+	public function get_name($id, $tab_name, $name, $lp) {
+		return $this -> universal_model -> get_values($tab_name, array($lp => $id), $name);
 	}
 	
 	public function prof_skills() {
 		$id = $_GET['id'];
-		$skills = $this -> get_prof_skills($id);
-		$name = $this -> get_profession_name($id);
+		$skills = $this -> get_skills($id, 'professions_skills', 'profession_id');
+		$name = $this -> get_name($id, 'professions', 'profession_name', 'id');
 		$data['skills'] = $skills;
 		$data['profession_name'] = $name;
 		$this -> load -> view('show/prof_skills', $data);
+	}
+
+	public function race_skills() {
+		$id = $_GET['id'];
+		$skills = $this -> get_skills($id, 'race_skills', 'race_id');
+		$name = $this -> get_name($id, 'rasa', 'raceName', 'raceID');
+		$data['skills'] = $skills;
+		$data['race_name'] = $name;
+		$this -> load -> view('show/race_skills', $data);
 	}
 }
