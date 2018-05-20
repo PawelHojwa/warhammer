@@ -22,6 +22,7 @@ class Edit_panel extends CI_Controller {
 		$this -> load -> model('spell_model');
 		$this -> load -> model('current_schematic_model');
 		$this -> load -> model('monster_model');
+		$this -> load -> model('exit_profession_model');
 	}
 	
 	public function success($page) {
@@ -841,6 +842,29 @@ class Edit_panel extends CI_Controller {
 			echo "Błąd ekwipunku";
 		}
 	}
+
+	public function get_exit_profession() {
+		if (isset($_POST['prof_id']) === TRUE && $_POST['prof_id'] !== FALSE) {
+			$exit = $this -> exit_profession_model -> exit_professions($_POST['prof_id']);
+			$arr = array();
+			foreach ($exit as $row) {
+				$arr[] = $row['exit_profession'];
+			}
+			$this -> output -> set_content_type('application/json') -> set_output(json_encode($arr));
+		} else {
+			echo "Błąd profesji wyjściowych";
+		}
+	}
+	
+	public function get_professions() {
+		$arr = $this -> universal_model -> get_data('professions');
+		$arr_id = $arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['id'];
+			$arr_name[] = $row['profession_name'];
+		}
+		return array_combine($arr_id, $arr_name);
+	}
 	
 	public function verify_profession_info() {
 		$advance = $this -> input -> post('type');
@@ -900,6 +924,16 @@ class Edit_panel extends CI_Controller {
 		return $arr;
 	}
 	
+	public function verify_exit_profession($prof_id, $id = "") {
+		$exit = $this -> input -> post('exit_prof');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $prof_id,
+			'exit_profession' => $exit
+		);
+		return $arr;
+	}
+	
 	public function edit_profession_info() {
 		if ($this -> session -> has_userdata('user') === FALSE) {
 			redirect('login/view_form');
@@ -922,6 +956,7 @@ class Edit_panel extends CI_Controller {
 			$items = $this -> admin_model -> get_items();
 			$prof_stats = $this -> get_profession_stats($id);
 			$prof_info = $this -> get_profession_info($id);
+			$exit = $this -> get_professions();
 			$data = $prof_info;
 			$data['type'] = $type; 
 			$data['class_id'] = $this -> universal_model -> get_values('professions', array('id' => $id), 'class_id');
@@ -929,6 +964,7 @@ class Edit_panel extends CI_Controller {
 			$data['stats'] = $prof_stats;
 			$data['skills'] = $this -> get_skills();
 			$data['inventory'] = $items;
+			$data['exit_profession'] = $exit;
 			$data['title'] = "Edycja profesji";
 			$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));		
 			$this -> form_validation -> set_rules('type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
@@ -955,10 +991,13 @@ class Edit_panel extends CI_Controller {
 				$p_stats = $this -> verify_profession_stats();
 				$p_skills = $this -> verify_profession_skills($id);
 				$p_inv = $this -> verify_profession_inv($id);
+				$p_exit = $this -> verify_exit_profession($id);
 				$this -> universal_model -> update('professions', $p_info, array('id' => $id));
 				$this -> universal_model -> update('professions_statistics', $p_stats, array('id' => $id));
 				$this -> universal_model -> delete('professions_skills', array('profession_id' => $id));
+				$this -> universal_model -> delete('exit_professions', array('profession_id' => $id));
 				$this -> admin_model -> profession_skill_insert($p_skills);
+				$this -> admin_model -> exit_profession_insert($p_exit);
 				$this -> universal_model -> delete('professions_inventory', array('profession_id' => $id));
 				$this -> admin_model -> profession_items_insert($p_inv);
 				redirect('admin_panel/add_profession');

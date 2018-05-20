@@ -40,7 +40,7 @@ class Delete extends CI_Controller {
 		$this -> universal_model -> delete('professions_inventory', array('profession_id' => $_GET['id']));
 		$this -> universal_model -> delete('professions_skills', array('profession_id' => $_GET['id']));
 		$this -> universal_model -> delete('professions_statistics', array('id' => $_GET['id']));
-		$this -> universal_model -> delete('exit_professions', array('id' => $_GET['id']));
+		$this -> universal_model -> delete('exit_professions', array('profession_id' => $_GET['id']));
 		$this -> success('add_profession');
 	}
 	

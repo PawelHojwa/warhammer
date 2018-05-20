@@ -127,7 +127,17 @@ echo "<p class='hide-div'>Ukryj</p>";
 echo "</div>";
 echo "<p class='hide-div'>Ukryj</p>";
 echo "</div>";
-echo br(2);
+echo "<p class='lead'>Profesje wyjściowe</p>";
+echo "<div class='profession-exit'>";
+foreach ($exit_profession as $k => $v) {
+	echo "<span>";
+	echo form_checkbox('exit_prof[]', $k, false, array('class' => 'exit-p'));
+	echo form_label($v, 'exit_prof[]');
+	echo "</span>";
+}
+echo "<p class='hide-div'>Ukryj</p>";
+echo "</div>";
+echo br();
 echo form_submit('sub_btn', "Zamień", array('class' => 'btn btn-primary'));
 ?>
 </div>
@@ -159,7 +169,6 @@ $('document').ready(function() {
 			$('select').hide();
 		}
 	});
-	console.log(c_id);
 	var stats = [];
 	$('.s_val').each(function(i) {
 		stats[i] = $(this).val();
@@ -182,10 +191,9 @@ $('document').ready(function() {
 		}
 		$('.s_val').eq(i).val(stats[i]);
 	});
-	var divs = ['type', 'stats', 'skills', 'inv'];
-	$('.type, .stats, .inv, .skills')
-	.hide();
-	$('.lead').css({'text-decoration' : 'underline', 'width' : '150'})
+	var divs = ['type', 'stats', 'skills', 'inv', 'profession-exit'];
+	$('.type, .stats, .inv, .skills, .profession-exit').hide();
+	$('.lead').css({'text-decoration' : 'underline', 'width' : '200'})
 	.hover(function() {
 		$(this).css({'cursor' : 'pointer', 'text-decoration' : 'none', 'color' : '#4169E1'});
 	}, function() {
@@ -257,6 +265,20 @@ $('document').ready(function() {
 			$.each(data, function(k, v) {
 				$('.inv[value="' + v +'"]').prop('checked', true);
 			});
+		}
+	});
+	$.ajax({
+		url : 'get_exit_profession',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			prof_id : p_id
+		},
+		success : function(data) {
+			$.each(data, function(k, v) {
+				$('.exit-p[value="' + v + '"]').prop('checked', true);
+			});
+			$('.exit-p[value="' + p_id + '"]').prop('disabled', true); 
 		}
 	});
 });
