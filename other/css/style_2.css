@@ -368,14 +368,14 @@ table td > span {
 
 /*-- ukrywanie elementów --*/
 
-#one-hand, #two-hand, #ranged, #prof-armour, #daily, #pets, .c-items, .prof-type, .prof-stats, .prof-skills, .prof-items, .show-result {
+#one-hand, #two-hand, #ranged, #prof-armour, #daily, #pets, .c-items, .prof-type, .prof-stats, .prof-skills, .prof-items, .show-result, .prof-exits {
 	color: black;
 	text-decoration: underline;
 	cursor: pointer;
-	max-width: 150px;
+	max-width: 200px;
 }
 
-#one-hand:hover, #two-hand:hover, #ranged:hover, #prof-armour:hover, #daily:hover, #pets:hover, .c-items:hover, .prof-type:hover, .prof-stats:hover, .prof-skills:hover, .prof-items:hover, .show-result:hover {
+#one-hand:hover, #two-hand:hover, #ranged:hover, #prof-armour:hover, #daily:hover, #pets:hover, .c-items:hover, .prof-type:hover, .prof-stats:hover, .prof-skills:hover, .prof-items:hover, .show-result:hover, .prof-exits:hover {
 	text-decoration: none;
 	color: #4169E1;
 }

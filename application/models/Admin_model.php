@@ -95,6 +95,17 @@ class Admin_model extends CI_Model {
 		}
 	}
 	
+	public function exit_profession_insert($arr) {
+		foreach ($arr['exit_profession'] as $row) {
+			$record = array(
+				'id' => $arr['id'],
+				'profession_id' => $arr['profession_id'],
+				'exit_profession' => $row
+			);
+			$this -> db -> insert('exit_professions', $record);
+		}
+	}
+	
 	public function profession_items_insert($arr) {
 		foreach ($arr['inventory_id'] as $item) {
 			$record = array(

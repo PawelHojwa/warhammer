@@ -178,6 +178,18 @@ echo "</div>";
 echo "<p class='hide-items'>Ukryj</p>";
 ?>
 </div>
+<p class="lead prof-exits">Profesje wyjściowe:</p>
+<div class="profession-exit">
+<?php
+foreach ($exit as $k => $v) {
+	echo "<span>";
+	echo form_checkbox('prof_exit[]', $k, false);
+	echo form_label($v, 'prof_exit[]');
+	echo "</span>";
+}
+?>
+<p class="hide-items">Ukryj</p>
+</div>
 <?php
 echo form_submit('btn_submit', 'Dodaj profesję', array('class' => 'btn btn-primary'));
 echo form_close();
@@ -213,6 +225,7 @@ $('document').ready(function() {
 	$('.profession-skills').hide();
 	$('.profession-statistics').hide();
 	$('.profession-items').hide();
+	$('.profession-exit').hide();
 	$('.one-hand, .two-hand, .ranged, .prof-armour, .daily, .pets').hide();
 	$('.show-result').click(function() {
 		$('.professions').slideToggle('slow', function() {
@@ -255,6 +268,9 @@ $('document').ready(function() {
 	});
 	$('#pets').click(function() {
 		$('.pets').slideToggle('slow');
+	});
+	$('.prof-exits').click(function() {
+		$('.profession-exit').slideToggle('slow');
 	});
 	$('input:radio:last-of-type').css('margin-left', 15);
 	var iWidth = window.innerWidth;

@@ -483,6 +483,16 @@ class Admin_panel extends CI_Controller {
 		}
 	}
 
+	public function get_professions() {
+		$arr = $this -> universal_model -> get_data('professions');
+		$arr_id = $arr_name = array();
+		foreach ($arr as $row) {
+			$arr_id[] = $row['id'];
+			$arr_name[] = $row['profession_name']; 
+		}
+		return array_combine($arr_id, $arr_name);
+	}
+
 	public function valid_profession_name($id = "") {
 		$profession_type = $this -> input -> post('profession_type');
 		$class_id = 0;
@@ -545,6 +555,16 @@ class Admin_panel extends CI_Controller {
 		return $arr;
 	}
 	
+	public function valid_exit_prof($prof_id, $id = '') {
+		$exit = $this -> input -> post('prof_exit');
+		$arr = array(
+			'id' => $id,
+			'profession_id' => $prof_id,
+			'exit_profession' => $exit
+		);
+		return $arr;
+	}
+	
 	public function add_profession() {
 		if (!isset($_SESSION['user'])) {
 			$data['title'] = "Logowanie";
@@ -562,10 +582,12 @@ class Admin_panel extends CI_Controller {
 			$skill_name = $this -> char_skills_model -> get_skills('skillName');
 			$class_id = $this -> admin_model -> get_classes('classID');	
 			$class_name = $this -> admin_model -> get_classes('className');
+			$exit_prof = $this -> get_professions();
 			$data['classes'] = array_combine($class_id, $class_name);
 			$data['items'] = $this -> admin_model -> get_items();
 			$data['subtitle'] = 'Dodaj/usun profesję';
 			$data['skills'] = array_combine($skill_id, $skill_name);
+			$data['exit'] = $exit_prof;
 			$data['added'] = "";
 			$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
 			$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
@@ -584,9 +606,11 @@ class Admin_panel extends CI_Controller {
 					$profession_skill = $this -> valid_skills($profession_id);
 					$profession_items = $this -> valid_item($profession_id);
 					$profession_statistics = $this -> valid_statistics($profession_id);
+					$profession_exit = $this -> valid_exit_prof($profession_id);
 					$this -> admin_model -> profession_skill_insert($profession_skill);
 					$this -> admin_model -> profession_items_insert($profession_items);
 					$this -> universal_model -> insert('professions_statistics', $profession_statistics);
+					$this -> admin_model -> exit_profession_insert($profession_exit);
 					$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
 					$add = "Wprowadzono <b>" . $last_profession . "</b>";
 				} else {
