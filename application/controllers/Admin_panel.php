@@ -452,7 +452,7 @@ class Admin_panel extends CI_Controller {
 			echo "<table>";
 			echo "<caption>" . $title . "</caption>";
 			echo "<tr>";
-			echo "<th>Profesja</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int</th><th>Op</th><th>SW</th><th>Ogd</th><th>Umiejętności</th>";
+			echo "<th>Profesja</th><th>Sz</th><th>WW</th><th>US</th><th>S</th><th>Wt</th><th>Żw</th><th>I</th><th>A</th><th>Zr</th><th>CP</th><th>Int</th><th>Op</th><th>SW</th><th>Ogd</th><th>Umiejętności</th><th>Profesje wyjściowe</th>";
 			echo "</tr>";
 			foreach ($professions as $profession) {
 				echo "<tr>";
@@ -473,6 +473,7 @@ class Admin_panel extends CI_Controller {
 				echo "<td>" . $this -> check_val($profession -> sw) . "</td>";
 				echo "<td>" . $this -> check_val($profession -> ogd) . "</td>";
 				echo "<td>" . anchor('show/prof_skills?id=' . $profession -> id, 'Pokaż', array('class'=>'skill-list')) . "</td>";
+				echo "<td>" . anchor('show/prof_exit?id=' . $profession -> id, 'Pokaż', array('class' => 'exit')) . "</td>";
 				echo "<td>" . anchor('edit_panel/edit_profession_info?id=' . $profession -> id, 'Edytuj') . "</td>";
 				echo "<td>" . anchor('delete/del_prof?id=' .  $profession -> id, 'Usuń', array('class' => 'delete')) . "</td>";
 				echo "</tr>";

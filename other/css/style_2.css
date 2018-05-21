@@ -390,3 +390,26 @@ table td > span {
 	text-decoration: none;
 	color: red;
 }
+
+/*-- wyskakujące okienka --*/
+
+.show-thing {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.show-ul {
+	padding: 0;
+	margin: 0;
+	list-style: none; 
+}
+
+.show-div {
+	width: 300px;
+	min-height: 50px;
+	z-index: 1000;
+	position: fixed;
+	box-shadow: 0 0 5px 3px black;
+	background-color: white;
+	padding: 10px;
+}

@@ -24,6 +24,18 @@ class Show extends CI_Controller {
 		return $this -> universal_model -> get_values($tab_name, array($lp => $id), $name);
 	}
 	
+	public function get_exit_profession($id) {
+		$arr = $this -> universal_model -> get_user('exit_professions', array('profession_id' => $id));
+		$arr_exit = $arr_names = array();
+		foreach ($arr as $row) {
+			$arr_exit[] = $row['exit_profession'];
+		}
+		foreach ($arr_exit as $row) {
+			$arr_names[] = $this -> universal_model -> get_values('professions', array('id' => $row), 'profession_name');
+		}
+		return $arr_names;
+	}
+	
 	public function prof_skills() {
 		$id = $_GET['id'];
 		$skills = $this -> get_skills($id, 'professions_skills', 'profession_id');
@@ -31,6 +43,15 @@ class Show extends CI_Controller {
 		$data['skills'] = $skills;
 		$data['profession_name'] = $name;
 		$this -> load -> view('show/prof_skills', $data);
+	}
+	
+	public function prof_exit() {
+		$id = $_GET['id'];
+		$exit = $this -> get_exit_profession($id);
+		$name = $this -> get_name($id, 'professions', 'profession_name', 'id');
+		$data['exit'] = $exit;
+		$data['profession_name'] = $name;
+		$this -> load -> view('show/exit_profession', $data);
 	}
 
 	public function race_skills() {
@@ -41,4 +62,6 @@ class Show extends CI_Controller {
 		$data['race_name'] = $name;
 		$this -> load -> view('show/race_skills', $data);
 	}
+	
+	
 }

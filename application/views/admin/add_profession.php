@@ -205,7 +205,7 @@ echo br();
 	echo form_label('Profesje zaawansowane');
 	?>
 	</div>
-	<div class="show-skills"></div>
+	<div class="show-div"></div>
 	<div class="result"></div>
 	
 </div>
@@ -278,9 +278,8 @@ $('document').ready(function() {
 	function calculate(x, y) {
 		return (x / 2) - (y / 2);  
 	}
-	$('.show-skills').hide();
+	$('.show-div').hide();
 	$('.show-profession input:radio').change(function() {
-	
 		var prof = $('input:radio:checked').val();
 		$.ajax({
 			url : 'get_profession',
@@ -293,25 +292,32 @@ $('document').ready(function() {
 				$('td:not(td:first-child)').addClass('text-center');
 				$('td').css('padding', 3);
 				$('caption').addClass('text-center').css('font-weight', 'bold');
-				$('.skill-list').css('position', 'relative');
 				$('.skill-list').click(function() {
 					var i = $('.skill-list').index(this);
 					var profId = $('.hide').eq(i).text();
-					$('.show-skills').show();
+					$('.show-div').show();
 					var divHeight = $('.show-skills').css('height');
-					$('.show-skills').css({
-						'padding' : 10,
-						'box-shadow' : '0 0 5px 2px black',
-						'width' : 300,
-						'position' : 'fixed',
+					$('.show-div').css({
+						'top' : calculate(iHeight, iHeight / 2),
+						'left' : calculate(iWidth, 300)
+					});
+					$('.show-div').load('/warhammer/index.php/show/prof_skills?id=' + profId);
+					$('body').not('.show-div').click(function() {
+						$('.show-div').hide();
+					});
+					return false;
+				});
+				$('.exit').click(function() {
+					var i = $('.exit').index(this);
+					var profId = $('.hide').eq(i).text();
+					$('.show-div').show();
+					$('.show-div').css({
 						'top' : calculate(iHeight, iHeight / 2),
 						'left' : calculate(iWidth, 300),
-						'z-index' : 1000,
-						'background-color' : 'white'
 					});
-					$('.show-skills').load('/warhammer/index.php/show/prof_skills?id=' + profId);
-					$('body').click(function() {
-						$('.show-skills').hide();
+					$('.show-div').load('/warhammer/index.php/show/prof_exit?id=' + profId);
+					$('body:not(.show-div)').click(function() {
+						$('.show-div').hide();
 					});
 					return false;
 				});
@@ -320,7 +326,7 @@ $('document').ready(function() {
 					if (x == false) {
 						event.preventDefault();
 					}
-	});
+				});
 			}
 		});
 	}).change();
