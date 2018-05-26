@@ -1,7 +1,7 @@
 <ul>
 <?php
-echo "<p>Profesja: " . $profession_name . "</p>";
-echo "<p>Umiejętności:</p>";
+echo "<p class='show-thing'>Profesja: " . $profession_name . "</p>";
+echo "<p class='show-thing'>Umiejętności:</p>";
 foreach ($skills as $row) {
 	echo "<li>" . $row . "</li>"; 
 }
@@ -13,5 +13,5 @@ $('ul').css({
 	'padding' : 0,
 	'margin' : 0
 });
-$('p').css({'text-decoration': 'underline', 'font-weight' : 'bold'});
+$('.show-thing').css({'text-decoration': 'underline', 'font-weight' : 'bold'});
 </script>
