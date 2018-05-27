@@ -63,5 +63,12 @@ class Show extends CI_Controller {
 		$this -> load -> view('show/race_skills', $data);
 	}
 	
-	
+	public function skill_description() {
+		$id = $_GET['id'];
+		$name = $this -> get_name($id, 'umiejetnosci', 'skillName', 'skillid');
+		$description = $this -> get_name($id, 'umiejetnosci', 'skill_description', 'skillid');
+		$data['description'] = $description;
+		$data['skill_name'] = $name;
+		$this -> load -> view('show/skill_description', $data);
+	}
 }

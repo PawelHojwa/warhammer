@@ -38,11 +38,13 @@ class Admin_panel extends CI_Controller {
 		$lp = 0;
 		echo "<table>";
 		echo "<tr>";
-		echo "<th>Lp.</th><th>Umiejętność</th>";
+		echo "<th>Lp.</th><th>Umiejętność</th><th>Opis</th>";
 		foreach ($arr as $row) {
 			echo "<tr>";
 			echo "<td>" . ++$lp . "</td>";
+			echo "<td class='hide'>" . $row -> skillid . "</td>";
 			echo "<td>" . $row -> skillName . "</td>";
+			echo "<td>" . anchor('show/skill_description?id=' . $row -> skillid, 'Pokaż', array('class' => 'desc')) . "</td>";
 			echo "<td>" . anchor('edit_panel/edit_skill_info?id=' . $row -> skillid, 'Edytuj') . "</td>";
 			echo "<td>" . anchor('delete/del_skill?id=' . $row -> skillid, 'Usuń', array('class' => 'delete')) . "</td>";
 			echo "</tr>";
