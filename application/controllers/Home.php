@@ -24,6 +24,7 @@ class Home extends CI_Controller
 									'speed' => 'Prędkość',
 									'monster' => 'Bestiariusz',
 									'admin_panel' => 'Panel administratora',
+									'professions' => 'Profesje',
 									'type' => $user_type
 		);
 		$this -> load -> view('templates/header', $data);
