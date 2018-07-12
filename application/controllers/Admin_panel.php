@@ -169,6 +169,7 @@ class Admin_panel extends CI_Controller {
 				echo "</tr>";
 				foreach ($spells as $spell) {
 					echo "<tr>";
+					echo "<td class='hide'>" . $spell -> id . "</td>";
 					echo "<td>" . $spell -> cast_name . "</td>";
 					echo "<td>" . $spell -> type . "</td>";
 					echo "<td class='text-center'>" . $spell -> spell_lvl . "</td>";
@@ -176,7 +177,7 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . $spell -> spell_duration . "</td>";
 					echo "<td>" . $spell -> spell_range . "</td>";
 					echo "<td>" . $spell -> spell_components  . "</td>";
-					echo "<td>" . $spell -> spell_effect . "</td>";
+					echo "<td>" . anchor('show/spell_description?id=' . $spell -> id, 'Pokaż', ['class' => 'spell-desc']) . "</td>";
 					echo "<td>" . anchor('edit_panel/edit_spell_info?id=' . $spell -> id, 'Edytuj') . "</td>";
 					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń', array('class' => 'delete')) . "</td>";
 					echo "<tr>";

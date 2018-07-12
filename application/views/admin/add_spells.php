@@ -26,8 +26,10 @@ echo form_close();
 
 echo br(2);
 ?>
+
 <p class="show-result" title="Kliknij aby rozwinąć">Pokaż czary</p>
 <div class="spell-result">
+	
 	<div class="spell-type">
 		<?php
 			foreach ($spell_type as $key => $value) {
@@ -47,6 +49,7 @@ echo br(2);
 		?>
 		</div>
 	<div class='result'></div>
+	<div class="show-div"></div>
 </div>
 </div>
 <script>
@@ -83,7 +86,24 @@ $('document').ready(function() {
 				lvl : spell_lvl
 			},
 			success : function(data) {
+				$('.show-div').hide();
 				$('.result').html(data);
+				
+				$('.spell-desc').click(function() {
+					var i = $('.spell-desc').index(this);
+					var id = $('.hide').eq(i).text();
+					$('.show-div').show().css({
+						'left' : (window.innerWidth  - (1000 / 2)) / 2,
+						'top' : 150,
+						'min-width' : 500,
+						//'max-width' : 800
+					});
+					$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
+					return false;
+				});
+				$('.show-div').click(function() {
+					$('.show-div').hide();
+				});
 				$('.delete').click(function(event) {
 					var x = confirm('Chcesz usunąć zaklęcie?');
 					if (x == false) {

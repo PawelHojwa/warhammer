@@ -44,7 +44,7 @@
 							'top' : calculate(iHeight, iHeight / 2),
 							'left' : calculate(iWidth, 300)
 						});
-						$('.show-div').load('/index.php/show/prof_skills?id=' + profId);
+						$('.show-div').load('/warhammer/index.php/show/prof_skills?id=' + profId);
 						$('.show-div').click(function() {
 							$('.show-div').hide();
 						});
@@ -58,7 +58,7 @@
 							'top' : calculate(iHeight, iHeight / 2),
 							'left' : calculate(iWidth, 300),
 						});
-						$('.show-div').load('/index.php/show/prof_exit?id=' + profId);
+						$('.show-div').load('/warhammer/index.php/show/prof_exit?id=' + profId);
 						$('body:not(.show-div)').click(function() {
 							$('.show-div').hide();
 						});

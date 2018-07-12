@@ -71,4 +71,13 @@ class Show extends CI_Controller {
 		$data['skill_name'] = $name;
 		$this -> load -> view('show/skill_description', $data);
 	}
+
+	public function spell_description() {
+		$id = $this -> input -> get('id');
+		$name = $this -> get_name($id, 'casts_names', 'cast_name', 'id');
+		$desc = $this -> get_name($id, 'spells', 'spell_effect', 'id');
+		$data['description'] = $desc;
+		$data['spell_name'] = $name;
+		$this -> load -> view('show/spell_description', $data); 
+	}
 }
