@@ -7,12 +7,14 @@ echo br();
 		echo br(2);
 		echo anchor('create_player/create', $create, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('professions/show_professions', $professions, array('class' => 'btn_anchor btn btn-primary anchor'));
+		echo anchor('skills/show', $skills, ['class' => 'btn_anchor btn btn-primary anchor']);
 		echo anchor('trade/price_list', $price_list, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('speed/speed_tables', $speed, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('monsters/show_monsters', $monster, array('class' => 'btn_anchor btn btn-primary anchor'));
 	} else {
 		echo anchor('create_player/create', $create, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('professions/show_professions', $professions, array('class' => 'btn_anchor btn btn-primary anchor'));
+		echo anchor('skills/show', $skills, ['class' => 'btn_anchor btn btn-primary anchor']);
 		echo anchor('trade/price_list', $price_list, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('speed/speed_tables', $speed, array('class' => 'btn_anchor btn btn-primary anchor'));
 		echo anchor('monsters/show_monsters', $monster, array('class' => 'btn_anchor btn btn-primary anchor'));

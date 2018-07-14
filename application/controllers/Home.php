@@ -25,6 +25,7 @@ class Home extends CI_Controller
 									'monster' => 'Bestiariusz',
 									'admin_panel' => 'Panel administratora',
 									'professions' => 'Profesje',
+									'skills' => 'Umiejętności',
 									'type' => $user_type
 		);
 		$this -> load -> view('templates/header', $data);

@@ -98,7 +98,7 @@ $('document').ready(function() {
 						'min-width' : 500,
 						//'max-width' : 800
 					});
-					$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
+					$('.show-div').load('/index.php/show/spell_description?id=' + id);
 					return false;
 				});
 				$('.show-div').click(function() {
