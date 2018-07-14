@@ -26,6 +26,7 @@ class Home extends CI_Controller
 									'admin_panel' => 'Panel administratora',
 									'professions' => 'Profesje',
 									'skills' => 'Umiejętności',
+									'spells' => 'Zaklęcia',
 									'type' => $user_type
 		);
 		$this -> load -> view('templates/header', $data);
