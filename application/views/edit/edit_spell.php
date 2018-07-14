@@ -22,7 +22,7 @@ echo form_input('spell_range', $spell['spell_range'], array('placeholder' => 'Za
 echo br();
 echo form_input('spell_components', $spell['spell_components'], array('placeholder' => 'Składniki...'));
 echo br();
-echo form_input('spell_effect', $spell['spell_effect'], array('placeholder' => 'Efekt...'));
+echo form_textarea('spell_effect', $spell['spell_effect'], array('placeholder' => 'Efekt...'));
 echo br(2);
 echo form_submit('sub_btn', 'Zamień', array('class' => 'btn btn-primary'));
 echo form_close();

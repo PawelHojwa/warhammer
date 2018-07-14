@@ -54,7 +54,7 @@ echo br(2);
 </div>
 <script>
 $('document').ready(function() {
-	$('.spell-result, .spell-lvl').hide();
+	$('.spell-result, .spell-lvl, .show-div').hide();
 	$('.show-result').click(function() {
 		$('.spell-result').slideToggle('slow', function() {
 			if ($(this).css('display') == 'none') {
@@ -86,19 +86,16 @@ $('document').ready(function() {
 				lvl : spell_lvl
 			},
 			success : function(data) {
-				$('.show-div').hide();
 				$('.result').html(data);
-				
 				$('.spell-desc').click(function() {
 					var i = $('.spell-desc').index(this);
 					var id = $('.hide').eq(i).text();
 					$('.show-div').show().css({
-						'left' : (window.innerWidth  - (1000 / 2)) / 2,
+						'left' : (window.innerWidth  - 1200) / 2,
 						'top' : 150,
-						'min-width' : 500,
-						//'max-width' : 800
+						'min-width' : 1000,
 					});
-					$('.show-div').load('/index.php/show/spell_description?id=' + id);
+					$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
 					return false;
 				});
 				$('.show-div').click(function() {
