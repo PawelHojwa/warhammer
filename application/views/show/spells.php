@@ -30,41 +30,14 @@
 		$('.lvl').hide();
 		$('.show-div').hide();
 		$('label').css('margin-right', 10);
-		$('.types input:radio').change(function() {
+		$('.types input:radio, .lvl input:radio').change(function() {
 			var type = $('.types input:radio:checked').val();
-			var lvl = 0;
-			if (type > 1) {
-				$('.lvl').show();
-				$('.lvl input:radio').change(function() {
-					lvl = $('.lvl input:radio:checked').val();
-					$.ajax({
-						url : 'get_spells',
-						type : 'post',
-						data : {
-							spell_cat : type,
-							spell_lvl : lvl
-						},
-						success : function(data) {
-							$('.show-spells').html(data);
-							$('.spell-desc').click(function() {
-								var i = $('.spell-desc').index(this);
-								var id = $('.hide').eq(i).text();
-								$('.show-div').show().css({
-									'left' : (window.innerWidth  - (1000 / 2)) / 2,
-									'top' : 150,
-									'min-width' : 500,
-								});
-								$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
-								return false;
-							});
-							$('.show-div').click(function() {
-								$('.show-div').hide();
-							});
-						}
-					});
-				}).change();
-			} else {
+			var lvl = $('.lvl input:radio:checked').val();
+			if (type == 1) {
 				$('.lvl').hide();
+				lvl = 0;
+			} else {
+				$('.lvl').show();
 			}
 			$.ajax({
 				url : 'get_spells',
@@ -79,18 +52,18 @@
 						var i = $('.spell-desc').index(this);
 						var id = $('.hide').eq(i).text();
 						$('.show-div').show().css({
-							'left' : (window.innerWidth  - (1000 / 2)) / 2,
+							'left' : (window.innerWidth - (1000 * 0.5 ) / 2),
 							'top' : 150,
 							'min-width' : 500,
 						});
 						$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
 						return false;
-					});
+					}); //click function
 					$('.show-div').click(function() {
 						$('.show-div').hide();
-					});
-				}
-			});
-		});
+					}); // click function
+				} // ajax success 
+			}); // ajax
+		}); // change function
 	});
 </script>
