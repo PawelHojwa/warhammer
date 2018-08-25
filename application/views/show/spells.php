@@ -52,11 +52,11 @@
 						var i = $('.spell-desc').index(this);
 						var id = $('.hide').eq(i).text();
 						$('.show-div').show().css({
-							'left' : (window.innerWidth - (1000 * 0.5 ) / 2),
+							'left' : (window.innerWidth - 600) / 2,
 							'top' : 150,
-							'min-width' : 500,
+							'width' : 600,
 						});
-						$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
+						$('.show-div').load('/index.php/show/spell_description?id=' + id);
 						return false;
 					}); //click function
 					$('.show-div').click(function() {
