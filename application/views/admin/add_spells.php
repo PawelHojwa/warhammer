@@ -91,9 +91,9 @@ $('document').ready(function() {
 					var i = $('.spell-desc').index(this);
 					var id = $('.hide').eq(i).text();
 					$('.show-div').show().css({
-						'left' : (window.innerWidth  - 1200) / 2,
+						'left' : (window.innerWidth  - 600) / 2,
 						'top' : 150,
-						'min-width' : 1000,
+						'width' : 600,
 					});
 					$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
 					return false;

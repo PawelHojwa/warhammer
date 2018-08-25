@@ -405,9 +405,6 @@ table td > span {
 }
 
 .show-div {
-	width: 300px;
-	min-height: 50px;
-	z-index: 1000;
 	position: fixed;
 	box-shadow: 0 0 5px 3px black;
 	background-color: white;
