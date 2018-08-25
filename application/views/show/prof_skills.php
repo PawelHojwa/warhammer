@@ -1,6 +1,6 @@
 <ul>
 <?php
-echo "<p class='show-thing'>Profesja: " . $profession_name . "</p>";
+echo "<p>Profesja: <span class='show-thing'>" . $profession_name . "</span></p>";
 echo "<p class='show-thing'>Umiejętności:</p>";
 foreach ($skills as $row) {
 	echo "<li>" . $row . "</li>"; 

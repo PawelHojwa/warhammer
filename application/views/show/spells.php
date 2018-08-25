@@ -56,7 +56,7 @@
 							'top' : 150,
 							'width' : 600,
 						});
-						$('.show-div').load('/index.php/show/spell_description?id=' + id);
+						$('.show-div').load('/warhammer/index.php/show/spell_description?id=' + id);
 						return false;
 					}); //click function
 					$('.show-div').click(function() {
