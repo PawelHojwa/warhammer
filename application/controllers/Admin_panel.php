@@ -160,26 +160,6 @@ class Admin_panel extends CI_Controller {
 			$spell = array('spell_type' => $spell_type, 'spell_lvl' => $spell_lvl);
 			$spells = $this -> admin_model -> get_spells($spell);
 			if (!empty($spells) && is_array($spells)) {
-				/*echo "<table>";
-				echo "<tr>";
-				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
-				echo "</tr>";
-				foreach ($spells as $spell) {
-					echo "<tr>";
-					echo "<td class='hide'>" . $spell -> id . "</td>";
-					echo "<td>" . $spell -> cast_name . "</td>";
-					echo "<td>" . $spell -> type . "</td>";
-					echo "<td class='text-center'>" . $spell -> spell_lvl . "</td>";
-					echo "<td class='text-center'>" . $spell -> spell_cost_pm . "</td>";
-					echo "<td>" . $spell -> spell_duration . "</td>";
-					echo "<td>" . $spell -> spell_range . "</td>";
-					echo "<td>" . $spell -> spell_components  . "</td>";
-					echo "<td>" . anchor('show/spell_description?id=' . $spell -> id, 'Pokaż', ['class' => 'spell-desc']) . "</td>";
-					echo "<td>" . anchor('edit_panel/edit_spell_info?id=' . $spell -> id, 'Edytuj') . "</td>";
-					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń', array('class' => 'delete')) . "</td>";
-					echo "<tr>";
-				 }
-				echo "</table>";*/
 				$this -> table -> set_heading('Nazwa', 'Typ', 'Poziom', 'PM', 'Czas trwania',
 				'Zasięg', 'Składniki', 'Efekt');
 				foreach ($spells as $row) {
@@ -202,7 +182,6 @@ class Admin_panel extends CI_Controller {
 			} else {
 				echo "Wybierz poziom czaru";
 			}
-			//}
 		}
 	}
 	
