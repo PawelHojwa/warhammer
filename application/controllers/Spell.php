@@ -18,7 +18,7 @@ class Spell extends CI_Controller {
 			$lvl = $this -> input -> post('spell_lvl');
 			$arr = $this -> admin_model -> get_spells(['spell_type' => $type, 'spell_lvl' => $lvl]);
 			if (!empty($arr) && is_array($arr)) {
-				$this -> table -> set_heading('Nazwa', 'Typ', 'Poziom', 'Koszt', 'Czas trwania',
+				$this -> table -> set_heading('Nazwa', 'Typ', 'Poziom', 'PM', 'Czas trwania',
 				'Zasięg', 'Składniki', 'Efekt');
 				foreach ($arr as $row) {
 					$hide = ['data' => $row -> id, 'class' => 'hide'];

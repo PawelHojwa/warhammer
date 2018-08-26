@@ -161,7 +161,7 @@ class Admin_panel extends CI_Controller {
 			if (!empty($spells) && is_array($spells)) {
 				echo "<table>";
 				echo "<tr>";
-				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
+				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
 				echo "</tr>";
 				foreach ($spells as $spell) {
 					echo "<tr>";
