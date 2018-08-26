@@ -38,10 +38,9 @@ $('document').ready(function() {
 			var i = $('.desc').index(this);
 			var id = $('.hide').eq(i).text();
 			$('.show-div').show().css({
-				'left' : (window.innerWidth  - (1000 / 2)) / 2,
-				'top' : 150,
-				'min-width' : 500,
-				//'max-width' : 800
+				'left' : (window.innerWidth  - 500) / 2,
+				'top' : 50,
+				'width' : 500,
 			});
 			$('.show-div').load('/warhammer/index.php/show/skill_description?id=' + id);
 			return false;
