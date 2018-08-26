@@ -38,20 +38,19 @@ class Admin_panel extends CI_Controller {
 	public function get_skills() {
 		$arr = $this -> admin_model -> get_skills();
 		$lp = 0;
-		echo "<table>";
-		echo "<tr>";
-		echo "<th>Lp.</th><th>Umiejętność</th><th>Opis</th>";
+		$this -> table -> set_heading('Lp.', 'Umiejętności', 'Opis');
 		foreach ($arr as $row) {
-			echo "<tr>";
-			echo "<td>" . ++$lp . "</td>";
-			echo "<td class='hide'>" . $row -> skillid . "</td>";
-			echo "<td>" . $row -> skillName . "</td>";
-			echo "<td>" . anchor('show/skill_description?id=' . $row -> skillid, 'Pokaż', array('class' => 'desc')) . "</td>";
-			echo "<td>" . anchor('edit_panel/edit_skill_info?id=' . $row -> skillid, 'Edytuj') . "</td>";
-			echo "<td>" . anchor('delete/del_skill?id=' . $row -> skillid, 'Usuń', array('class' => 'delete')) . "</td>";
-			echo "</tr>";
+			$hide = ['data' => $row -> skillid, 'class' => 'hide'];
+			$this -> table -> add_row(
+				++$lp,
+				$hide,
+				$row -> skillName,
+				anchor('show/skill_description?id=' . $row -> skillid, 'Pokaż', array('class' => 'desc')),
+				anchor('edit_panel/edit_skill_info?id=' . $row -> skillid, 'Edytuj'),
+				anchor('delete/del_skill?id=' . $row -> skillid, 'Usuń', array('class' => 'delete'))
+			);
 		}
-		echo "</table>";
+		echo $this -> table -> generate();
 	}
 	
 	public function check_data($data_name, $tab_name, $col_name) {
