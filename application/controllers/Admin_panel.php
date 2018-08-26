@@ -11,6 +11,7 @@ class Admin_panel extends CI_Controller {
 		$this -> load -> model('char_skills_model');
 		$this -> load -> helper('form');
 		$this -> load -> model('trade_model');
+		$this -> load -> library('table');
 	}
 	
 	public function admin_menu() {
@@ -159,7 +160,7 @@ class Admin_panel extends CI_Controller {
 			$spell = array('spell_type' => $spell_type, 'spell_lvl' => $spell_lvl);
 			$spells = $this -> admin_model -> get_spells($spell);
 			if (!empty($spells) && is_array($spells)) {
-				echo "<table>";
+				/*echo "<table>";
 				echo "<tr>";
 				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
 				echo "</tr>";
@@ -178,7 +179,26 @@ class Admin_panel extends CI_Controller {
 					echo "<td>" . anchor('delete/del_spell?id=' . $spell -> id, 'Usuń', array('class' => 'delete')) . "</td>";
 					echo "<tr>";
 				 }
-				echo "</table>";
+				echo "</table>";*/
+				$this -> table -> set_heading('Nazwa', 'Typ', 'Poziom', 'PM', 'Czas trwania',
+				'Zasięg', 'Składniki', 'Efekt');
+				foreach ($spells as $row) {
+					$hide = ['data' => $row -> id, 'class' => 'hide'];
+					$this -> table -> add_row(
+						$hide,
+				 		$row -> cast_name,
+						$row -> type,
+						$row -> spell_lvl,
+						$row -> spell_cost_pm,
+						$row -> spell_duration,
+						$row -> spell_range,
+						$row -> spell_components,
+						anchor('show/spell_description?id=' . $row -> id, 'Pokaż', ['class' => 'spell-desc']),
+						anchor('edit_panel/edit_spell_info?id=' . $row -> id, 'Edytuj'),
+						anchor('delete/del_spell?id=' . $row -> id, 'Usuń', array('class' => 'delete'))
+					);
+				}
+				echo $this -> table -> generate();
 			} else {
 				echo "Wybierz poziom czaru";
 			}
