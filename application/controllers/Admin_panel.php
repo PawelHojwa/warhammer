@@ -153,14 +153,12 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function get_spells() {
-		if (isset($_POST['spell']) === TRUE && $_POST['spell'] !== FALSE) {
-			$spell_type = $_POST['spell'];
-			$spell_lvl = $_POST['lvl'];
+		if ($this -> input -> post('spell') !== FALSE && $this -> input -> post('lvl') !== FALSE) {
+			$spell_type = $this -> input -> post('spell');
+			$spell_lvl = $this -> input -> post('lvl');
 			$spell = array('spell_type' => $spell_type, 'spell_lvl' => $spell_lvl);
 			$spells = $this -> admin_model -> get_spells($spell);
-			if ($spell_type > 1 && $spell_lvl < 1) {
-				echo "Wybierz poziom czaru";
-			} else {
+			if (!empty($spells) && is_array($spells)) {
 				echo "<table>";
 				echo "<tr>";
 				echo "<th>Nazwa czaru</th><th>Typ</th><th>Poziom czaru</th><th>Koszt PM</th><th>Czas trwania</th><th>Zasięg</th><th>Składniki</th><th>Efekt</th>";
@@ -181,7 +179,10 @@ class Admin_panel extends CI_Controller {
 					echo "<tr>";
 				 }
 				echo "</table>";
+			} else {
+				echo "Wybierz poziom czaru";
 			}
+			//}
 		}
 	}
 	
