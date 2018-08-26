@@ -16,22 +16,17 @@ class Login extends CI_Controller
 	
 	public function view_form()
 	{
-		$data['title'] = "Logowanie";
-		$data['sub_title'] = "Zaloguj się";
-		$data['error'] = "";
-		$this->load->view('templates/header', $data);
-		$this->load->view('form/login', $data);
-		$this->load->view('templates/footer');
+		$this->load->view('form/login');
 	}
 	
-	public function success()
-	{
-		redirect('create_player/create');
+	public function success() {
+		$user_name = $this -> session -> user;
+		$data['name'] = $user_name;
+		$this -> load -> view('form/success');
 	}
 	
 	public function form_login()
 	{
-		
 		$this->form_validation->set_rules('username', 'Imię', 'required',
 			array('required' => "Pole '{field}' jest wymagane",
 			)
@@ -39,8 +34,6 @@ class Login extends CI_Controller
 		$this->form_validation->set_rules('password', 'Hasło', 'required',
 			array('required' => "Pole '{field}' jest wymagane")
 		);
-		
-	
 		if ($this->form_validation->run() === FALSE)
 		{
 			
@@ -64,9 +57,6 @@ class Login extends CI_Controller
 			else
 			{
         if ($user_type == 'admin') {
-        	/*$data['type'] = $user_type;
-        	$data['admin_panel'] = 'Panel administracyjny';*/
-					
         	redirect('home/index');
         } else {
         	$this->success();

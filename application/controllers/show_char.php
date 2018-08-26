@@ -49,59 +49,57 @@ class Show_char extends CI_Controller {
 	}
 	
 	public function page_1() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
-			redirect('login/form_login');
-		} else {
-			if (!isset($_SESSION['p_id'])) {
-				$_SESSION['p_id'] = $_GET['id'];
-			}
-			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
-			$data = $this -> get_char($_SESSION['p_id'], $profession_id);
-			$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
-			foreach ($data['exit_professions'] as $exit) {
-				if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {
-					$data['exit_professions'] = "Kolejna profesja cyrkowca lub podstawowa profesja Łotra, lub losowo wybrana klasa Rangera, Wojownika lub Uczonego";
-				} else if (($profession_id > 141 && $profession_id < 161  || $profession_id == 169) && $exit['exit_profession'] == 0) {
-					$data['exit_professions'] = "Brak";
-				}
-			}
-			foreach($data['sk'] as $skill) {
-				if ($skill == 'Bardzo wytrzymały') {
-					$data['wt']++;
-					$data['cwt']++;
-				}
-				if ($skill == 'Bardzo silny') {
-					$data['cs']++;
-					$data['cs']++;
-				}
-				if ($skill == 'Bardzo szybki') {
-					$data['sz']++;
-					$data['csz']++;
-				}
-				if ($skill == 'Celne strzelanie') {
-					$data['us'] += 10;
-					$data['cus'] += 10;
-				}
-				if ($skill == "Szybki refleks") {
-					$data['ini'] += 10;
-					$data['ci'] += 10;
-				}
-				if ($skill == 'Siłacz') {
-					$data['s']++;
-					$data['zw'] += $data['add_zw'];
-					$data['cs']++;
-					$data['czw'] += $data['add_zw'];
-					
-				}
-			}
-			$data['title'] = "Karta postaci";
-			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('characters/page_1', $data);
-			$this -> load -> view('templates/footer');
+		if (!isset($_SESSION['p_id'])) {
+			$_SESSION['p_id'] = $_GET['id'];
 		}
+		$profession_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
+		$data = $this -> get_char($_SESSION['p_id'], $profession_id);
+		$data['exit_professions'] = $this -> exit_profession_model -> exit_professions($profession_id);
+		$data['name'] = $this -> session -> user;
+		foreach ($data['exit_professions'] as $exit) {
+			if ($profession_id > 3 && $profession_id < 25 && $exit['exit_profession'] == 0) {
+				$data['exit_professions'] = "Kolejna profesja cyrkowca lub podstawowa profesja Łotra, lub losowo wybrana klasa Rangera, Wojownika lub Uczonego";
+			} else if (($profession_id > 141 && $profession_id < 161  || $profession_id == 169) && $exit['exit_profession'] == 0) {
+				$data['exit_professions'] = "Brak";
+			}
+		}
+		foreach($data['sk'] as $skill) {
+			if ($skill == 'Bardzo wytrzymały') {
+				$data['wt']++;
+				$data['cwt']++;
+			}
+			if ($skill == 'Bardzo silny') {
+				$data['cs']++;
+				$data['cs']++;
+			}
+			if ($skill == 'Bardzo szybki') {
+				$data['sz']++;
+				$data['csz']++;
+			}
+			if ($skill == 'Celne strzelanie') {
+				$data['us'] += 10;
+				$data['cus'] += 10;
+			}
+			if ($skill == "Szybki refleks") {
+				$data['ini'] += 10;
+				$data['ci'] += 10;
+			}
+			if ($skill == 'Siłacz') {
+				$data['s']++;
+				$data['zw'] += $data['add_zw'];
+				$data['cs']++;
+				$data['czw'] += $data['add_zw'];
+				
+			}
+		}
+		$data['title'] = "Karta postaci";
+		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+		$this -> load -> view('characters/page_1', $data);
+		$this -> load -> view('templates/footer');
 	}
-
 }

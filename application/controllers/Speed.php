@@ -8,6 +8,7 @@ class Speed extends CI_Controller {
 		$this -> load -> helper('html');
 		$this -> load -> helper('url_helper');
 		$this -> load -> helper('form');
+		$this -> load -> library('session');
 	}
 	
 	public function speed_values() {
@@ -17,7 +18,13 @@ class Speed extends CI_Controller {
 	public function speed_tables() {
 		$data['speed'] = $this -> speed_values();
 		$data['title'] = 'Prędkość';
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('speed/speed', $data);
 		$this -> load -> view('templates/footer');
 	}

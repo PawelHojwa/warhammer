@@ -1,5 +1,3 @@
-<?php
-echo "Zmiany zapisano";
-echo br(2);
-echo anchor('login/logout', "Wyloguj", array('style' => 'display: inline-block;'));
-?>
+<div class="formlog">
+<p class="right"><span id="span">Witaj, <?php echo $name . '</span>'; echo anchor('login/logout', 'Wyloguj', ['class' => 'btn btn-primary'])?></p>
+</div>

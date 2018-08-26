@@ -37,6 +37,7 @@ class Race_skills extends CI_Controller {
 		$data['skills'] = $this -> get_race_skills($race);
 		$data['title'] = "Umiejętności rasowe";
 		$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+		$data['name'] = $this -> session -> user;
 		if ($data['amount'] == 1) {
 			$skill = $data['skills'][0] -> skill_id;
 			$this -> universal_model -> insert('char_skills', array('id' => '', 'char_id' => $_SESSION['p_id'], 'profId' => 1, 'skill_id' => $skill));
@@ -46,6 +47,11 @@ class Race_skills extends CI_Controller {
 		}
 		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
 			$this -> load -> view('form/race_skills', $data);
 			$this -> load -> view('templates/footer');
 		} else {
@@ -55,7 +61,6 @@ class Race_skills extends CI_Controller {
 					$arr[] = $skill -> skillid;
 				}
 			}
-			
 			$datas = $this -> verify_data($arr);
 			$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $datas);
 			redirect('player_skills/skill');

@@ -33,57 +33,54 @@ class Player_skills extends CI_Controller {
 	}
 
 	public function skill() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		$r_skills = $this -> universal_model -> get_user('char_skills', array('char_id' => $_SESSION['p_id']));
+		$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
+		$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
+		$race_skills = array();
+		$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
+		if (!empty($r_skills) && is_array($r_skills)) {
+			foreach ($r_skills as $skill) {
+				$race_skills[] = $skill['skill_id'];
+			}
+			$r_s = $this -> race_skills($race_skills, $_SESSION['p_id']);
+			$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $r_s);
+		}
+		$data = $this -> char_skill -> char_data($_SESSION['p_id']);
+		if (!isset($_SESSION['amount'])) {
+			$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+		} else {
+			$data['amount'] = $_SESSION['amount'];
+		}
+		$data['id'] = $_SESSION['p_id'];
+		$skills = $this -> get_skill($prof_id);
+		$prof_skills = array();
+		foreach ($skills as $skill) {
+			$prof_skills[] = $skill['skill_id'];
+		}
+		$data['profession'] = $prof_name;
+		$data['profession_id'] = $prof_id;
+		$data['name'] = $this -> session -> user;
+		$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
+		$this -> form_validation -> set_rules('skills[]', 'Umiejętność', 'required', array('required' => "'{}' jest wymagana"));
+		if ($this -> form_validation -> run() === false) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('form/skills', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			$r_skills = $this -> universal_model -> get_user('char_skills', array('char_id' => $_SESSION['p_id']));
-			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
-			$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
-			$race_skills = array();
-			$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
-			if (!empty($r_skills) && is_array($r_skills)) {
-				foreach ($r_skills as $skill) {
-					$race_skills[] = $skill['skill_id'];
-				}
-				$r_s = $this -> race_skills($race_skills, $_SESSION['p_id']);
-				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $r_s);
-			}
-			$data = $this -> char_skill -> char_data($_SESSION['p_id']);
-			if (!isset($_SESSION['amount'])) {
-				$data['amount'] = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'amount');
+			if ($char_id == NULL) {
+				$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
+				redirect('inventory/form_inventory');
 			} else {
-				$data['amount'] = $_SESSION['amount'];
-			}
-			$data['id'] = $_SESSION['p_id'];
-			$skills = $this -> get_skill($prof_id);
-			$prof_skills = array();
-			foreach ($skills as $skill) {
-				$prof_skills[] = $skill['skill_id'];
-			}
-			$data['profession'] = $prof_name;
-			$data['profession_id'] = $prof_id;
-			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
-			$this -> form_validation -> set_rules('skills[]', 'Umiejętność', 'required', array('required' => "'{}' jest wymagana"));
-			if ($this -> form_validation -> run() === false) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/skills', $data);
-				$this -> load -> view('templates/footer');
-			} else {
-				if ($char_id == NULL) {
-					$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
-					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
-					redirect('inventory/form_inventory');
-				} else {
-					$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
-					$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
-					$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
-					redirect('inventory/form_inventory');
-				}
+				$this -> universal_model -> delete('char_skills', array('char_id' => $_SESSION['p_id']));
+				$arr = $this -> verify_data($_SESSION['p_id'], $prof_id, $prof_skills);
+				$this -> char_skills_model -> multi_insert('char_skills', 'skill_id', $arr);
+				redirect('inventory/form_inventory');
 			}
 		}
 	}

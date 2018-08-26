@@ -23,8 +23,9 @@ class Admin_panel extends CI_Controller {
 				'add_race' => 'Dodaj rase',
 				'add_class' => 'Dodaj klase',
 				'add_monster' => 'Dodaj potwora',
-				'add_item' => 'Dodaj przedmiot'
-			);
+				'add_item' => 'Dodaj przedmiot',
+				'name' => $this -> session -> user
+ 			);
 		return $arr;
 	}
 	
@@ -68,14 +69,6 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function show_list() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
-			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
-			$this -> load -> view('templates/footer');
-		} else {
 			$data = $this -> admin_menu();
 			if ($this -> session -> has_userdata('p_id') ) {
 				$this -> session -> unset_userdata('p_id');
@@ -83,51 +76,56 @@ class Admin_panel extends CI_Controller {
 			$data['chars'] = $this -> get_character_names();
 			$data['subtitle'] = 'Wszystkie postacie';
 			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
 			$this -> load -> view('admin/admin_menu', $data);
 			$this -> load -> view('admin/show_list', $data);
 			$this -> load -> view('templates/footer');
-		}
 	}
 	
 	public function add_skill() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('skill') === TRUE) {
+			$this -> session -> unset_userdata('skill');
+		}
+		$data = $this -> admin_menu();
+		$data['subtitle'] = "Dodaj/usuń umiejętność";
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('description', 'Opis umiejętności', 'required', array('required' => '{field} jest wymagany'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_skills', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('skill') === TRUE) {
-				$this -> session -> unset_userdata('skill');
-			}
-			$data = $this -> admin_menu();
-			$data['subtitle'] = "Dodaj/usuń umiejętność";
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('skill_name', 'Nazwa umiejętności', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('description', 'Opis umiejętności', 'required', array('required' => '{field} jest wymagany'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_skills', $data);
-				$this -> load -> view('templates/footer');
+			$skill_name = $this -> check_data('skill_name', 'umiejetnosci', 'skillName');
+			$add = "";
+			if (empty($skill_name)) {
+				$skill_data = $this -> skills_data();
+				$this -> universal_model -> insert('umiejetnosci', $skill_data);
+				$last_skill = $this -> universal_model -> last_index('umiejetnosci', 'skillName');
+				$add = "Wprowadzono <b>" . $last_skill . "</b>";
 			} else {
-				$skill_name = $this -> check_data('skill_name', 'umiejetnosci', 'skillName');
-				$add = "";
-				if (empty($skill_name)) {
-					$skill_data = $this -> skills_data();
-					$this -> universal_model -> insert('umiejetnosci', $skill_data);
-					$last_skill = $this -> universal_model -> last_index('umiejetnosci', 'skillName');
-					$add = "Wprowadzono <b>" . $last_skill . "</b>";
-				} else {
-					$add = $skill_name . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_skills', $data);
-				$this -> load -> view('templates/footer');
+				$add = $skill_name . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_skills', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
@@ -305,135 +303,138 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_items() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('item') === TRUE) {
+			$this -> session -> unset_userdata('item');
+		}
+		$data = $this -> admin_menu();
+		$data['subtitle'] = "Dodaj/usuń przedmiot";
+		$availability = $this -> universal_model -> get_data('availability');
+		$armour_placement = $this -> universal_model -> get_data('armour_placement');
+		$data['group_id'] = $this -> universal_model -> get_data('items_group');
+		$type = $this -> universal_model -> get_data('things_types');
+		$weapon_type = $this -> universal_model -> get_data('weapon_type_name');
+		$type_id =  $type_name = $availability_id = $availability_name = array();
+		$data['weapon_type'] = $weapon_type;
+		$data['armour_placement'] = $armour_placement;
+		foreach ($type as $row) {
+			$type_id[] = $row['id'];
+			$type_name[] = $row['name'];
+		}
+		$data['item_type'] = array_combine($type_id, $type_name);
+		foreach ($availability as $row) {
+			$availability_id[] = $row['lp'];
+			$availability_name[] = $row['avail'];
+		}
+		$data['availability'] = array_combine($availability_id, $availability_name);
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('item_name', 'Nazwa przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('type', 'Kategoria przedmiotu', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('weight', 'Waga', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_item', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('item') === TRUE) {
-				$this -> session -> unset_userdata('item');
-			}
-			$data = $this -> admin_menu();
-			$data['subtitle'] = "Dodaj/usuń przedmiot";
-			$availability = $this -> universal_model -> get_data('availability');
-			$armour_placement = $this -> universal_model -> get_data('armour_placement');
-			$data['group_id'] = $this -> universal_model -> get_data('items_group');
-			$type = $this -> universal_model -> get_data('things_types');
-			$weapon_type = $this -> universal_model -> get_data('weapon_type_name');
-			$type_id =  $type_name = $availability_id = $availability_name = array();
-			$data['weapon_type'] = $weapon_type;
-			$data['armour_placement'] = $armour_placement;
-			foreach ($type as $row) {
-				$type_id[] = $row['id'];
-				$type_name[] = $row['name'];
-			}
-			$data['item_type'] = array_combine($type_id, $type_name);
-			foreach ($availability as $row) {
-				$availability_id[] = $row['lp'];
-				$availability_name[] = $row['avail'];
-			}
-			$data['availability'] = array_combine($availability_id, $availability_name);
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('item_name', 'Nazwa przedmiotu', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('type', 'Kategoria przedmiotu', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('weight', 'Waga', 'required', array('required' => '{field} jest wymagana'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_item', $data);
-				$this -> load -> view('templates/footer');
-			} else {
-				$name = $this -> check_data('item_name', 'items', 'item');
-				$add = "";
-				if (empty($name)) {
-					$item_name = $this -> valid_items_name();
-					$this -> universal_model -> insert('items', $item_name);
-					$last_id = $this -> universal_model -> last_index('items', 'id');
-					$last_item = $this -> universal_model -> last_index('items', 'item');
-					$trade_item = $this -> valid_items($last_id);
-					$this -> universal_model -> insert('trades', $trade_item);
-					if ($trade_item['type'] == 3) {
-						$armour = $this -> valid_armour_placement($last_id);
-						if (!empty($armour) && is_array($armour)) {
-							$this -> admin_model -> armour_multi_insert($armour);
-						}
+			$name = $this -> check_data('item_name', 'items', 'item');
+			$add = "";
+			if (empty($name)) {
+				$item_name = $this -> valid_items_name();
+				$this -> universal_model -> insert('items', $item_name);
+				$last_id = $this -> universal_model -> last_index('items', 'id');
+				$last_item = $this -> universal_model -> last_index('items', 'item');
+				$trade_item = $this -> valid_items($last_id);
+				$this -> universal_model -> insert('trades', $trade_item);
+				if ($trade_item['type'] == 3) {
+					$armour = $this -> valid_armour_placement($last_id);
+					if (!empty($armour) && is_array($armour)) {
+						$this -> admin_model -> armour_multi_insert($armour);
 					}
-					$add = "Wprowadzono <b>" . $last_item . "</b>";
-				} else {
-					$add = $name . " już istnieje!";
 				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_item', $data);
-				$this -> load -> view('templates/footer');
+				$add = "Wprowadzono <b>" . $last_item . "</b>";
+			} else {
+				$add = $name . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_item', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
 	public function add_spell() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('spell') === TRUE) {
+			$this -> session -> unset_userdata('spell');
+		}
+		$data = $this -> admin_menu();
+		$data['subtitle'] = "Dodaj/usuń czar";
+		$spells = $this -> universal_model -> get_data('casts_type');
+		$spell_id = array();
+		$spell_type = array();
+		foreach ($spells as $spell) {
+			$spell_id[] = $spell['id'];
+			$spell_type[] = $spell['type'];
+		}
+		$data['spell_type'] = array_combine($spell_id, $spell_type);
+		$lvl = array(0, 1, 2, 3, 4);
+		$data['spell_lvl'] = $lvl;
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('spell_name', 'Nazwa czaru', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('spell_lvl', 'Poziom czaru', 'required', array('required' => '{field} jest wymagany'));
+		$this -> form_validation -> set_rules('spell_cost', 'Koszt czaru', 'required', array('required' => '{field} jest wymagany'));
+		$this -> form_validation -> set_rules('spell_duration', 'Długość działania', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('spell_type', 'Typ czaru', 'required', array('required' => '{field} jest wymagany'));
+		$this -> form_validation -> set_rules('spell_range', 'Zasięg czaru', 'required', array('required' => '{field} jest wymagany'));
+		$this -> form_validation -> set_rules('spell_components', 'Komponenty', 'required', array('required' => '{field} są wymagane'));
+		$this -> form_validation -> set_rules('spell_effect', 'Efekt', 'required', array('required' => '{field} jest wymagany'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_spells', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('spell') === TRUE) {
-				$this -> session -> unset_userdata('spell');
-			}
-			$data = $this -> admin_menu();
-			$data['subtitle'] = "Dodaj/usuń czar";
-			$spells = $this -> universal_model -> get_data('casts_type');
-			$spell_id = array();
-			$spell_type = array();
-			foreach ($spells as $spell) {
-				$spell_id[] = $spell['id'];
-				$spell_type[] = $spell['type'];
-			}
-			$data['spell_type'] = array_combine($spell_id, $spell_type);
-			$lvl = array(0, 1, 2, 3, 4);
-			$data['spell_lvl'] = $lvl;
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('spell_name', 'Nazwa czaru', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('spell_lvl', 'Poziom czaru', 'required', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('spell_cost', 'Koszt czaru', 'required', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('spell_duration', 'Długość działania', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('spell_type', 'Typ czaru', 'required', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('spell_range', 'Zasięg czaru', 'required', array('required' => '{field} jest wymagany'));
-			$this -> form_validation -> set_rules('spell_components', 'Komponenty', 'required', array('required' => '{field} są wymagane'));
-			$this -> form_validation -> set_rules('spell_effect', 'Efekt', 'required', array('required' => '{field} jest wymagany'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_spells', $data);
-				$this -> load -> view('templates/footer');
+			$spell = $this -> check_data('spell_name', 'casts_names', 'cast_name');
+			$add = "";
+			if (empty($spell)) {
+				$spell_name = $this -> sp_name();
+				$this -> universal_model -> insert('casts_names', $spell_name);
+				$spell_id = $this -> universal_model -> last_index('casts_names', 'id');
+				$spell_info = $this -> spell($spell_id);
+				$this -> universal_model -> insert('spells', $spell_info);
+				$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
+				$add = "Wprowadzono <b>" . $last_spell . "</b>";
 			} else {
-				$spell = $this -> check_data('spell_name', 'casts_names', 'cast_name');
-				$add = "";
-				if (empty($spell)) {
-					$spell_name = $this -> sp_name();
-					$this -> universal_model -> insert('casts_names', $spell_name);
-					$spell_id = $this -> universal_model -> last_index('casts_names', 'id');
-					$spell_info = $this -> spell($spell_id);
-					$this -> universal_model -> insert('spells', $spell_info);
-					$last_spell = $this -> universal_model -> last_index('casts_names', 'cast_name');
-					$add = "Wprowadzono <b>" . $last_spell . "</b>";
-				} else {
-					$add = $spell . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_spells', $data);
-				$this -> load -> view('templates/footer');
+				$add = $spell . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_spells', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
+	
 	
 	public function check_val($str) {
 		if ($str > 0) {
@@ -570,62 +571,63 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_profession() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('prof') === TRUE) {
+			$this -> session ->unset_userdata('prof');
+		}
+		$data = $this -> admin_menu();
+		$skill_id = $this -> char_skills_model -> get_skills('skillid');
+		$skill_name = $this -> char_skills_model -> get_skills('skillName');
+		$class_id = $this -> admin_model -> get_classes('classID');	
+		$class_name = $this -> admin_model -> get_classes('className');
+		$exit_prof = $this -> get_professions();
+		$data['classes'] = array_combine($class_id, $class_name);
+		$data['items'] = $this -> admin_model -> get_items();
+		$data['subtitle'] = 'Dodaj/usun profesję';
+		$data['skills'] = array_combine($skill_id, $skill_name);
+		$data['exit'] = $exit_prof;
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_profession', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('prof') === TRUE) {
-				$this -> session ->unset_userdata('prof');
-			}
-			$data = $this -> admin_menu();
-			$skill_id = $this -> char_skills_model -> get_skills('skillid');
-			$skill_name = $this -> char_skills_model -> get_skills('skillName');
-			$class_id = $this -> admin_model -> get_classes('classID');	
-			$class_name = $this -> admin_model -> get_classes('className');
-			$exit_prof = $this -> get_professions();
-			$data['classes'] = array_combine($class_id, $class_name);
-			$data['items'] = $this -> admin_model -> get_items();
-			$data['subtitle'] = 'Dodaj/usun profesję';
-			$data['skills'] = array_combine($skill_id, $skill_name);
-			$data['exit'] = $exit_prof;
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('profession_name', 'Nazwa profesji', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('profession_type', 'Rodzaj profesji', 'required', array('required' => '{field} jest wymagany'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_profession', $data);
-				$this -> load -> view('templates/footer');
+			$profession = $this -> check_data('profession_name', 'professions', 'profession_name');
+			$add = "";
+			if (empty($profession)) {
+				$profession_name = $this -> valid_profession_name();
+				$this -> universal_model -> insert('professions', $profession_name);
+				$profession_id = $this -> universal_model -> last_index('professions', 'id');
+				$profession_skill = $this -> valid_skills($profession_id);
+				$profession_items = $this -> valid_item($profession_id);
+				$profession_statistics = $this -> valid_statistics($profession_id);
+				$profession_exit = $this -> valid_exit_prof($profession_id);
+				$this -> admin_model -> profession_skill_insert($profession_skill);
+				$this -> admin_model -> profession_items_insert($profession_items);
+				$this -> universal_model -> insert('professions_statistics', $profession_statistics);
+				$this -> admin_model -> exit_profession_insert($profession_exit);
+				$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
+				$add = "Wprowadzono <b>" . $last_profession . "</b>";
 			} else {
-				$profession = $this -> check_data('profession_name', 'professions', 'profession_name');
-				$add = "";
-				if (empty($profession)) {
-					$profession_name = $this -> valid_profession_name();
-					$this -> universal_model -> insert('professions', $profession_name);
-					$profession_id = $this -> universal_model -> last_index('professions', 'id');
-					$profession_skill = $this -> valid_skills($profession_id);
-					$profession_items = $this -> valid_item($profession_id);
-					$profession_statistics = $this -> valid_statistics($profession_id);
-					$profession_exit = $this -> valid_exit_prof($profession_id);
-					$this -> admin_model -> profession_skill_insert($profession_skill);
-					$this -> admin_model -> profession_items_insert($profession_items);
-					$this -> universal_model -> insert('professions_statistics', $profession_statistics);
-					$this -> admin_model -> exit_profession_insert($profession_exit);
-					$last_profession = $this -> universal_model -> last_index('professions', 'profession_name');
-					$add = "Wprowadzono <b>" . $last_profession . "</b>";
-				} else {
-					$add = $profession . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_profession', $data);
-				$this -> load -> view('templates/footer');
+				$add = $profession . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_profession', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 
@@ -721,55 +723,56 @@ class Admin_panel extends CI_Controller {
 	}
 
 	public function add_race() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('race') === TRUE) {
+			$this -> session -> unset_userdata('race');
+		}
+		$data = $this -> admin_menu();
+		$skill_id = $this -> char_skills_model -> get_skills('skillid');
+		$skill_name = $this -> char_skills_model -> get_skills('skillName');
+		$data['subtitle'] = 'Dodaj/usuń rasy';
+		$data['skills'] = array_combine($skill_id, $skill_name);
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
+		$this -> form_validation -> set_rules('min_age', 'Minimalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczą'));
+		$this -> form_validation -> set_rules('max_age', 'Maksymalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczbą'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_races', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('race') === TRUE) {
-				$this -> session -> unset_userdata('race');
-			}
-			$data = $this -> admin_menu();
-			$skill_id = $this -> char_skills_model -> get_skills('skillid');
-			$skill_name = $this -> char_skills_model -> get_skills('skillName');
-			$data['subtitle'] = 'Dodaj/usuń rasy';
-			$data['skills'] = array_combine($skill_id, $skill_name);
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('race_name', 'Nazwa rasy', 'required', array('required' => '{field} jest wymagana'));
-			$this -> form_validation -> set_rules('min_age', 'Minimalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczą'));
-			$this -> form_validation -> set_rules('max_age', 'Maksymalny wiek', 'required|numeric', array('required' => '{field} jest wymagany', 'numeric' => '{field} musi być liczbą'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_races', $data);
-				$this -> load -> view('templates/footer');
+			$race = $this -> check_data('race_name', 'rasa', 'raceName');
+			$add = "";
+			if (empty($race)) {
+				$race_name = $this -> valid_race();
+				$this -> universal_model -> insert('rasa', $race_name);
+				$race_id = $this -> universal_model -> last_index('rasa', 'raceID');
+				$race_age = $this -> valid_race_age($race_id);
+				$this -> universal_model -> insert('race_age', $race_age);
+				$race_skill = $this -> valid_race_skill($race_id);
+				$this -> admin_model -> race_skill_insert($race_skill);
+				$race_add_skill = $this -> valid_add_race_skill($race_id);
+				$this -> admin_model -> add_race_skill_insert($race_add_skill);
+				$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
+				$add = "Wprowadzono <b>" . $last_race . "</b>";
 			} else {
-				$race = $this -> check_data('race_name', 'rasa', 'raceName');
-				$add = "";
-				if (empty($race)) {
-					$race_name = $this -> valid_race();
-					$this -> universal_model -> insert('rasa', $race_name);
-					$race_id = $this -> universal_model -> last_index('rasa', 'raceID');
-					$race_age = $this -> valid_race_age($race_id);
-					$this -> universal_model -> insert('race_age', $race_age);
-					$race_skill = $this -> valid_race_skill($race_id);
-					$this -> admin_model -> race_skill_insert($race_skill);
-					$race_add_skill = $this -> valid_add_race_skill($race_id);
-					$this -> admin_model -> add_race_skill_insert($race_add_skill);
-					$last_race = $this -> universal_model -> last_index('rasa', 'raceName');
-					$add = "Wprowadzono <b>" . $last_race . "</b>";
-				} else {
-					$add = $race . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_races', $data);
-				$this -> load -> view('templates/footer');
+				$add = $race . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_races', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
@@ -789,47 +792,48 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_class() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('class') === TRUE) {
+			$this -> session -> unset_userdata('class');
+		}
+		$data = $this -> admin_menu();
+		$items = $this -> admin_model -> get_items();
+		$data['items'] = $items;
+		$data['subtitle'] = 'Dodaj/usuń klase';
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_class', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('class') === TRUE) {
-				$this -> session -> unset_userdata('class');
-			}
-			$data = $this -> admin_menu();
-			$items = $this -> admin_model -> get_items();
-			$data['items'] = $items;
-			$data['subtitle'] = 'Dodaj/usuń klase';
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('class_name', 'Nazwa klasy', 'required', array('required' => '{field} jest wymagana'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_class', $data);
-				$this -> load -> view('templates/footer');
+			$class = $this -> check_data('class_name', 'classes' ,'className');
+			if (empty($class)) {
+				$class_name = $this -> valid_class();
+				$this -> universal_model -> insert('classes', $class_name);
+				$class_id = $this -> universal_model -> last_index('classes', 'classID');
+				$class_items = $this -> valid_class_items($class_id);
+				$this -> admin_model -> class_items_multi_insert($class_items);
+				$last_class = $this -> universal_model -> last_index('classes', 'className');
+				$add = "Wprowadzono <b>" . $last_class . "</b>";
 			} else {
-				$class = $this -> check_data('class_name', 'classes' ,'className');
-				if (empty($class)) {
-					$class_name = $this -> valid_class();
-					$this -> universal_model -> insert('classes', $class_name);
-					$class_id = $this -> universal_model -> last_index('classes', 'classID');
-					$class_items = $this -> valid_class_items($class_id);
-					$this -> admin_model -> class_items_multi_insert($class_items);
-					$last_class = $this -> universal_model -> last_index('classes', 'className');
-					$add = "Wprowadzono <b>" . $last_class . "</b>";
-				} else {
-					$add = $class . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_class', $data);
-				$this -> load -> view('templates/footer');
+				$add = $class . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_class', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 	
@@ -911,50 +915,51 @@ class Admin_panel extends CI_Controller {
 	}
 	
 	public function add_monster() {
-		if (!isset($_SESSION['user'])) {
-			$data['title'] = "Logowanie";
-			$data['sub_title'] = "Formularz logowania";
-			$data['error'] = "";
+		if ($this -> session -> has_userdata('monster') === TRUE) {
+			$this -> session -> unset_userdata('monster');
+		}
+		$data = $this -> admin_menu();
+		$data['subtitle'] = "Dodaj/usuń potwora";
+		$category = $this -> universal_model -> get_data('kategoria_potwora');
+		$category_name = $category_id = array();
+		foreach ($category as $row) {
+			$category_id[] = $row['categoryID'];
+			$category_name[] = $row['monsterCategory'];
+		}
+		$data['category'] = array_combine($category_id, $category_name);
+		$data['added'] = "";
+		$this -> form_validation -> set_rules('monster_name', 'Nazwa potwora', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
 			$this -> load -> view('templates/header', $data);
-			$this -> load -> view('form/login', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_monsters', $data);
 			$this -> load -> view('templates/footer');
 		} else {
-			if ($this -> session -> has_userdata('monster') === TRUE) {
-				$this -> session -> unset_userdata('monster');
-			}
-			$data = $this -> admin_menu();
-			$data['subtitle'] = "Dodaj/usuń potwora";
-			$category = $this -> universal_model -> get_data('kategoria_potwora');
-			$category_name = $category_id = array();
-			foreach ($category as $row) {
-				$category_id[] = $row['categoryID'];
-				$category_name[] = $row['monsterCategory'];
-			}
-			$data['category'] = array_combine($category_id, $category_name);
-			$data['added'] = "";
-			$this -> form_validation -> set_rules('monster_name', 'Nazwa potwora', 'required', array('required' => '{field} jest wymagana'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_monsters', $data);
-				$this -> load -> view('templates/footer');
+			$monster = $this -> check_data('monster_name', 'monsters', 'monsterName');	
+			$add = "";
+			if (empty($monster)) {
+				$monster_data = $this -> valid_monster();
+				$this -> universal_model -> insert('monsters', $monster_data);
+				$last_monster = $this -> universal_model -> last_index('monsters', 'monsterName');
+				$add = "Wprowadzono <b>" . $last_monster . "</b>";
 			} else {
-				$monster = $this -> check_data('monster_name', 'monsters', 'monsterName');	
-				$add = "";
-				if (empty($monster)) {
-					$monster_data = $this -> valid_monster();
-					$this -> universal_model -> insert('monsters', $monster_data);
-					$last_monster = $this -> universal_model -> last_index('monsters', 'monsterName');
-					$add = "Wprowadzono <b>" . $last_monster . "</b>";
-				} else {
-					$add = $monster . " już istnieje!";
-				}
-				$data['added'] = $add;
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('admin/admin_menu', $data);
-				$this -> load -> view('admin/add_monsters', $data);
-				$this -> load -> view('templates/footer');
+				$add = $monster . " już istnieje!";
 			}
+			$data['added'] = $add;
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('admin/admin_menu', $data);
+			$this -> load -> view('admin/add_monsters', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 }

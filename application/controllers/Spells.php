@@ -26,30 +26,32 @@ class Spells extends CI_Controller {
 	}
 	
 	public function spell_form() {
-		if (!isset($_SESSION['user'])) {
-			redirect('login/view_form');
-		} else {
-			$this -> form_validation -> set_rules('spell[]', 'Czar', 'required', array('required' => 'Nie wybrano czarów'));
-			$data['amount'] = 2;
-			$data['spells'] = $this -> get_spell();
-			$data['title'] = "Zaklęcia";
-			$data['sub_title'] = 'Wybierz zaklęcia';
-			$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/spells_form', $data);
-				$this -> load -> view('templates/footer');
+		$this -> form_validation -> set_rules('spell[]', 'Czar', 'required', array('required' => 'Nie wybrano czarów'));
+		$data['amount'] = 2;
+		$data['spells'] = $this -> get_spell();
+		$data['title'] = "Zaklęcia";
+		$data['sub_title'] = 'Wybierz zaklęcia';
+		$data['name'] = $this -> session -> user;
+		$char_id = $this -> universal_model -> get_values('char_skills', array('char_id' => $_SESSION['p_id']), 'char_id');
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
 			} else {
-				if ($char_id == NULL) {
-					$arr = $this -> verifity_data();
-					$this -> spell_model -> multi_insert('char_spells', $arr);
-					redirect('free_stat/rise_stat');
-				} else {
-					$this -> universal_model -> delete('char_spells', array('char_id' => $_SESSION['p_id']));
-					$arr = $this -> verifity_data();
-					$this -> spell_model -> multi_insert('char_spells', $arr);
-					redirect('free_stat/rise_stat');
-				}
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('form/spells_form', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			if ($char_id == NULL) {
+				$arr = $this -> verifity_data();
+				$this -> spell_model -> multi_insert('char_spells', $arr);
+				redirect('free_stat/rise_stat');
+			} else {
+				$this -> universal_model -> delete('char_spells', array('char_id' => $_SESSION['p_id']));
+				$arr = $this -> verifity_data();
+				$this -> spell_model -> multi_insert('char_spells', $arr);
+				redirect('free_stat/rise_stat');
 			}
 		}
 	}

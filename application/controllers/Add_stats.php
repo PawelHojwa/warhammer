@@ -35,69 +35,71 @@ class Add_stats extends CI_Controller {
 	}
 	
 	public function add() {
-		if (!isset($_SESSION['user'])) {
-			redirect('login/view_form');
+		$player_id = $_SESSION['p_id'];
+		$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
+		$profession_name = $this -> universal_model -> get_values('professions', array('id' => $profession_id), 'profession_name');
+		$data = $this -> get_stats($player_id, $profession_id);
+		$race_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'raceID');
+		$race_stats = $this -> get_race_stats($race_id);
+		//podstawowe statystyki
+		$data['sz'] += $race_stats['sz'];
+		$data['ww'] += $race_stats['ww'];
+		$data['us'] += $race_stats['us'];
+		$data['s'] += $race_stats['s'];
+		$data['wt'] += $race_stats['wt'];
+		$data['zw'] += $race_stats['zw'];
+		$data['i'] += $race_stats['i'];
+		$data['a'] += $race_stats['a'];
+		$data['zr'] += $race_stats['zr'];
+		$data['cp'] += $race_stats['cp'];
+		$data['int'] += $race_stats['intel'];
+		$data['op'] += $race_stats['op'];
+		$data['sw'] += $race_stats['sw'];
+		$data['ogd'] += $race_stats['ogd'];
+		//statystyki po rozwinięciu
+		$data['csz'] += $race_stats['sz'];
+		$data['cww'] += $race_stats['ww'];
+		$data['cus'] += $race_stats['us'];
+		$data['cs'] += $race_stats['s'];
+		$data['cwt'] += $race_stats['wt'];
+		$data['czw'] += $race_stats['zw'];
+		$data['ci'] += $race_stats['i'];
+		$data['ca'] += $race_stats['a'];
+		$data['czr'] += $race_stats['zr'];
+		$data['ccp'] += $race_stats['cp'];
+		$data['cint'] += $race_stats['intel'];
+		$data['cop'] += $race_stats['op'];
+		$data['csw'] += $race_stats['sw'];
+		$data['cogd'] += $race_stats['ogd'];
+		$data['title'] = "Dodawanie statystyk";
+		$data['profession_name'] = $profession_name;
+		$data['amount'] = 0;
+		$data['name'] = $this -> session -> user;
+		$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
+		$data['exp'] = $exp;
+		if (floor($exp / 100) == 0) {
+			redirect('login/logout');
 		} else {
-			$player_id = $_SESSION['p_id'];
-			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
-			$profession_name = $this -> universal_model -> get_values('professions', array('id' => $profession_id), 'profession_name');
-			$data = $this -> get_stats($player_id, $profession_id);
-			$race_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'raceID');
-			$race_stats = $this -> get_race_stats($race_id);
-			//podstawowe statystyki
-			$data['sz'] += $race_stats['sz'];
-			$data['ww'] += $race_stats['ww'];
-			$data['us'] += $race_stats['us'];
-			$data['s'] += $race_stats['s'];
-			$data['wt'] += $race_stats['wt'];
-			$data['zw'] += $race_stats['zw'];
-			$data['i'] += $race_stats['i'];
-			$data['a'] += $race_stats['a'];
-			$data['zr'] += $race_stats['zr'];
-			$data['cp'] += $race_stats['cp'];
-			$data['int'] += $race_stats['intel'];
-			$data['op'] += $race_stats['op'];
-			$data['sw'] += $race_stats['sw'];
-			$data['ogd'] += $race_stats['ogd'];
-			//statystyki po rozwinięciu
-			$data['csz'] += $race_stats['sz'];
-			$data['cww'] += $race_stats['ww'];
-			$data['cus'] += $race_stats['us'];
-			$data['cs'] += $race_stats['s'];
-			$data['cwt'] += $race_stats['wt'];
-			$data['czw'] += $race_stats['zw'];
-			$data['ci'] += $race_stats['i'];
-			$data['ca'] += $race_stats['a'];
-			$data['czr'] += $race_stats['zr'];
-			$data['ccp'] += $race_stats['cp'];
-			$data['cint'] += $race_stats['intel'];
-			$data['cop'] += $race_stats['op'];
-			$data['csw'] += $race_stats['sw'];
-			$data['cogd'] += $race_stats['ogd'];
-			$data['title'] = "Dodawanie statystyk";
-			$data['profession_name'] = $profession_name;
-			$data['amount'] = 0;
-			$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
-			$data['exp'] = $exp;
-			if (floor($exp / 100) == 0) {
-				redirect('login/logout');
+			$data['amount'] = floor($exp / 100);
+		}
+		$this -> form_validation -> set_rules('exp', 'Exp', 'required', array('required' => "Pole '{field}' jest wymagane"));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
 			} else {
-				$data['amount'] = floor($exp / 100);
+				$this -> load -> view('form/login');
 			}
-			$this -> form_validation -> set_rules('exp', 'Exp', 'required', array('required' => "Pole '{field}' jest wymagane"));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/add_stats', $data);
-				$this -> load -> view('templates/footer');
-			} else {
-				$arr = $this -> verify_stats($player_id, $race_stats);
-				$points = $this -> verify_dev_stats($player_id);
-				$diff_exp = $this -> input -> post('exp');
-				$this -> universal_model -> update('current_schematic', $arr, array('char_id' => $player_id));
-				$this -> universal_model -> update('dev_statistics', $points, array('char_id' => $player_id));
-				$this -> universal_model -> update('characters', array('exp' => ($exp - $diff_exp)), array('id' => $player_id));
-				redirect('add_choose/show_options');
-			}
+			$this -> load -> view('form/add_stats', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			$arr = $this -> verify_stats($player_id, $race_stats);
+			$points = $this -> verify_dev_stats($player_id);
+			$diff_exp = $this -> input -> post('exp');
+			$this -> universal_model -> update('current_schematic', $arr, array('char_id' => $player_id));
+			$this -> universal_model -> update('dev_statistics', $points, array('char_id' => $player_id));
+			$this -> universal_model -> update('characters', array('exp' => ($exp - $diff_exp)), array('id' => $player_id));
+			redirect('add_choose/show_options');
 		}
 	}
 

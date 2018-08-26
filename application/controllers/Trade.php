@@ -8,6 +8,7 @@ class Trade extends CI_Controller {
 		$this -> load -> helper('html');
 		$this -> load -> helper('url_helper');
 		$this -> load -> helper('form');
+		$this -> load -> library('session');
 	}
 
 	public function get_list($tab_name) {
@@ -17,7 +18,13 @@ class Trade extends CI_Controller {
 	public function price_list() {
 		$data['trade_list'] = $this -> trade_list();
 		$data['title'] = 'Cennik';
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('trade/list', $data);
 		$this -> load -> view('templates/footer');
 	}
@@ -76,7 +83,6 @@ class Trade extends CI_Controller {
 				}
 			}
 			$this -> output -> set_content_type('application/json') -> set_output(json_encode($price));
-			//echo "lalala";
 		} else {
 			echo "BlaBla";
 		}
@@ -102,7 +108,7 @@ class Trade extends CI_Controller {
 					}
 					echo "</table>";
 		} else {
-			echo "Gdzie jest błąd?";
+			echo "Błąd";
 		}
 	}
 

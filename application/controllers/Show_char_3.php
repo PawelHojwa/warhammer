@@ -20,7 +20,13 @@ class Show_char_3 extends CI_Controller {
 		$player_id = $_SESSION['p_id'];
 		$data = $this -> get_company($player_id);
 		$data['title'] = "Karta postaci";
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('characters/page_3');
 		$this -> load -> view('templates/footer');
 	}

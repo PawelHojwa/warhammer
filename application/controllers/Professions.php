@@ -9,11 +9,13 @@ class Professions extends CI_Controller {
 		$this -> load -> library('table');
 		$this -> load -> model('admin_model');
 		$this -> load -> model('universal_model');
+		$this -> load -> library('session');
 	}
 	
 	public function set_data() {
 		$arr = [
 			'title' => 'Profesje',
+			'name' => $this -> session -> user
 		];
 		return $arr;
 	}
@@ -30,6 +32,11 @@ class Professions extends CI_Controller {
 	public function show_professions() {
 		$data = $this -> set_data();
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
 		$this -> load -> view('show/professions', $data);
 		$this -> load -> view('templates/footer');
 	}

@@ -1,14 +1,11 @@
-<div id="wrapper">
-	<?php echo form_open('login/form_login', 'id="login"');
-		echo form_label('Logowanie', '', ['class' => 'form_caption']);
-		echo form_label('Nazwa użytkownika: ', 'username') . "<br>"; 
-		echo form_input('username', '', 'id="first"');
-		echo form_label('Hasło: ', 'password') . "<br>";
-		echo form_password('password'); 
+<div class="formlog">
+	<?php echo form_open('login/form_login');
+		echo form_input('username', '', ['placeholder' => 'Nazwa użytkownika...', 'id' => 'first']);
+		echo form_password('password', '', ['placeholder' => 'Hasło...']); 
 		echo form_submit('submit', 'Zaloguj', ['class' => 'btn btn-primary']);	
 	echo form_close();
 	?>
-	<div id="anchors">
+	<div id="anchors" class="right clr">
 		<?php
 		echo anchor('register/register', 'Rejestracja', 
 			array('title' => 'Rejestracja'));

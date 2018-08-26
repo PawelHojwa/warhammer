@@ -100,7 +100,7 @@ echo br(2);
 </div>
 <script>
 $('document').ready(function() {
-	$('span').css({'width': 305, 'display' : 'inline-block'});
+	$('span').not('#span').css({'width': 305, 'display' : 'inline-block'});
 	$('.result').hide();
 	$('.class-items').hide();
 	$('.c-items').click(function() {

@@ -16,7 +16,13 @@ class Show_char_4 extends CI_Controller {
 	public function page_4() {
 		$data['spells'] = $this -> get_spells($_SESSION['p_id']);
 		$data['title'] = "Karta postaci";
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('characters/page_4', $data);
 		$this -> load -> view('templates/footer');
 	}

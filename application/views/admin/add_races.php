@@ -195,7 +195,7 @@ echo br(2);
 <div class='result'></div>
 <script>
 $(document).ready(function() {
-	$('span').css({
+	$('span').not('#span').css({
 		'display' : 'inline-block',
 		'width' : 305
 	});

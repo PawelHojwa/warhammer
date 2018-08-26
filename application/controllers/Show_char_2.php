@@ -51,7 +51,13 @@ class Show_char_2 extends CI_Controller {
 		$data['exp'] = $this -> get_stats($player_id, 'exp');
 		$data['family'] = $this -> get_stats($player_id, 'family');
 		$data['title'] = "Karta postaci";
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('characters/page_2', $data);
 		$this -> load -> view('templates/footer');
 	}

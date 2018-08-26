@@ -1,6 +1,5 @@
 <div class="container">
 <h1><?php echo $title; ?></h1>
-<p class="lead">Witaj <?php echo $user;?></p>
 <button class="btn btn-info show-table">Pokaż postacie</button>
 <div class="character-table">
 	<p class="name_caption lead">Twoje postacie:</p>
@@ -22,9 +21,8 @@
 	?>
 	</table>
 </div>
-<br>
+<br><br>
 <?php 
-echo anchor('login/logout', "Wyloguj", array('style' => 'display: inline-block;')) . "<br><br>";
 echo form_open('create_player/create', ['id' => 'basic']);
 ?>
 <div class="form-group">
@@ -123,7 +121,6 @@ echo form_input('rint', '', ['size' => 2, 'id' => 'rint', 'readonly' => 'readonl
 echo form_input('rop', '', ['size' => 2, 'id' => 'rop', 'readonly' => 'readonly']); //12
 echo form_input('rsw', '', ['size' => 2, 'id' => 'rsw', 'readonly' => 'readonly']); //13
 echo form_input('rogd', '', ['size' => 2, 'id' => 'rogd', 'readonly' => 'readonly']) . "<br>"; //14
-
 //statystyki pobrane z bazy
 echo form_input('sz', '', ['size' => 2, 'id' => 'sz', 'readonly' => 'readonly']); //1
 echo form_input('ww', '', ['size' => 2, 'id' => 'ww', 'readonly' => 'readonly']); //2

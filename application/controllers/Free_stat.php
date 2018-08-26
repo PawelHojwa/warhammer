@@ -71,14 +71,12 @@ class Free_stat extends CI_Controller {
 	}
 	
 	public function rise_stat() {
-		if (!isset($_SESSION['user'])) {
-			redirect('Login/form_login');
-		} else {
 			$id = $_SESSION['p_id'];
 			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'profession_id');
 			$race_id = $this -> universal_model -> get_values('characters', array('id' => $_SESSION['p_id']), 'raceID');
 			$data = $this -> get_stats($id, $prof_id, $race_id);
 			$data['title'] = "Pierwsze rozwinięcie";
+			$data['name'] = $this -> session -> user;
 			$this -> form_validation -> set_rules('csz', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cww', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			$this -> form_validation -> set_rules('cus', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
@@ -95,6 +93,11 @@ class Free_stat extends CI_Controller {
 			$this -> form_validation -> set_rules('cogd', 'Szybkość', 'required', array('required' => "Pole '{field}' nie może być puste"));
 			if ($this -> form_validation -> run() === FALSE) {
 				$this -> load -> view('templates/header', $data);
+				if ($this -> session -> has_userdata('userID')) {
+					$this -> load -> view('form/success', $data);
+				} else {
+					$this -> load -> view('form/login');
+				}
 				$this -> load -> view('form/free_rise', $data);
 				$this -> load -> view('templates/footer');
 			} else {
@@ -112,6 +115,5 @@ class Free_stat extends CI_Controller {
 				$this -> universal_model -> update('current_schematic', $current_schematic, array('char_id' => $_SESSION['p_id']));
 				redirect('show_char/page_1');
 			}
-		}
 	}
 }

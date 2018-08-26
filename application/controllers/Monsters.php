@@ -7,6 +7,7 @@ class Monsters extends CI_Controller {
 		$this -> load -> model('monster_model');
 		$this -> load -> model('universal_model');
 		$this -> load -> helper('form');	
+		$this -> load -> library('session');
 	}
 	
 	public function get_monsters() {
@@ -65,7 +66,13 @@ class Monsters extends CI_Controller {
 		}
 		$data['monster'] = array_combine($category_id, $category_name);
 		$data['title'] = "Bestiariusz";
+		$data['name'] = $this -> session -> user;
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
 		$this -> load -> view('monsters/show_monsters');
 		$this -> load -> view('templates/footer');
 	}

@@ -74,45 +74,47 @@ class Change_profession extends CI_Controller {
 	}
 	
 	public function change() {
-		if ($this -> session -> has_userdata('user') === FALSE) {
-			redirect('login/view_form');
-		} else {
-			$id = $this -> session -> p_id;
-			$c_id = $this -> universal_model -> get_data('classes');
-			$classes_id = $classes_name = array();
-			foreach ($c_id as $row) {
-				$classes_id[] = $row['classID'];
-				$classes_name[] = $row['className'];
-			}
-			$classes = array_combine($classes_id, $classes_name);
-			$class_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'classID');
-			$class_name = $this -> universal_model -> get_values('classes', array('classID' => $class_id), 'className');
-			$character_name = $this -> universal_model -> get_values('characters', array('id' => $id), 'name');
-			$prof_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'profession_id');
-			$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
-			$exp = $this -> universal_model -> get_values('characters', array('id' => $id), 'exp');
-			$data['character_name'] = $character_name;
-			$data['class_id'] = $class_id;
-			$data['class_name'] = $class_name;
-			$data['classes'] = $classes;
-			$data['profession_id'] = $prof_id;
-			$data['profession'] = $prof_name;
-			$data['exp'] = $exp;
-			$data['title'] = "Zmiana profesji";
-			$this -> form_validation -> set_rules('profession', 'Profesja', 'required', array('required' => '{field} jest wymagana'));
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/character_change', $data);
-				$this -> load -> view('templates/footer');
+		$id = $this -> session -> p_id;
+		$c_id = $this -> universal_model -> get_data('classes');
+		$classes_id = $classes_name = array();
+		foreach ($c_id as $row) {
+			$classes_id[] = $row['classID'];
+			$classes_name[] = $row['className'];
+		}
+		$classes = array_combine($classes_id, $classes_name);
+		$class_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'classID');
+		$class_name = $this -> universal_model -> get_values('classes', array('classID' => $class_id), 'className');
+		$character_name = $this -> universal_model -> get_values('characters', array('id' => $id), 'name');
+		$prof_id = $this -> universal_model -> get_values('characters', array('id' => $id), 'profession_id');
+		$prof_name = $this -> universal_model -> get_values('professions', array('id' => $prof_id), 'profession_name');
+		$exp = $this -> universal_model -> get_values('characters', array('id' => $id), 'exp');
+		$data['character_name'] = $character_name;
+		$data['class_id'] = $class_id;
+		$data['class_name'] = $class_name;
+		$data['classes'] = $classes;
+		$data['profession_id'] = $prof_id;
+		$data['profession'] = $prof_name;
+		$data['exp'] = $exp;
+		$data['title'] = "Zmiana profesji";
+		$data['name'] = $this -> session -> user;
+		$this -> form_validation -> set_rules('profession', 'Profesja', 'required', array('required' => '{field} jest wymagana'));
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
 			} else {
-				$prof = $this -> verify_prof();
-				$diff = $this -> input -> post('exp');
-				$career = $this -> verify_career($id);
-				$this -> universal_model -> insert('career', $career);
-				$this -> universal_model -> update('characters',$prof, array('id' => $id));
-				$this -> universal_model -> update('characters', array('exp' => $exp - $diff), array('id' => $id));
-				redirect('show_char/page_1');
+				$this -> load -> view('form/login');
 			}
+			$this -> load -> view('form/character_change', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			$prof = $this -> verify_prof();
+			$diff = $this -> input -> post('exp');
+			$career = $this -> verify_career($id);
+			$this -> universal_model -> insert('career', $career);
+			$this -> universal_model -> update('characters',$prof, array('id' => $id));
+			$this -> universal_model -> update('characters', array('exp' => $exp - $diff), array('id' => $id));
+			redirect('show_char/page_1');
 		}
 	}
 }

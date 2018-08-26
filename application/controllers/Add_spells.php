@@ -23,45 +23,44 @@ class Add_spells extends CI_Controller {
 	}
 	
 	public function add () {
-		if (!isset($_SESSION['user'])) {
-			redirect('login/view_form');
-		} else {
-			$player_id = $_SESSION['p_id'];
-			$data = array();
-			$spells = $this -> get_spells();
-			$spells_id = array();
-			$spell_name = array();
-			foreach ($spells as $spell) {
-				$spells_id[] = $spell['spell_name_id'];
-				$spell_name[] = $spell['cast_name'];
-			}
-			$data['spells'] = array_combine($spells_id, $spell_name);
-			$profession_name = $this -> get_player_profession($player_id);
-			$data['title'] = "Dodawanie czarów";
-			$data['char_id'] = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'id');
-			$data['profession_name'] = $profession_name['profName'];
-			$data['amount'] = 0;
-			$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
-			if (floor($exp / 100) == 0) {
-				redirect('login/logout');
-			} else {
-				$data['amount'] = floor($exp / 100);
-			}
-			if ($this -> form_validation -> run() === FALSE) {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/add_spells', $data);
-				$this -> load -> view('templates/footer');
-			} else {
-				$diff_exp = $this -> input -> post('exp');
-				$arr = $this -> verify_spell($player_id);
-				$this -> spell_model -> multi_insert('char_spells', $arr);
-				$this -> universal_model -> update('characters', array('exp' => ($exp - $diff_exp)), array('id' => $player_id));
-				redirect('add_incrase/show_options');
-			}
+		$player_id = $_SESSION['p_id'];
+		$data = array();
+		$spells = $this -> get_spells();
+		$spells_id = array();
+		$spell_name = array();
+		foreach ($spells as $spell) {
+			$spells_id[] = $spell['spell_name_id'];
+			$spell_name[] = $spell['cast_name'];
 		}
-		/*echo "<pre>";
-		var_dump($data);
-		echo "</pre>";*/
+		$data['spells'] = array_combine($spells_id, $spell_name);
+		$profession_name = $this -> get_player_profession($player_id);
+		$data['title'] = "Dodawanie czarów";
+		$data['name'] = $this -> session -> user;
+		$data['char_id'] = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'id');
+		$data['profession_name'] = $profession_name['profName'];
+		$data['amount'] = 0;
+		$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
+		if (floor($exp / 100) == 0) {
+			redirect('login/logout');
+		} else {
+			$data['amount'] = floor($exp / 100);
+		}
+		if ($this -> form_validation -> run() === FALSE) {
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
+			} else {
+				$this -> load -> view('form/login');
+			}
+			$this -> load -> view('form/add_spells', $data);
+			$this -> load -> view('templates/footer');
+		} else {
+			$diff_exp = $this -> input -> post('exp');
+			$arr = $this -> verify_spell($player_id);
+			$this -> spell_model -> multi_insert('char_spells', $arr);
+			$this -> universal_model -> update('characters', array('exp' => ($exp - $diff_exp)), array('id' => $player_id));
+			redirect('add_incrase/show_options');
+		}
 	}
 	
 	public function character_spells() {

@@ -9,25 +9,27 @@ class Add_choose extends CI_Controller {
 	}
 	
 	public function show_options() {
-		if (!isset($_SESSION['user'])) {
+		$player_id = $_SESSION['p_id'];
+		$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
+		$data['profession_id'] = $profession_id;
+		$data['title'] = "Wybierze opcje";
+		$data['add_stats'] = "Dodaj statystykę";
+		$data['add_skill'] = "Dodaj umiejętność";
+		$data['add_spell'] = "Dodaj czar";
+		$data['change_profession'] = "Zmień profesję";
+		$data['name'] = $this -> session -> user;
+		$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
+		if (floor($exp / 100) == 0) {
 			redirect('login/view_form');
 		} else {
-			$player_id = $_SESSION['p_id'];
-			$profession_id = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'profession_id');
-			$data['profession_id'] = $profession_id;
-			$data['title'] = "Wybierze opcje";
-			$data['add_stats'] = "Dodaj statystykę";
-			$data['add_skill'] = "Dodaj umiejętność";
-			$data['add_spell'] = "Dodaj czar";
-			$data['change_profession'] = "Zmień profesję";
-			$exp = $this -> universal_model -> get_values('characters', array('id' => $player_id), 'exp');
-			if (floor($exp / 100) == 0) {
-				redirect('login/view_form');
+			$this -> load -> view('templates/header', $data);
+			if ($this -> session -> has_userdata('userID')) {
+				$this -> load -> view('form/success', $data);
 			} else {
-				$this -> load -> view('templates/header', $data);
-				$this -> load -> view('form/choose', $data);
-				$this -> load -> view('templates/footer');
+				$this -> load -> view('form/login');
 			}
+			$this -> load -> view('form/choose', $data);
+			$this -> load -> view('templates/footer');
 		}
 	}
 }  

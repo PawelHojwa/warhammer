@@ -8,6 +8,7 @@ class Skills extends CI_Controller {
 		$this -> load -> helper('url');
 		$this -> load -> library('table');
 		$this -> load -> model('admin_model');
+		$this -> load -> library('session');
 	}
 	
 	public function get_skill() {
@@ -27,6 +28,7 @@ class Skills extends CI_Controller {
 	public function create_data() {
 		$arr = [
 			'title' => 'Umiejętności',
+			'name' => $this -> session -> user
 		];
 		return $arr;
 	}
@@ -34,6 +36,11 @@ class Skills extends CI_Controller {
 	public function show() {
 		$data = $this -> create_data();
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('show/skill_show', $data);
 		$this -> load -> view('templates/footer');
 	}

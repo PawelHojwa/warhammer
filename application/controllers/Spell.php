@@ -9,6 +9,7 @@ class Spell extends CI_Controller {
 		$this -> load -> helper('url');
 		$this -> load -> model('admin_model');
 		$this -> load -> model('universal_model');
+		$this -> load -> library('session');
 	}
 	
 	public function get_spells() {
@@ -46,7 +47,8 @@ class Spell extends CI_Controller {
 		$arr = [
 			'title' => 'Zaklęcia',
 			'types' => $types,
-			'lvl' => $lvl
+			'lvl' => $lvl,
+			'name' => $this -> session -> user
 		];
 		return $arr;
 	}
@@ -64,6 +66,11 @@ class Spell extends CI_Controller {
 	public function show() {
 		$data = $this -> set_data();
 		$this -> load -> view('templates/header', $data);
+		if ($this -> session -> has_userdata('userID')) {
+			$this -> load -> view('form/success', $data);
+		} else {
+			$this -> load -> view('form/login');
+		}
 		$this -> load -> view('show/spells', $data);
 		$this -> load -> view('templates/footer');
 	}
